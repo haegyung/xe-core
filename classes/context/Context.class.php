@@ -48,7 +48,7 @@ class Context {
 	var $is_uploaded = false;   ///< true if attached file exists
 
 	/**
-	 * @brief return static context object (Singleton)
+	 * @brief returns static context object (Singleton)
 	 * @return object
 	 * @remarks it's to use Context without declaration of an object
 	 **/
@@ -313,7 +313,7 @@ class Context {
 
 	/**
 	 * @brief Single Sign On (SSO)
-	 * @return true if module handleing is necessary in the control path of current request
+	 * @return true if module handling is necessary in the control path of current request
 	 **/
 	function checkSSO() {
 		// pass if it's not GET request or XE is not yet installed
@@ -417,6 +417,10 @@ class Context {
 
 		return $self->site_title;
 	}
+	/**
+	 * @deprecated
+	 */
+	function _getBrowserTitle() { return $this->getBrowserTitle(); }
 
 	/**
 	 * @brief load language file according to language type
@@ -538,7 +542,7 @@ class Context {
 	 * @param[in] $method response method (HTML/XMLRPC/JSON)
 	 * @return none
 	 **/
-	function setResponseMethod($method = "HTML") {
+	function setResponseMethod($method='HTML') {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
 
 		$methods = array('HTML','XMLRPC','JSON');
@@ -991,21 +995,18 @@ class Context {
 	/**
 	 * @brief js file을 추가
 	 **/
-	function addJsFile($file, $optimized = false, $targetie = '',$index=null, $type='head') {
+	function addJsFile($file, $optimized = false, $targetie = '',$index=0, $type='head') {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
 
 		$avail_types = array('head', 'body');
 		if(!in_array($type, $avail_types)) $type = $avail_types[0];
 
-		$file = $self->normalizeFilePath($file);
+		$key = $self->normalizeFilePath($file)."\t".$targetie;
+		$map = &$self->js_files_map;
 
 		// Is this file already registered?
-		if ($self->js_files_map[$file]) return;
-		$self->js_files_map[$file] = 1;
-
-		if(is_null($index)) $index = count($self->js_files);
-		while($self->js_files[$index++]);
-		$self->js_files[--$index] = array('file'=>$file, 'targetie'=>$targetie, 'type'=>$type);
+		if (!is_array($map[$type])) $map[$type] = array();
+		if (!isset($map[$type][$key]) || (int)$map[$type][$key] > (int)$index) $map[$type][$key] = (int)$index+count($map[$type])/100;
 	}
 
 	/**
@@ -1016,10 +1017,10 @@ class Context {
 
 		$realfile = realpath($file);
 
-		foreach($self->js_files as $key=>$val) {
-			if(realpath($val['file'])==$realfile && $val['targetie'] == $targetie) {
-				unset($self->js_files[$key]);
-				unset($self->js_files_map[$val['file']]);
+		foreach($self->js_files_map as $key=>$val) {
+			list($_file, $_targetie) = explode("\t", $key);
+			if(realpath($_file)==$realfile && $_targetie == $targetie) {
+				unset($self->js_files_map[$key]);
 				return;
 			}
 		}
@@ -1030,7 +1031,6 @@ class Context {
 	 **/
 	function unloadAllJsFiles() {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
-		$self->js_files = array();
 		$self->js_files_map = array();
 	}
 
@@ -1065,11 +1065,16 @@ class Context {
 	function getJsFile($type='head') {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
 
-		ksort($self->js_files);
+		if(!is_array($self->js_files_map[$type])) $self->js_files_map[$type] = array();
 
-		$ret   = array();
-		foreach($self->js_files as $key=>$val) {
-			if($val['type'] == $type) $ret[] = $val;
+		$ret = array();
+		$map = &$self->js_files_map[$type];
+
+		asort($self->js_files_map[$type]);
+
+		foreach($map as $key=>$val) {
+			list($file, $targetie) = explode("\t", $key);
+			$ret[] = array('file'=>$file, 'targetie'=>$targetie);
 		}
 
 		return $ret;
@@ -1078,18 +1083,13 @@ class Context {
 	/**
 	 * @brief CSS file 추가
 	 **/
-	function addCSSFile($file, $optimized = false, $media = 'all', $targetie = '',$index = null) {
+	function addCSSFile($file, $optimized=false, $media='all', $targetie='',$index=0) {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
 
-		$file = $self->normalizeFilePath($file);
+		$key = $self->normalizeFilePath($file)."\t".$targetie."\t".$media;
+		$map = &$self->css_files_map;
 
-		// Is this file already registered?
-		if ($self->css_files_map[$file]) return;
-		$self->css_files_map[$file] = 1;
-
-		if(is_null($index)) $index = count($self->css_files);
-		while($self->css_files[$index++]);
-		$self->css_files[--$index] = array('file'=>$file, 'targetie'=>$targetie, 'media'=>$media);
+		if (!isset($map[$key]) || (int)$map[$key] > (int)$index) $map[$key] = (int)$index+count($map)/100;
 	}
 
 	/**
@@ -1100,10 +1100,10 @@ class Context {
 
 		$realfile = realpath($file);
 
-		foreach($self->css_files as $key => $val) {
-			if(realpath($val['file'])==$realfile && $val['media'] == $media && $val['targetie'] == $targetie) {
-				unset($self->css_files[$key]);
-				unset($self->css_files_map[$val['file']]);
+		foreach($self->css_files_map as $key => $val) {
+			list($_file, $_targetie, $_media) = explode("\t", $key);
+			if(realpath($_file)==$realfile && $_media==$media && $_targetie==$targetie) {
+				unset($self->css_files_map[$key]);
 				return;
 			}
 		}
@@ -1114,17 +1114,24 @@ class Context {
 	 **/
 	function unloadAllCSSFiles() {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
-		$self->css_files = array();
 		$self->css_files_map = array();
 	}
 
 	/**
-	 * @brief CSS file 목록 return
+	 * @brief return a list of css files
 	 **/
 	function getCSSFile() {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
-		ksort($self->css_files);
-		return array_values($self->css_files);
+	
+		asort($self->css_files_map);
+		$ret = array();
+		
+		foreach($self->css_files_map as $key=>$val) {
+			list($_file, $_targetie, $_media) = explode("\t", $key);
+			$ret[] = array('file'=>$_file, 'media'=>$_media, 'targetie'=>$_targetie);
+		}
+		
+		return $ret;
 	}
 
 	/**
@@ -1149,8 +1156,8 @@ class Context {
 			if(!$filename) continue;
 
 			if(substr($filename,0,2)=='./') $filename = substr($filename,2);
-			if(preg_match('/\.js$/i',  $filename))     $self->addJsFile($plugin_path.$filename, false, '', null, 'body');
-			elseif(preg_match('/\.css$/i', $filename)) $self->addCSSFile($plugin_path.$filename, false, 'all', '', null);
+			if(preg_match('/\.js$/i',  $filename))     $self->addJsFile($plugin_path.$filename, false, '', 0, 'body');
+			elseif(preg_match('/\.css$/i', $filename)) $self->addCSSFile($plugin_path.$filename, false, 'all', '', 0);
 		}
 
 		if(is_dir($plugin_path.'lang')) $self->loadLang($plugin_path.'lang');
@@ -1191,7 +1198,7 @@ class Context {
 	}
 
 	/**
-	 * @brief BodyHeader 추가
+	 * @brief add BodyHeader
 	 **/
 	function addBodyHeader($header) {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
@@ -1199,7 +1206,7 @@ class Context {
 	}
 
 	/**
-	 * @brief BodyHeader return
+	 * @brief returns BodyHeader
 	 **/
 	function getBodyHeader() {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
@@ -1207,7 +1214,7 @@ class Context {
 	}
 
 	/**
-	 * @brief HtmlFooter 추가
+	 * @brief add HtmlFooter
 	 **/
 	function addHtmlFooter($footer) {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
@@ -1215,7 +1222,7 @@ class Context {
 	}
 
 	/**
-	 * @brief HtmlFooter return
+	 * @brief returns HtmlFooter
 	 **/
 	function getHtmlFooter() {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
@@ -1223,23 +1230,22 @@ class Context {
 	}
 
 	/**
-	 * @brief db설정내용이 저장되어 있는 config file의 path를 return
+	 * @brief returns the path of the config file that contains database settings
 	 **/
 	function getConfigFile() {
 		return _XE_PATH_."files/config/db.config.php";
 	}
 
 	/**
-	 * @brief ftp설정내용이 저장되어 있는 config file의 path를 return
+	 * @brief returns the path of the config file that contains FTP settings
 	 **/
 	function getFTPConfigFile() {
 		return _XE_PATH_."files/config/ftp.config.php";
 	}
 
 	/**
-	 * @brief 설치가 되어 있는지에 대한 체크
-	 *
-	 * 단순히 db config 파일의 존재 유무로 설치 여부를 체크한다
+	 * @brief Checks whether XE is installed
+	 * @return true if the config file exists, otherwise false.
 	 **/
 	function isInstalled() {
 		return FileHandler::hasContent(Context::getConfigFile());
@@ -1253,7 +1259,8 @@ class Context {
 	}
 
 	/**
-	 * @brief rewrite mod 사용에 대한 변수 return
+	 * @brief Check whether it is allowed to use rewrite mod
+	 * @return true if it is allowed to use rewrite mod, otherwise false
 	 **/
 	function isAllowRewrite() {
 		$oContext = &Context::getInstance();
@@ -1261,7 +1268,7 @@ class Context {
 	}
 
 	/**
-	 * @brief 로컬 경로를 웹 경로로 변경
+	 * @brief Converts a local path into an URL
 	 */
 	function pathToUrl($path) {
 		$xe   = _XE_PATH_;
