@@ -750,7 +750,7 @@ class Context {
 			if(is_array($args_list) && $args_list[0]=='') array_shift($args_list);
 		} else {
 			// Otherwise, make GET variables into array
-			$get_vars = $_GET;
+			$get_vars = get_object_vars($self->get_vars);
 		}
 
 		// arrange args_list
@@ -909,11 +909,12 @@ class Context {
 	}
 
 	/**
-	 * @brief key/val로 context vars 세팅
+	 * @brief set a context value with a key
 	 **/
-	function set($key, $val, $set_to_get_vars = false) {
+	function set($key, $val, $set_to_get_vars=0) {
 		is_a($this,'Context')?$self=&$this:$self=&Context::getInstance();
 		$self->context->{$key} = $val;
+		if($set_to_get_vars === false) return;
 		if($set_to_get_vars || $self->get_vars->{$key}) $self->get_vars->{$key} = $val;
 	}
 
