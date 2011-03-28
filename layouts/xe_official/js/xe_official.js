@@ -25,5 +25,4 @@ jQuery(function($){
     };
     gItem.find('>a').mouseover(gMenuToggle).focus(gMenuToggle);
     gItem.mouseleave(gMenuOut);
-
 });
