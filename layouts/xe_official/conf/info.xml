@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="0.2">
-    <title xml:lang="ko">XE 공식 사이트 레이아웃</title>
-    <title xml:lang="jp">XE公式サイトレイアウト</title>
-    <title xml:lang="en">XE Official website layout</title>
-    <title xml:lang="ge">XE Offizielle Website-Layout</title>
-    <title xml:lang="ru">XE Официальный сайт макет</title>
-    <title xml:lang="es">Diseño oficial de la página web de XE</title>
-    <title xml:lang="zh-CN">XE 官方网站布局</title>
-    <title xml:lang="zh-TW">XE 官方網站版面</title>
-    <title xml:lang="vi">Giao diện chính thức của XE</title>
-    <title xml:lang="tr">XE Resmi Websitesi Yerleşim Düzeni</title>
+    <title xml:lang="ko">XE Official</title>
+    <title xml:lang="jp">XE Official</title>
+    <title xml:lang="en">XE Official</title>
+    <title xml:lang="ge">XE Official</title>
+    <title xml:lang="ru">XE Official</title>
+    <title xml:lang="es">XE Official</title>
+    <title xml:lang="zh-CN">XE Official</title>
+    <title xml:lang="zh-TW">XE Official</title>
+    <title xml:lang="vi">XE Official</title>
+    <title xml:lang="tr">XE Official</title>
     <description xml:lang="ko">
-        XE 공식 사이트 레이아웃입니다.
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
     <description xml:lang="jp">
-        XEの公式サイトのレイアウトです。
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
     <description xml:lang="en">
-        This layout is the XE Official website layout.
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
     <description xml:lang="ge">
-        Dieses Layout ist das XE Offizielle Website-Layout.
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
     <description xml:lang="ru">
-        Этот формат является XE Официальный сайт компоновку.
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
     <description xml:lang="es">
-        Este diseño is el diseño oficial de la página web de Zerobard XE.
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
     <description xml:lang="zh-CN">
-        XE官方网站布局。
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
     <description xml:lang="zh-TW">
-        XE官方網站版面。
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
 	<description xml:lang="vi">
-        Đây là giao diện chính thức của XE.
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>
 	<description xml:lang="tr">
-        Bu yerleşim düzeni, XE'nin resmi website yerleşim düzenidir.
+        2007년 XE 공식 사이트 레이아웃. 2011년 코드 리펙토링.
         제작 : NHN
     </description>    
-    <version>0.1</version>
-    <date>2007-08-01</date>
+    <version>1.0</version>
+    <date>2011-03-29</date>
     <link>http://xpressengine.com/</link>
 
     <author email_address="developers@xpressengine.com" link="http://xpressengine.com/">
