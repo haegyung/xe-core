@@ -243,7 +243,7 @@
 
             // 2011. 03. 30 Cubrid index 추가 요청
             if(!$oDB->isIndexExists("document_extra_vars", "idx_document_list_order")) {
-                $oDB->addIndex("document_extra_vars", "idx_document_list_order", array("document_srl","module_srl","var_idx"), true);
+                $oDB->addIndex("document_extra_vars", "idx_document_list_order", array("document_srl","module_srl","var_idx"), false);
             }
 
             return new Object(0,'success_updated');
