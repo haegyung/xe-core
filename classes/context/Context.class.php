@@ -1003,9 +1003,12 @@ class Context {
 		$key = $self->normalizeFilePath($file)."\t".$targetie;
 		$map = &$self->js_files_map;
 
+		debugPrint($file);
+		debugPrint($map);
+		
 		// Is this file already registered?
 		if (!is_array($map[$type])) $map[$type] = array();
-		if (!isset($map[$type][$key]) || (int)$map[$type][$key] > (int)$index) $map[$type][$key] = (int)$index+count($map[$type])/100;
+		if (!isset($map[$type][$key]) || (int)$map[$type][$key] > (int)$index) $map[$type][$key] = (int)$index+count($map[$type])/1000-1;
 	}
 
 	/**
@@ -1088,7 +1091,7 @@ class Context {
 		$key = $self->normalizeFilePath($file)."\t".$targetie."\t".$media;
 		$map = &$self->css_files_map;
 
-		if (!isset($map[$key]) || (int)$map[$key] > (int)$index) $map[$key] = (int)$index+count($map)/100;
+		if (!isset($map[$key]) || (int)$map[$key] > (int)$index) $map[$key] = (int)$index+count($map)/100-1;
 	}
 
 	/**
