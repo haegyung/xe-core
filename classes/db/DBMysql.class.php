@@ -455,7 +455,16 @@
 						}
 					}
 
-                } elseif(!$value || is_numeric($value)) $value = (int)$value;
+                }
+				// sql injection 문제로 xml 선언이 number인 경우이면서 넘어온 값이 숫자형이 아니면 에러
+				//elseif(!$value || is_numeric($value)) $value = (int)$value;
+                else {
+					if(!is_numeric($value)) {
+                		$this->setError(-1, 'Column Type mismatch error');
+						return;
+					}
+					$value = (int)$value;
+				}
 
                 $column_list[] = '`'.$name.'`';
                 $value_list[] = $value;
