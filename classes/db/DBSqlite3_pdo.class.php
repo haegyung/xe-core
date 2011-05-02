@@ -462,13 +462,9 @@
 
                 if($output->column_type[$name]!='number') $val_list[] = $this->addQuotes($value);
                 else {
-					// sql injection 문제로 xml 선언이 number인 경우이면서 넘어온 값이 숫자형이 아니면 에러
+					// sql injection 문제로 xml 선언이 number인 경우이면서 넘어온 값이 숫자형이 아니면 숫자형으로 강제 형변환
                     //if(!$value || is_numeric($value)) $value = (int)$value;
-					if(!is_numeric($value)) {
-                		$this->setError(-1, 'Column Type mismatch error');
-						return;
-					}
-                    $val_list[] = $value;
+                    $val_list[] = (int)$value;
                 }
 
                 $prepare_list[] = '?';

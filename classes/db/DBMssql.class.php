@@ -548,11 +548,8 @@
 				} elseif(!$value){
 					$value = '';
 				}
-				// sql injection 문제로 xml 선언이 number인 경우이면서 넘어온 값이 숫자형이 아니면 에러
-				else {
-					$this->setError('Column Type mismatch error');
-					return;
-				}
+				// sql injection 문제로 xml 선언이 number인 경우이면서 넘어온 값이 숫자형이 아니면 숫자형으로 강제 형변환
+				else $value = (int)$value;
 				
                 $column_list[] = '['.$name.']';
 				$value_list[] = '?';
