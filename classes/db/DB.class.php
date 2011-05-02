@@ -694,5 +694,13 @@
 
 			return $arr;
 		}
+
+        /**
+         * @brief Just like numbers, and operations needed to remove the rest
+         **/
+		function _filterNumber(&$value)
+		{
+			$value = preg_replace('/[^\d\w\+\-\*\/\.\(\)]/', '', $value);
+		}
     }
 ?>
