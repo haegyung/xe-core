@@ -595,8 +595,6 @@
 						if(!$value) $value = '';
 						$column_list[] = sprintf("[%s] = %s",  $name, $value);
 					}
-
-					
                 }
             }
 
