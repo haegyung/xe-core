@@ -602,27 +602,27 @@
          * @brief group의 이미지마크 정보를 구함
          **/
         function getGroupImageMark($member_srl,$site_srl=0) {
-            $oModuleModel = &getModel('module');
-            $config = $oModuleModel->getModuleConfig('member');
-            if($config->group_image_mark!='Y'){
-                return null;
-            }
-            $member_group = $this->getMemberGroups($member_srl,$site_srl);
+            if(!isset($GLOBALS['__member_info__']['group_image_mark'][$member_srl])) {
+				$oModuleModel = &getModel('module');
+				$config = $oModuleModel->getModuleConfig('member');
+				if($config->group_image_mark!='Y') return null;
 
-            $groups_info = $this->getGroups($site_srl);
-            $image_mark = null;
-            if(count($member_group) > 0 && is_array($member_group)){
-                $group_srl = array_keys($member_group);
-                $image_mark = $groups_info[$group_srl[0]]->image_mark;
-            }
-            if($image_mark){
-//                list($width, $height, $type, $attrs) = getimagesize($image_mark);
-//                $info->width = $width;
-//                $info->height = $height;
-                $info->src = $image_mark;
-                return $info;
+				$args->member_srl = $member_srl;
+				$args->site_srl = $site_srl;
+				
+				$image_mark_output = executeQueryArray('member.getMemberGroupUseImageMark', $args);
+				$image_marks = $image_mark_output->data;
+				if (is_array($image_marks)) $image_mark = $image_marks[0]->image_mark;
 
-            }else return false;
+				if($image_mark){
+					$info->src = $image_mark;
+                    $GLOBALS['__member_info__']['group_image_mark'][$member_srl] = $info;
+				}else $GLOBALS['__member_info__']['group_image_mark'][$member_srl] = 'N';
+			}
+
+			if ($GLOBALS['__member_info__']['group_image_mark'][$member_srl] == 'N') return null;
+
+			return $GLOBALS['__member_info__']['group_image_mark'][$member_srl];
         }
 
         /**
