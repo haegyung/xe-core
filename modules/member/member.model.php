@@ -354,6 +354,8 @@
         function getGroups($site_srl = 0) {
             if(!$GLOBALS['__group_info__'][$site_srl]) {
                 $args->site_srl = $site_srl;
+				$args->sort_index = 'list_order';
+				$args->order_type = 'asc';
                 $output = executeQuery('member.getGroups', $args);
                 if(!$output->data) return;
 
