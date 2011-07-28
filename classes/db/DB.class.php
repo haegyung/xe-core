@@ -701,6 +701,7 @@
 		function _filterNumber(&$value)
 		{
 			$value = preg_replace('/[^\d\w\+\-\*\/\.\(\)]/', '', $value);
+			$value = preg_replace('@[/+\-*]{2,}@', '', $value);
 			if(!$value) $value = 0;
 		}
     }
