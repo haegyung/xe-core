@@ -276,6 +276,14 @@
 							$oModule->setLayoutPath("./modules/admin/tpl");
 							$oModule->setLayoutFile("layout.html");
 						}
+						else{
+                            $this->error = 'msg_is_not_administrator';
+                            $oMessageObject = &ModuleHandler::getModuleInstance('message',$type);
+                            $oMessageObject->setError(-1);
+                            $oMessageObject->setMessage($this->error);
+                            $oMessageObject->dispMessage();
+                            return $oMessageObject;
+                        }   
 					}
 				}
 				else if($xml_info->default_index_act && method_exists($oModule, $xml_info->default_index_act))
