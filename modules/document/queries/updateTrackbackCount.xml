@@ -3,7 +3,7 @@
         <table name="documents" />
     </tables>
     <columns>
-        <column name="trackback_count" var="trackback_count" />
+        <column name="trackback_count" var="trackback_count" filter="number" />
     </columns>
     <conditions>
         <condition operation="equal" column="document_srl" var="document_srl" filter="number" notnull="notnull" />

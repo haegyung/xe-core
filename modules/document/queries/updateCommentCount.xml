@@ -3,7 +3,7 @@
         <table name="documents" />
     </tables>
     <columns>
-        <column name="comment_count" var="comment_count" notnull="notnull" />
+        <column name="comment_count" var="comment_count" notnull="notnull" filter="number" />
         <column name="update_order" var="update_order" />
         <column name="last_update" var="last_update" default="curdate()" />
         <column name="last_updater" var="last_updater" />
