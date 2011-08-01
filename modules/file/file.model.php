@@ -209,5 +209,16 @@
         function getFileModuleConfig($module_srl) {
             return $this->getFileConfig($module_srl);
         }
+
+		function getFileGrant($file_info, $member_info){
+			if (!$file_info || !$member_info) return null;
+
+			$oModuleModel = &getModel('module');
+			$grant = $oModuleModel->getGrant($oModuleModel->getModuleInfoByModuleSrl($file_info->module_srl), $member_info);
+			
+			$file_grant->is_deletable = ($member_info->is_admin == 'Y' || $member_info->member_srl == $file_info->member_srl || $grant->manager);
+			
+			return $file_grant;
+		}
     }
 ?>

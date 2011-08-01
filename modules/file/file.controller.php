@@ -496,6 +496,8 @@
             $srls = explode(',',$file_srl);
             if(!count($srls)) return;
 
+			$oFileModel = &getModel('file');
+			$logged_info = Context::get('logged_info');
             for($i=0;$i<count($srls);$i++) {
                 $srl = (int)$srls[$i];
                 if(!$srl) continue;
@@ -507,6 +509,10 @@
 
                 $file_info = $output->data;
                 if(!$file_info) continue;
+
+				$file_grant = $oFileModel->getFileGrant($file_info, $logged_info); 
+
+				if(!$file_grant->is_deletable) continue;
 
                 $source_filename = $output->data->source_filename;
                 $uploaded_filename = $output->data->uploaded_filename;
