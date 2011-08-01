@@ -266,11 +266,11 @@
 						$oModule = &$this->getModuleInstance($forward->module, $type, $kind);
 					}
                     $xml_info = $oModuleModel->getModuleActionXml($forward->module);
+					$oMemberModel = &getModel('member');
+					$logged_info = $oMemberModel->getLoggedInfo();
+
 					if($this->module == "admin" && $type == "view")
 					{
-						$oMemberModel = &getModel('member');
-
-						$logged_info = $oMemberModel->getLoggedInfo();
 						if($logged_info->is_admin=='Y') {
 							$orig_module->loadSideBar();
 							$oModule->setLayoutPath("./modules/admin/tpl");
