@@ -96,11 +96,11 @@
 </tr>
 <tr class="row2">
     <th scope="row"><div>{$lang->homepage}</div></th>
-    <td><!--@if($member_info->homepage)--><a href="{$member_info->homepage}" onclick="winopen(this.href); return false;">{htmlspecialchars($member_info->homepage)}</a><!--@end-->&nbsp;</td>
+    <td><!--@if($member_info->homepage)--><a href="{htmlspecialchars($member_info->homepage)}" onclick="winopen(this.href); return false;">{htmlspecialchars($member_info->homepage)}</a><!--@end-->&nbsp;</td>
 </tr>
 <tr>
     <th scope="row"><div>{$lang->blog}</div></th>
-    <td><!--@if($member_info->blog)--><a href="{$member_info->blog}" onclick="windopen(this.href); return false;">{htmlspecialchars($member_info->blog)}</a><!--@end-->&nbsp;</td>
+    <td><!--@if($member_info->blog)--><a href="{htmlspecialchars($member_info->blog)}" onclick="windopen(this.href); return false;">{htmlspecialchars($member_info->blog)}</a><!--@end-->&nbsp;</td>
 </tr>
 <tr class="row2">
     <th scope="row"><div>{$lang->birthday}</div></th>
