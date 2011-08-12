@@ -613,19 +613,16 @@
 				$member_group = $this->getMemberGroups($member_srl,$site_srl);
 				$groups_info = $this->getGroups($site_srl);
 				$image_mark_info = null;
-				if(count($member_group) > 0 && is_array($member_group)){
-					$group_srl = array_keys($member_group);
-				}
 
-				$i = 0;
-				while($i < count($group_srl)){
-					$target = $groups_info[$group_srl[$i++]];
-					if ($target->image_mark)
+				foreach($groups_info as $key=>$val){
+					$target = $member_group[$key];
+					if (!empty($target) && !empty($val->image_mark))
 					{
-						$info->title = $target->title;
-						$info->description = $target->description;
-						$info->src = $target->image_mark;
+						$info->title = $val->title;
+						$info->description = $val->description;
+						$info->src = $val->image_mark;
 						$GLOBALS['__member_info__']['group_image_mark'][$member_srl] = $info;
+						break;
 					}
 				}
 				if (!$info) $GLOBALS['__member_info__']['group_image_mark'][$member_srl] == 'N';
