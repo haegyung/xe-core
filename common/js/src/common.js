@@ -605,21 +605,16 @@ function doDocumentPreview(obj) {
     var dummy_obj = jQuery("#previewDocument");
 
     if(!dummy_obj.length) {
-        jQuery(
+        dummy_obj = jQuery(
             '<form id="previewDocument" target="previewDocument" method="post" action="'+request_uri+'">'+
             '<input type="hidden" name="module" value="document" />'+
             '<input type="hidden" name="act" value="dispDocumentPreview" />'+
             '<input type="hidden" name="content" />'+
             '</form>'
         ).appendTo(document.body);
-
-        dummy_obj = jQuery("#previewDocument")[0];
     }
 
-    if(dummy_obj) {
-        dummy_obj.content.value = content;
-        dummy_obj.submit();
-    }
+	dummy_obj.find('input[name="content"]').val(content).end().submit();
 }
 
 /* 게시글 저장 */
