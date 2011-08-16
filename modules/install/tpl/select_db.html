@@ -3,7 +3,7 @@
 <h2 class="xeAdmin">{$lang->select_db_type}</h2>
 
     <form method="post" action="./">
-    <input type="hidden" name="module" value="{$module}" />
+    <input type="hidden" name="module" value="{htmlspecialchars($module)}" />
     <input type="hidden" name="act" value="dispInstallForm" />
 
     <table cellspacing="0" class="tableType6">
@@ -11,8 +11,8 @@
     <!--@foreach(DB::getSupportedList() as $key => $val)-->
     <tr>
         <th scope="row">
-            <input type="radio" name="db_type" value="{$val->db_type}" <!--@if(!$val->enable)-->disabled="disabled"<!--@end--> id="db_type_{$val->db_type}" <!--@if($val->db_type=="mysql")-->checked="checked"<!--@end-->/>
-            <label for="db_type_{$val->db_type}">{$val->db_type}</label>
+            <input type="radio" name="db_type" value="{htmlspecialchars($val->db_type)}" <!--@if(!$val->enable)-->disabled="disabled"<!--@end--> id="db_type_{htmlspecialchars($val->db_type)}" <!--@if($val->db_type=="mysql")-->checked="checked"<!--@end-->/>
+            <label for="db_type_{htmlspecialchars($val->db_type)}">{htmlspecialchars($val->db_type)}</label>
         </th>
         <td>{$lang->db_desc[$val->db_type]}</td>
     </tr>

@@ -15,15 +15,15 @@
         <h4 class="xeAdmin">{$lang->extra_vars} {$selected_var_idx}</h4>
         <table cellspacing="0" class="crossTable ">
         <tr>
-            <th><div>{$lang->eid}</div></th>
+            <th><div>{htmlspecialchars($lang->eid)}</div></th>
             <td class="wide">
-                <input type="text" name="eid" value="{$selected_var->eid}" class="inputTypeText w200" id="eid" /><p>{$lang->about_extra_vars_eid_value}</p>
+                <input type="text" name="eid" value="{htmlspecialchars($selected_var->eid)}" class="inputTypeText w200" id="eid" /><p>{$lang->about_extra_vars_eid_value}</p>
             </td>
         </tr>
         <tr>
             <th><div>{$lang->column_name}</div></th>
             <td class="wide">
-                <input type="text" name="name" value="{htmlspecialchars($selected_var->name)}" class="inputTypeText w200" id="name" /><a href="{getUrl('','module','module','act','dispModuleAdminLangcode','target','name')}" onclick="popopen(this.href);return false;" class="buttonSet buttonSetting"><span>{$lang->cmd_find_langcode}</span></a> 
+                <input type="text" name="name" value="{htmlspecialchars($selected_var->name)}" class="inputTypeText w200" id="name" /><a href="{getUrl('','module','module','act','dispModuleAdminLangcode','target','name')}" onclick="popopen(this.href);return false;" class="buttonSet buttonSetting"><span>{$lang->cmd_find_langcode}</span></a>
             </td>
         </tr>
         <tr>
@@ -32,7 +32,7 @@
                 <select name="type">
                     <!--@foreach($lang->column_type_list as $k => $v)-->
                         <!--@if($key != 'kr_zip')-->
-                        <option value="{$k}" <!--@if($selected_var->type==$k)-->selected="selected"<!--@end-->>{$lang->column_type_list[$k]}</option>
+                        <option value="{htmlspecialchars($k)}" <!--@if($selected_var->type==$k)-->selected="selected"<!--@end-->>{$lang->column_type_list[$k]}</option>
                         <!--@end-->
                     <!--@end-->
                 </select>
@@ -44,11 +44,11 @@
         </tr>
         <tr>
             <th><div>{$lang->default_value}</div></th>
-            <td><input type="text" name="default" value="{$selected_var->default}" class="inputTypeText w400" /><p>{$lang->about_extra_vars_default_value}</p></td>
+            <td><input type="text" name="default" value="{htmlspecialchars($selected_var->default)}" class="inputTypeText w400" /><p>{$lang->about_extra_vars_default_value}</p></td>
         </tr>
         <tr>
             <th><div>{$lang->description}</div></th>
-            <td><input type="text" name="desc" value="{$selected_var->desc}" id="desc" class="inputTypeText w400" /><a href="{getUrl('','module','module','act','dispModuleAdminLangcode','target','desc')}" onclick="popopen(this.href);return false;" class="buttonSet buttonSetting"><span>{$lang->cmd_find_langcode}</span></a></td>
+            <td><input type="text" name="desc" value="{htmlspecialchars($selected_var->desc)}" id="desc" class="inputTypeText w400" /><a href="{getUrl('','module','module','act','dispModuleAdminLangcode','target','desc')}" onclick="popopen(this.href);return false;" class="buttonSet buttonSetting"><span>{$lang->cmd_find_langcode}</span></a></td>
         </tr>
         <tr>
             <th><div>{$lang->cmd_search}</div></th>
@@ -86,8 +86,8 @@
     <!--@foreach($extra_keys as $key => $val)-->
     <tr>
         <td rowspan="3">{$val->idx}</td>
-        <td rowspan="3">{$val->eid}</td>
-        <td class="nowrap"><b>{$val->name}</b></td>
+        <td rowspan="3">{htmlspecialchars($val->eid)}</td>
+        <td class="nowrap"><b>{htmlspecialchars($val->name)}</b></td>
         <td class="nowrap">{$lang->column_type_list[$val->type]}</td>
         <td rowspan="3"><!--@if($val->is_required=='Y')--><b>{$lang->is_required}</b><!--@else-->N<!--@end--></td>
         <td rowspan="3"><!--@if($val->search=='Y')--><b>{$lang->search_target}</b><!--@else-->N<!--@end--></td>
@@ -100,11 +100,11 @@
     </tr>
     <tr>
         <td>{$lang->default_value}</td>
-        <td class="wide">{$val->default}&nbsp;</td>
+        <td class="wide">{htmlspecialchars($val->default)}&nbsp;</td>
     </tr>
     <tr>
         <td>{$lang->description}</td>
-        <td class="wide">{$val->desc}&nbsp;</td>
+        <td class="wide">{htmlspecialchars($val->desc)}&nbsp;</td>
     </tr>
     <!--@end-->
     <tr>

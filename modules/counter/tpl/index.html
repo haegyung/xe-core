@@ -17,8 +17,8 @@
 <div class="header4 gap1">
 
     <form action="./index.php" method="get" id="fo_calendar">
-    <input type="hidden" name="module" value="{$module}" />
-    <input type="hidden" name="act" value="{$act}" />
+    <input type="hidden" name="module" value="{htmlspecialchars($module)}" />
+    <input type="hidden" name="act" value="{htmlspecialchars($act)}" />
     <input type="hidden" name="selected_date" id="selected_date" value="{zDate('Ymd',$selected_date)}" />
 
     <table cellspacing="0" class="colTable">
@@ -48,7 +48,7 @@
             }
         };
 
-        $.extend(option,$.datepicker.regional['{$lang_type}']);
+        $.extend(option,$.datepicker.regional['{htmlspecialchars($lang_type)}']);
         $(".inputDate").datepicker(option);
     });
 })(jQuery);
@@ -69,7 +69,7 @@
 
     <ul class="localNavigation">
         <!--@foreach($lang->cmd_select_counter_type as $key => $val)-->
-        <li <!--@if($type==$key || (!$type && $key == "hour"))-->class="on"<!--@end-->><a href="{getUrl('type',$key)}">{$val}</a></li>
+        <li <!--@if($type==$key || (!$type && $key == "hour"))-->class="on"<!--@end-->><a href="{getUrl('type',$key)}">{htmlspecialchars($val)}</a></li>
         <!--@end-->
     </ul>
 </div>
@@ -77,9 +77,9 @@
 
 <!-- 일자를 옮기는 form -->
 <form action="./" method="get" id="fo_counter">
-    <input type="hidden" name="module" value="{$module}" />
-    <input type="hidden" name="act" value="{$act}" />
-    <input type="hidden" name="selected_date" value="{$selected_date}" />
+    <input type="hidden" name="module" value="{htmlspecialchars($module)}" />
+    <input type="hidden" name="act" value="{htmlspecialchars($act)}" />
+    <input type="hidden" name="selected_date" value="{htmlspecialchars($selected_date)}" />
 </form>
 
 
@@ -99,13 +99,13 @@
         <div>
         <!--// 시간대별 -->
         <!--@if($type == 'year')-->
-            <em>{$key}</em>
+            <em>{htmlspecialchars($key)}</em>
         <!--@elseif($type == 'month')-->
-            <em>{$key}</em>
+            <em>{htmlspecialchars($key)}</em>
         <!--@elseif($type == 'day')-->
-            <em>{$key}</em> {$lang->unit_day}
+            <em>{htmlspecialchars($key)}</em> {$lang->unit_day}
         <!--@else-->
-            <em>{$key}</em>
+            <em>{htmlspecialchars($key)}</em>
         <!--@end-->
         </div>
     </th>
@@ -114,13 +114,13 @@
         <div>
         <!--// 시간대별 -->
         <!--@if($type == 'year')-->
-            <em>{$key}</em> {$lang->unit_year}
+            <em>{htmlspecialchars($key)}</em> {$lang->unit_year}
         <!--@elseif($type == 'month')-->
-            <em>{$key}</em> {$lang->unit_month}
+            <em>{htmlspecialchars($key)}</em> {$lang->unit_month}
         <!--@elseif($type == 'day')-->
-            <em>{$key}</em> {$lang->unit_day}
+            <em>{htmlspecialchars($key)}</em> {$lang->unit_day}
         <!--@else-->
-            <em>{$key}</em> {$lang->unit_hour}
+            <em>{htmlspecialchars($key)}</em> {$lang->unit_hour}
         <!--@end-->
         </div>
     </th>
@@ -128,8 +128,8 @@
 	{@ $img_width = (int)$percent; $img_width = $img_width?$img_width.'%':'3px'; }
     <td class="wide">
 		<div class="barContainer">
-			<span class="graphHr" style="width:{$img_width}">
-				<span>{number_format($val)}({$percent}%)</span>
+			<span class="graphHr" style="width:{htmlspecialchars($img_width)}">
+				<span>{number_format($val)}({htmlspecialchars($percent)}%)</span>
 			</span>
 		</div>
     </td>

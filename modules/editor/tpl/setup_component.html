@@ -8,35 +8,35 @@
 </div>
 
 <form action="./" method="get" onsubmit="return procFilter(this, setup_component);">
-<input type="hidden" name="component_name" value="{$component_name}" />
+<input type="hidden" name="component_name" value="{htmlspecialchars($component_name)}" />
 
     <div id="popBody">
         <table cellspacing="0" class="rowTable">
         <tr class="row2">
             <th scope="row"><div>{$lang->component_name}</div></th>
-            <td>{$component->component_name} ver. {$component->version}</td>
+            <td>{htmlspecialchars($component->component_name)} ver. {htmlspecialchars($component->version)}</td>
         </tr>
         <tr>
             <th scope="row"><div>{$lang->component_author}</div></th>
             <td class="blue">
             <!--@foreach($component->author as $author)-->
-            {$author->name} (<a href="{$author->homepage}" onclick="window.open(this.href);return false;">{$author->homepage}</a>, <a href="mailto:{$author->email_address}">{$author->email_address}</a>)<br />
+            {htmlspecialchars($author->name)} (<a href="{htmlspecialchars($author->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($author->homepage)}</a>, <a href="mailto:{htmlspecialchars($author->email_address)}">{htmlspecialchars($author->email_address)}</a>)<br />
             <!--@endforeach-->
             </td>
         </tr>
         <!--@if($component->link)-->
         <tr class="row2">
             <th scope="row"><div>{$lang->component_link}</div></th>
-            <td><a href="#" onclick="winopen('{$component->link}');return false;">{$component->link}</a></td>
+            <td><a href="#" onclick="winopen('{htmlspecialchars($component->link)}');return false;">{htmlspecialchars($component->link)}</a></td>
         </tr>
         <!--@end-->
 
         <!--@foreach($component->extra_vars as $key => $val)-->
         <tr class="row{$cycle_idx}">
-            <th scope="row"><div>{$val->title}</div></th>
+            <th scope="row"><div>{htmlspecialchars($val->title)}</div></th>
             <td>
-                <input type="text" name="{$key}" value="{$val->value}" class="inputTypeText w400" />
-                <p>{$val->description}</p>
+                <input type="text" name="{htmlspecialchars($key)}" value="{htmlspecialchars($val->value)}" class="inputTypeText w400" />
+                <p>{htmlspecialchars($val->description)}</p>
             </td>
         </tr>
         <!--@end-->
@@ -45,7 +45,7 @@
             <th scope="row"><div>{$lang->grant}</div></th>
             <td>
             <!--@foreach($group_list as $key => $val)-->
-                <input type="checkbox" name="target_group" value="{$key}" <!--@if(in_array($key, $component->target_group))-->checked="checked"<!--@end--> id="group_{$key}"> <label for="group_{$key}">{$val->title}</label> &nbsp;
+                <input type="checkbox" name="target_group" value="{htmlspecialchars($key)}" <!--@if(in_array($key, $component->target_group))-->checked="checked"<!--@end--> id="group_{htmlspecialchars($key)}"> <label for="group_{htmlspecialchars($key)}">{htmlspecialchars($val->title)}</label> &nbsp;
             <!--@end-->
                 <p>{$lang->about_component_grant}</p>
             </td>
@@ -63,7 +63,7 @@
                         <div class="module_category_title">
                             <input type="checkbox" onclick="XE.checkboxToggleAll('mid_list', { wrap:'section_{$module_category_srl}' }); return false;" />
                         <!--@if($modules->title)-->
-                            {$modules->title}
+                            {htmlspecialchars($modules->title)}
                         <!--@else-->
                             {$lang->none_category}
                         <!--@end-->
@@ -72,8 +72,8 @@
                         <div id="section_{$module_category_srl}">
                         <!--@foreach($modules->list as $key => $val)-->
                             <div class="module_list">
-                                <input type="checkbox" value="{$key}" name="mid_list" id="chk_mid_list_{$key}" <!--@if(in_array($key, $component->mid_list))-->checked="checked"<!--@end--> /> 
-                                <label for="chk_mid_list_{$key}">{$key} ({$val->browser_title})</label>
+                                <input type="checkbox" value="{htmlspecialchars($key)}" name="mid_list" id="chk_mid_list_{htmlspecialchars($key)}" <!--@if(in_array($key, $component->mid_list))-->checked="checked"<!--@end--> />
+                                <label for="chk_mid_list_{htmlspecialchars($key)}">{htmlspecialchars($key)} ({htmlspecialchars($val->browser_title)})</label>
                             </div>
                         <!--@end-->
                         </div>

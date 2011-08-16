@@ -6,20 +6,20 @@
     <table cellspacing="0" class="rowTable">
     <tr>
         <th scope="row"><div>{$lang->title}</div></th>
-        <td>{$addon_info->title} ver. {$addon_info->version}</td>
+        <td>{htmlspecialchars($addon_info->title)} ver. {htmlspecialchars($addon_info->version)}</td>
     </tr>
     <tr>
         <th scope="row"><div>{$lang->author}</div></th>
         <td>
             <!--@foreach($addon_info->author as $author)-->
-            {$author->name} <!--@if($author->homepage || $author->email_address)-->(<!--@if($author->homepage)--><a href="{$author->homepage}" onclick="window.open(this.href);return false;">{$author->homepage}</a><!--@end--><!--@if($author->homepage && $author->email_address)-->, <!--@end--><!--@if($author->email_address)--><a href="mailto:{$author->email_address}">{$author->email_address}</a><!--@end-->)<!--@end--><br />
+            {htmlspecialchars($author->name)} <!--@if($author->homepage || $author->email_address)-->(<!--@if($author->homepage)--><a href="{htmlspecialchars($author->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($author->homepage)}</a><!--@end--><!--@if($author->homepage && $author->email_address)-->, <!--@end--><!--@if($author->email_address)--><a href="mailto:{htmlspecialchars($author->email_address)}">{htmlspecialchars($author->email_address)}</a><!--@end-->)<!--@end--><br />
             <!--@endforeach-->
         </td>
     </tr>
 <!--@if($addon_info->homepage)-->
     <tr>
         <th scope="row"><div>{$lang->homepage}</div></th>
-        <td><a href="{$addon_info->homepage}" onclick="window.open(this.href);return false;">{$addon_info->homepage}</a></td>
+        <td><a href="{htmlspecialchars($addon_info->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($addon_info->homepage)}</a></td>
     </tr><!--@end-->
     <tr>
         <th scope="row"><div>{$lang->regdate}</div></th>
@@ -29,16 +29,16 @@
     <tr>
         <th scope="row"><div>{$lang->addon_license}</div></th>
         <td>
-            {nl2br(trim($addon_info->license))}
+            {nl2br(htmlspecialchars(trim($addon_info->license)))}
         <!--@if($addon_info->license_link)-->
-            <p><a href="{$addon_info->license_link}" onclick="window.close(); return false;">{$addon_info->license_link}</a></p>
+            <p><a href="{htmlspecialchars($addon_info->license_link)}" onclick="window.close(); return false;">{htmlspecialchars($addon_info->license_link)}</a></p>
         <!--@end-->
         </td>
     </tr><!--@end-->
 <!--@if($addon_info->description)-->
     <tr>
         <th scope="row"><div>{$lang->description}</div></th>
-        <td>{nl2br(trim($addon_info->description))}</td>
+        <td>{nl2br(htmlspecialchars(trim($addon_info->description)))}</td>
     </tr><!--@end-->
     </table>
 
@@ -57,23 +57,23 @@
     <!--@foreach($addon_info->history as $history)-->
     <tr>
         <th scope="row"><div>
-            {$history->version}<br />
-            {$history->date}
+            {htmlspecialchars($history->version)}<br />
+            {htmlspecialchars($history->date)}
         </div></th>
         <td>
             <!--@foreach($history->author as $author)-->
-            <p>{$author->name} (<a href="{$author->homepage}" onclick="window.open(this.href);return false;">{$author->homepage}</a> / <a href="mailto:{$author->email_address}">{$author->email_address}</a>)</p>
+            <p>{htmlspecialchars($author->name)} (<a href="{htmlspecialchars($author->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($author->homepage)}</a> / <a href="mailto:{htmlspecialchars($author->email_address)}">{htmlspecialchars($author->email_address)}</a>)</p>
             <!--@endforeach-->
             <!--@if($history->description)-->
-            <p>{nl2br(trim($history->description))}</p>
+            <p>{nl2br(htmlspecialchars(trim($history->description)))}</p>
             <!--@endif-->
             <!--@if($history->logs)-->
             <ul>
                 <!--@foreach($history->logs as $log)-->
                 <!--@if($log->link)-->
-                <li><a href="{$log->link}">{$log->text}</a></li>
+                <li><a href="{htmlspecialchars($log->link)}">{htmlspecialchars($log->text)}</a></li>
                 <!--@else-->
-                <li>{$log->text}</li>
+                <li>{htmlspecialchars($log->text)}</li>
                 <!--@endif-->
                 <!--@endforeach-->
             </ul>

@@ -3,16 +3,16 @@
 
 <div class="printContent">
 
-    <div><h1 class="xeAdmin">{$oDocument->getTitleText()}</h1></div>
+    <div><h1 class="xeAdmin">{htmlspecialchars($oDocument->getTitleText())}</h1></div>
 
-    <div class="member_{$oDocument->get('member_srl')} gap1 fl">{$oDocument->get('nick_name')}</div>
+    <div class="member_{$oDocument->get('member_srl')} gap1 fl">{htmlspecialchars($oDocument->get('nick_name'))}</div>
     <div class="gap1 fr">{$oDocument->getRegdate()}</div>
     <div class="clear"></div>
 
 
     <!--@if($oDocument->isExtraVarsExists() && (!$oDocument->isSecret() || $oDocument->isGranted()) )-->
     <!--@foreach($oDocument->getExtraVars() as $key => $val)-->
-    <div class="gap1">{$val->name} : {$val->getValueHtml()}</div>
+    <div class="gap1">{htmlspecialchars($val->name)} : {$val->getValueHtml()}</div>
     <div class="clear"></div>
     <!--@end-->
     <!--@end-->

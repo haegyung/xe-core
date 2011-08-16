@@ -12,12 +12,12 @@
         <div class="filebox_preview_{$val->module_filebox_srl}" style="width:100px;height:100px;float:left; position:relative;margin-right:10px; ">
             <!--@if($ext=='swf'||$ext=='flv')-->
             <script type="text/javascript">//<![CDATA[
-            displayMultimedia('{getUrl('')}{$layout_image_path}{$file}', '100%', '100%');
+            displayMultimedia('{getUrl('')}{htmlspecialchars($layout_image_path)}{htmlspecialchars($file)}', '100%', '100%');
             //]]></script>
             <!--@elseif(in_array($ext,array('gif','png','jpg','jpeg')))-->
-                <img src="{getUrl('')}{$layout_image_path}{$file}" width="100%" height="100%" />
+                <img src="{getUrl('')}{htmlspecialchars($layout_image_path)}{htmlspecialchars($file)}" width="100%" height="100%" />
             <!--@end-->
-            <span class="small button" style="position:absolute;left:3px; top:3px;"><button type="button" onclick="selectLayoutImage(request_uri+'{$layout_image_path}{$file}');">{$lang->cmd_select}</button></span>
+            <span class="small button" style="position:absolute;left:3px; top:3px;"><button type="button" onclick="selectLayoutImage(request_uri+'{htmlspecialchars($layout_image_path)}{htmlspecialchars($file)}');">{$lang->cmd_select}</button></span>
         </div>
     <!--@end-->
 

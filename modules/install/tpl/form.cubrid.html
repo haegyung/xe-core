@@ -3,7 +3,7 @@
 <!--#include("header.html")-->
 
 <form action="./" method="post" onsubmit="return procFilter(this, install)">
-<input type="hidden" name="db_type" value="{$db_type}" />
+<input type="hidden" name="db_type" value="{htmlspecialchars($db_type)}" />
 
     <h2 class="xeAdmin">{$lang->form_title}</h2>
 
@@ -13,7 +13,7 @@
     <col />
 
     <tr>
-        <th rowspan="6" class="hr" scope="row">{$db_type}</th>
+        <th rowspan="6" class="hr" scope="row">{htmlspecialchars($db_type)}</th>
         <th class="second" scope="row"><label for="textfield11">{$lang->db_hostname}</label></th>
         <td><input type="text" name="db_hostname" value="127.0.0.1" class="inputTypeText w100" id="textfield11" /></td>
     </tr>

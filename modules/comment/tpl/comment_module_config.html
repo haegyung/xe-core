@@ -1,19 +1,19 @@
 <!--%import("filter/insert_comment_module_config.xml")-->
 
 <form action="./" method="post" onsubmit="return procFilter(this, insert_comment_module_config)">
-<input type="hidden" name="target_module_srl" value="{$module_info->module_srl?$module_info->module_srl:$module_srls}" />
+<input type="hidden" name="target_module_srl" value="{htmlspecialchars($module_info->module_srl?$module_info->module_srl:$module_srls)}" />
 
     <h4 class="xeAdmin">{$lang->comment}</h4>
     <table cellspacing="0" class="rowTable">
-    <tr>    
+    <tr>
         <th><div>{$lang->comment_count}</div></th>
         <td class="wide">
 			<p>{$lang->about_comment_count}</p>
-            <input type="text" name="comment_count" value="{$comment_config->comment_count}" class="inputTypeText w80" />
+            <input type="text" name="comment_count" value="{htmlspecialchars($comment_config->comment_count)}" class="inputTypeText w80" />
 
         </td>
     </tr>
-    <tr>    
+    <tr>
         <th><div>{$lang->cmd_vote}</div></th>
         <td>
 		    <select name="use_vote_up" class="w100">
@@ -23,7 +23,7 @@
             </select>
         </td>
     </tr>
-    <tr>    
+    <tr>
         <th><div>{$lang->cmd_vote_down}</div></th>
         <td>
 		    <select name="use_vote_down" class="w100">

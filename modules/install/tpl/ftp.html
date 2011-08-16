@@ -33,7 +33,7 @@
     <tr>
         <th class="second hr" scope="row" rowspan="2"><div>{$lang->msg_ftp_installed_ftp_realpath}<br /><br/>{$lang->msg_ftp_installed_realpath}:<br/> {_XE_PATH_}</div></th>
         <td>
-            <input type="text" name="ftp_root_path" value="{$ftp_info->ftp_root_path}" class="inputTypeText w400" /> 
+            <input type="text" name="ftp_root_path" value="{htmlspecialchars($ftp_info->ftp_root_path)}" class="inputTypeText w400" />
         </td>
     </tr>
     <tr id="ftplist">

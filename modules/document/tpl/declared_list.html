@@ -3,7 +3,7 @@
 <!--#include("header.html")-->
 
 <form id="fo_list" action="./" method="get" onsubmit="return procFilter(this, delete_checked)">
-<input type="hidden" name="page" value="{$page}" />
+<input type="hidden" name="page" value="{htmlspecialchars($page)}" />
 
 <!-- 목록 -->
 <table cellspacing="0" class="rowTable">
@@ -26,7 +26,7 @@
         <td>{$no}</td>
         <td><input type="checkbox" name="cart" value="{$oDocument->document_srl}" onclick="doAddDocumentCart(this)" <!--@if($oDocument->isCarted())-->checked="checked"<!--@end-->/></td>
         <td>
-            <a href="{getUrl('','document_srl',$oDocument->document_srl)}" onclick="window.open(this.href);return false">{$oDocument->getTitleText()}</a>
+            <a href="{getUrl('','document_srl',$oDocument->document_srl)}" onclick="window.open(this.href);return false">{htmlspecialchars($oDocument->getTitleText())}</a>
 
             <!--@if($oDocument->getCommentCount())-->
                 [{$oDocument->getCommentCount()}]
@@ -36,7 +36,7 @@
                 [{$oDocument->getTrackbackCount()}]
             <!--@end-->
         </td>
-        <td><span class="member_{$oDocument->get('member_srl')}">{$oDocument->getNickName()}</span></td>
+        <td><span class="member_{$oDocument->get('member_srl')}">{htmlspecialchars($oDocument->getNickName())}</span></td>
         <td><strong>{$oDocument->get('declared_count')}</strong></td>
         <td>{$oDocument->get('readed_count')}</td>
         <td>{$oDocument->get('voted_count')}</td>
@@ -58,12 +58,12 @@
 <!-- 페이지 네비게이션 -->
 <div class="clear"></div>
 <div class="pagination a1">
-    <a href="{getUrl('page','','module_srl','')}" class="prevEnd">{$lang->first_page}</a> 
+    <a href="{getUrl('page','','module_srl','')}" class="prevEnd">{$lang->first_page}</a>
     <!--@while($page_no = $page_navigation->getNextPage())-->
         <!--@if($page == $page_no)-->
-            <strong>{$page_no}</strong> 
+            <strong>{$page_no}</strong>
         <!--@else-->
-            <a href="{getUrl('page',$page_no,'module_srl','')}">{$page_no}</a> 
+            <a href="{getUrl('page',$page_no,'module_srl','')}">{$page_no}</a>
         <!--@end-->
     <!--@end-->
     <a href="{getUrl('page',$page_navigation->last_page,'module_srl','')}" class="nextEnd">{$lang->last_page}</a>

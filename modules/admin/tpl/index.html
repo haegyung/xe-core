@@ -30,12 +30,12 @@
 						<param value="transparent" name="wmode"/>
 						<param value="false" name="menu"/>
 						<param value="true" name="allowFullScreen"/>
-						<param value="colorType=red&amp;viewNum={$status->visitor}" name="flashVars"/>
+						<param value="colorType=red&amp;viewNum={htmlspecialchars($status->visitor)}" name="flashVars"/>
 						<!--[if !IE]> <-->
-						<object title="{$status->visitor}" height="50" width="100%" align="middle" name="count_red" class="F1239845427590201480_undefined" data="{getUrl()}modules/admin/tpl/swf/count.swf" type="application/x-shockwave-flash">
-							<param value="colorType=red&amp;viewNum={$status->visitor}" name="flashVars"/>
+						<object title="{htmlspecialchars($status->visitor)}" height="50" width="100%" align="middle" name="count_red" class="F1239845427590201480_undefined" data="{getUrl()}modules/admin/tpl/swf/count.swf" type="application/x-shockwave-flash">
+							<param value="colorType=red&amp;viewNum={htmlspecialchars($status->visitor)}" name="flashVars"/>
 							<param value="transparent" name="wmode"/>
-							{$status->visitor}
+							{htmlspecialchars($status->visitor)}
 						</object>
 						<!--> <![endif]-->
 					</object>
@@ -44,7 +44,7 @@
 			<dl class="reply">
 				<dt>{$lang->today_comments}</dt>
 				<dd>
-					<object title="{$status->comment->today}" height="50" width="100%" align="middle" id="count_blue" class="F1239845427590201480_undefined" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000">
+					<object title="{htmlspecialchars($status->comment->today)}" height="50" width="100%" align="middle" id="count_blue" class="F1239845427590201480_undefined" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000">
 						<param value="{getUrl()}modules/admin/tpl/swf/count.swf" name="movie"/>
 						<param value="high" name="quality"/>
 						<param value="#FFFFFF" name="bgColor"/>
@@ -52,12 +52,12 @@
 						<param value="transparent" name="wmode"/>
 						<param value="false" name="menu"/>
 						<param value="true" name="allowFullScreen"/>
-						<param value="colorType=blue&amp;viewNum={$status->comment_count}" name="flashVars"/>
+						<param value="colorType=blue&amp;viewNum={htmlspecialchars($status->comment_count)}" name="flashVars"/>
 						<!--[if !IE]> <-->
-						<object title="{$status->comment->today}" height="50" width="100%" align="middle" name="count_blue" class="F1239845427590201480_undefined" data="{getUrl()}modules/admin/tpl/swf/count.swf" type="application/x-shockwave-flash">
-							<param value="colorType=blue&amp;viewNum={$status->comment_count}" name="flashVars"/>
+						<object title="{htmlspecialchars($status->comment->today)}" height="50" width="100%" align="middle" name="count_blue" class="F1239845427590201480_undefined" data="{getUrl()}modules/admin/tpl/swf/count.swf" type="application/x-shockwave-flash">
+							<param value="colorType=blue&amp;viewNum={htmlspecialchars($status->comment_count)}" name="flashVars"/>
 							<param value="transparent" name="wmode"/>
-							{$status->comment->today}
+							{htmlspecialchars($status->comment->today)}
 						</object>
 						<!--> <![endif]-->
 					</object>
@@ -66,7 +66,7 @@
 			<dl class="trackback">
 				<dt>{$lang->today_trackbacks}</dt>
 				<dd>
-					<object title="{$status->trackback->today}" height="50" width="100%" align="middle" id="count_gray" class="F1239845427590201480_undefined" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000">
+					<object title="{htmlspecialchars($status->trackback->today)}" height="50" width="100%" align="middle" id="count_gray" class="F1239845427590201480_undefined" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000">
 						<param value="{getUrl()}modules/admin/tpl/swf/count.swf" name="movie"/>
 						<param value="high" name="quality"/>
 						<param value="#FFFFFF" name="bgColor"/>
@@ -74,12 +74,12 @@
 						<param value="transparent" name="wmode"/>
 						<param value="false" name="menu"/>
 						<param value="true" name="allowFullScreen"/>
-						<param value="colorType=gray&amp;viewNum={$status->trackback_count}" name="flashVars"/>
+						<param value="colorType=gray&amp;viewNum={htmlspecialchars($status->trackback_count)}" name="flashVars"/>
 						<!--[if !IE]> <-->
-						<object title="{$status->trackback->today}" height="50" width="100%" align="middle" name="count_gray" class="F1239845427590201480_undefined" data="{getUrl()}modules/admin/tpl/swf/count.swf" type="application/x-shockwave-flash">
-							<param value="colorType=gray&amp;viewNum={$status->trackback_count}" name="flashVars"/>
+						<object title="{htmlspecialchars($status->trackback->today)}" height="50" width="100%" align="middle" name="count_gray" class="F1239845427590201480_undefined" data="{getUrl()}modules/admin/tpl/swf/count.swf" type="application/x-shockwave-flash">
+							<param value="colorType=gray&amp;viewNum={htmlspecialchars($status->trackback_count)}" name="flashVars"/>
 							<param value="transparent" name="wmode"/>
-							{$status->trackback->today}
+							{htmlspecialchars($status->trackback->today)}
 						</object>
 						<!--> <![endif]-->
 					</object>
@@ -145,7 +145,7 @@
 			<div class="graph">
 				<!--@foreach($status->week as $key => $val)-->
 				<dl>
-					<dt><!--@if($key==date("Ymd"))--><strong>{$key}</strong><!--@else-->{$key}<!--@end--></dt>
+					<dt><!--@if($key==date("Ymd"))--><strong>{htmlspecialchars($key)}</strong><!--@else-->{htmlspecialchars($key)}<!--@end--></dt>
 					<dd class="past" style="height:{$val->last/$status->week_max * 100}%" title="{$lang->last_week}:{number_format($val->last)}"><span>{$lang->last_week}:{number_format($val->last)}</span></dd>
 					<dd class="today" style="height:{$val->this/$status->week_max * 100}%" title="{$lang->this_week}:{number_format($val->this)}"><span>{$lang->this_week}:{number_format($val->this)}</span></dd>
 
@@ -159,7 +159,7 @@
 	<div class="section">
 	<h4 class="dashboardH4">{$lang->env_information} <a href="{getUrl('','module','admin','act','dispAdminConfig')}">{$lang->cmd_setup}</a></h4>
         <!--@if($current_version < $released_version)-->
-        <p class="summary red">{nl2br($lang->about_download_link)} [<a href="{$download_link}" onclick="window.open(this.href);return false;">{$lang->cmd_download}</a>]</p>
+        <p class="summary red">{nl2br(htmlspecialchars($lang->about_download_link))} [<a href="{htmlspecialchars($download_link)}" onclick="window.open(this.href);return false;">{$lang->cmd_download}</a>]</p>
         <!--@end-->
         <table>
 		<col width="160" />
@@ -168,20 +168,20 @@
         <tr>
             <th><div>{$lang->current_version}</div></th>
             <td class="wide">
-                <strong>{$current_version}</strong><!--@if($current_version == $released_version)--> [<a href="{$download_link}" onclick="window.open(this.href);return false;">{$lang->cmd_view}</a>]<!--@end-->
+                <strong>{htmlspecialchars($current_version)}</strong><!--@if($current_version == $released_version)--> [<a href="{htmlspecialchars($download_link)}" onclick="window.open(this.href);return false;">{$lang->cmd_view}</a>]<!--@end-->
             </td>
         </tr>
         <tr>
             <th><div>{$lang->current_path}</div></th>
-            <td>{$installed_path}/</td>
+            <td>{htmlspecialchars($installed_path)}/</td>
         </tr>
         <tr>
             <th><div>{$lang->start_module}</div></th>
-            <td><a href="{getSiteUrl('','','mid',$start_module->mid)}" onclick="window.open(this.href);return false;">{$start_module->browser_title}</a></td>
+            <td><a href="{getSiteUrl('','','mid',$start_module->mid)}" onclick="window.open(this.href);return false;">{htmlspecialchars($start_module->browser_title)}</a></td>
         </tr>
         <tr>
             <th><div>{$lang->time_zone}</div></th>
-            <td><!--@foreach($time_zone_list as $key => $val)--><!--@if($time_zone==$key)-->{substr($val,1,10)}<!--@end--><!--@endforeach--></td>
+            <td><!--@foreach($time_zone_list as $key => $val)--><!--@if($time_zone==$key)-->{htmlspecialchars(substr($val,1,10))}<!--@end--><!--@endforeach--></td>
         </tr>
         <tr>
             <th><div>{$lang->use_rewrite}</div></th>
@@ -197,7 +197,7 @@
 		</tr>
         <tr>
             <th><div>Language</div></th>
-            <td><!--@foreach($lang_supported as $key => $val)--><!--@if($key == $selected_lang)-->{$val}<!--@endif--><!--@endforeach--></td>
+            <td><!--@foreach($lang_supported as $key => $val)--><!--@if($key == $selected_lang)-->{htmlspecialchars($val)}<!--@endif--><!--@endforeach--></td>
         </tr>
         <tr>
             <th><div>{$lang->qmail_compatibility}</div></th>
@@ -236,12 +236,12 @@
         <!--@foreach($module_list as $key => $val)-->
 			<!--@if($val->need_install || $val->need_update)-->
             <tr>
-                <th><a href="{getUrl('','module','admin','act',$val->admin_index_act)}" title="{trim(htmlspecialchars($val->description))}">{$val->title}</a> ({$val->module})</th>
+                <th><a href="{getUrl('','module','admin','act',$val->admin_index_act)}" title="{trim(htmlspecialchars($val->description))}">{htmlspecialchars($val->title)}</a> ({htmlspecialchars($val->module)})</th>
                 <td class="alert">
                     <!--@if($val->need_install)-->
-                        <a href="#" onclick="doInstallModule('{$val->module}');return false;" title="{htmlspecialchars($lang->cmd_install)}">{$lang->cmd_install}</a>
+                        <a href="#" onclick="doInstallModule('{htmlspecialchars($val->module)}');return false;" title="{htmlspecialchars($lang->cmd_install)}">{$lang->cmd_install}</a>
                     <!--@elseif($val->need_update)-->
-                        <a href="#" onclick="doUpdateModule('{$val->module}'); return false;" title="{htmlspecialchars($lang->cmd_update)}">{$lang->cmd_update}</a>
+                        <a href="#" onclick="doUpdateModule('{htmlspecialchars($val->module)}'); return false;" title="{htmlspecialchars($lang->cmd_update)}">{$lang->cmd_update}</a>
                     <!--@else-->
 					&nbsp;
                     <!--@end-->
@@ -263,7 +263,7 @@
         <tbody>
         <!--@foreach($news as $key => $val)-->
         <tr>
-			<th><a href="{$val->url}" onclick="window.open(this.href);return false;" class="fl">{cut_str($val->title,36)}</a></th>
+			<th><a href="{htmlspecialchars($val->url)}" onclick="window.open(this.href);return false;" class="fl">{htmlspecialchars(cut_str($val->title,36))}</a></th>
             <td><span class="date fr">{zdate($val->date,"y-m-d")}</span></td>
         </tr>
         <!--@endforeach-->
@@ -288,20 +288,20 @@
 		<tbody>
 		<!--@foreach($addon_list as $key => $val)-->
 		<tr>
-			<th><a href="{getUrl('','module','addon','act','dispAddonAdminInfo','selected_addon',$val->addon)}" onclick="popopen(this.href,'addon_info');return false">{cut_str($val->title,24)}</a></th>
+			<th><a href="{getUrl('','module','addon','act','dispAddonAdminInfo','selected_addon',$val->addon)}" onclick="popopen(this.href,'addon_info');return false">{htmlspecialchars(cut_str($val->title,24))}</a></th>
 			<td class="center"><a href="{getUrl('','module','addon','act','dispAddonAdminSetup','selected_addon',$val->addon)}" onclick="popopen(this.href,'addon_info');return false" class="buttonSet buttonSetting"><span>{$lang->cmd_setup}</span></a></td>
 			<td class="center">
 				<!--@if($val->activated)-->
-				<a href="#" onclick="doToggleAddonInAdmin(this, '{$val->addon}');return false;" title="{htmlspecialchars($lang->use)}" class="buttonSet buttonActive"><span>{$lang->use}</span></a>
+				<a href="#" onclick="doToggleAddonInAdmin(this, '{htmlspecialchars($val->addon)}');return false;" title="{htmlspecialchars($lang->use)}" class="buttonSet buttonActive"><span>{$lang->use}</span></a>
 				<!--@else-->
-				<a href="#" onclick="doToggleAddonInAdmin(this, '{$val->addon}');return false;" title="{htmlspecialchars($lang->notuse)}" class="buttonSet buttonDisable"><span>{$lang->notuse}</span></a>
+				<a href="#" onclick="doToggleAddonInAdmin(this, '{htmlspecialchars($val->addon)}');return false;" title="{htmlspecialchars($lang->notuse)}" class="buttonSet buttonDisable"><span>{$lang->notuse}</span></a>
 				<!--@end-->
 			</td>
 			<td class="center">
 				<!--@if($val->mactivated)-->
-				<a href="#" onclick="doToggleAddonInAdmin(this, '{$val->addon}', 'mobile');return false;" title="{htmlspecialchars($lang->use)}" class="buttonSet buttonActive"><span>{$lang->use}</span></a>
+				<a href="#" onclick="doToggleAddonInAdmin(this, '{htmlspecialchars($val->addon)}', 'mobile');return false;" title="{htmlspecialchars($lang->use)}" class="buttonSet buttonActive"><span>{$lang->use}</span></a>
 				<!--@else-->
-				<a href="#" onclick="doToggleAddonInAdmin(this, '{$val->addon}', 'mobile');return false;" title="{htmlspecialchars($lang->notuse)}" class="buttonSet buttonDisable"><span>{$lang->notuse}</span></a>
+				<a href="#" onclick="doToggleAddonInAdmin(this, '{htmlspecialchars($val->addon)}', 'mobile');return false;" title="{htmlspecialchars($lang->notuse)}" class="buttonSet buttonDisable"><span>{$lang->notuse}</span></a>
 				<!--@end-->
 			</td>
 		</tr>

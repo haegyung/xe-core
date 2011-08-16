@@ -2,7 +2,7 @@
 <!--%import("filter/reset_layout_code.xml")-->
 
 <!--#include("header.html")-->
-<h3 class="xeAdmin">{$selected_layout->layout_title}</h3>
+<h3 class="xeAdmin">{htmlspecialchars($selected_layout->layout_title)}</h3>
 
 <div class="header4">
     <ul class="localNavigation">
@@ -11,7 +11,7 @@
     </ul>
 </div>
 
-<h4 class="xeAdmin">{$selected_layout->title} ver {$selected_layout->version} ({$selected_layout->layout})</h4>
+<h4 class="xeAdmin">{htmlspecialchars($selected_layout->title)} ver {htmlspecialchars($selected_layout->version)} ({htmlspecialchars($selected_layout->layout)})</h4>
 <p class="summary">{nl2br($lang->about_layout_code)}</p>
 
 <h4 class="xeAdmin">{$lang->layout_image_repository}</h4>
@@ -30,12 +30,12 @@
                 <div class="preview_image" style="width:100px;height:100px;float:left; position:relative;margin-right:10px; ">
                     <!--@if($ext=='swf'||$ext=='flv')-->
                     <script type="text/javascript">//<![CDATA[
-                    displayMultimedia('{getUrl('')}{$layout_image_path}{$file}', '100%', '100%');
+                    displayMultimedia('{getUrl('')}{htmlspecialchars($layout_image_path)}{htmlspecialchars($file)}', '100%', '100%');
                     //]]></script>
                     <!--@elseif(in_array($ext,array('gif','png','jpg','jpeg')))-->
-                        <img src="{getUrl('')}{$layout_image_path}{$file}" width="100%" height="100%" />
+                        <img src="{getUrl('')}{htmlspecialchars($layout_image_path)}{htmlspecialchars($file)}" width="100%" height="100%" />
                     <!--@end-->
-                    <a href="#" onclick="deleteFile({$layout_srl},'{$file}');return false" onmouseover="jQuery('div.imagePath').html('{$layout_image_path}{$file}')" style="position:absolute; left:3px; top:3px;" class="small button red"><span>{$lang->cmd_delete}</span></a>
+                    <a href="#" onclick="deleteFile({$layout_srl},'{htmlspecialchars($file)}');return false" onmouseover="jQuery('div.imagePath').html('{htmlspecialchars($layout_image_path)}{htmlspecialchars($file)}')" style="position:absolute; left:3px; top:3px;" class="small button red"><span>{$lang->cmd_delete}</span></a>
                 </div>
                 <!--@end-->
                 &nbsp;

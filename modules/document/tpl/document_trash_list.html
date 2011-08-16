@@ -37,7 +37,7 @@
         <td class="number center">{$no}</td>
         <!--<td class="center"><input type="checkbox" name="cart" value="{$oDocument->document_srl}" onclick="doAddDocumentCart(this)" <!--@if($oDocument->isCarted())-->checked="checked"<!--@end-->/></td>-->
         <td class="left subject">
-            {$oDocument->getTitle()}
+            {htmlspecialchars($oDocument->getTitle())}
 
             <!--@if($oDocument->getCommentCount())-->
                 [{$oDocument->getCommentCount()}]
@@ -49,8 +49,8 @@
         </td>
         <td class="nowrap"><span class="member_{$oDocument->get('trash_member_srl')}">{htmlspecialchars($oDocument->get('trash_nick_name'))}</span></td>
         <td class="date center nowrap">{zdate($oDocument->get('trash_date'), "Y-m-d H:i:s")}</td>
-        <td class="number center nowrap">{$oDocument->get('ipaddress')}</td>
-        <td class="left">{$oDocument->get('trash_description')}</td>
+        <td class="number center nowrap">{htmlspecialchars($oDocument->get('ipaddress'))}</td>
+        <td class="left">{htmlspecialchars($oDocument->get('trash_description'))}</td>
         <td class="center"><a href="#" onclick="executeFilterByTargetSrl('restore_form', {$oDocument->get('trash_srl')}, restore_trash);">{$lang->cmd_restore}</a></td>
     </tr>
     <!--@end-->
@@ -61,12 +61,12 @@
 
 <!-- 페이지 네비게이션 -->
 <div class="pagination a1">
-    <a href="{getUrl('page','','module_srl',$module_srl)}" class="prevEnd">{$lang->first_page}</a> 
+    <a href="{getUrl('page','','module_srl',$module_srl)}" class="prevEnd">{$lang->first_page}</a>
     <!--@while($page_no = $page_navigation->getNextPage())-->
         <!--@if($page == $page_no)-->
-            <strong>{$page_no}</strong> 
+            <strong>{$page_no}</strong>
         <!--@else-->
-            <a href="{getUrl('page',$page_no,'module_srl',$module_srl)}">{$page_no}</a> 
+            <a href="{getUrl('page',$page_no,'module_srl',$module_srl)}">{$page_no}</a>
         <!--@end-->
     <!--@end-->
     <a href="{getUrl('page',$page_navigation->last_page,'module_srl',$module_srl)}" class="nextEnd">{$lang->last_page}</a>

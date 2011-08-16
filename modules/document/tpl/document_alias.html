@@ -7,7 +7,7 @@
 <input type="hidden" id="target_srl" name="target_srl" value="" />
 </form>
 
-<form action="{Context::getRequestUri()}" method="post" onsubmit="return procFilter(this, insert_alias)">
+<form action="{htmlspecialchars(Context::getRequestUri())}" method="post" onsubmit="return procFilter(this, insert_alias)">
 <input type="hidden" name="document_srl" value="{$document_srl}" />
 <input type="hidden" name="module_srl" value="{$oDocument->get('module_srl')}" />
 
@@ -23,14 +23,14 @@
 </thead>
 <tbody>
 <tr>
-    <td rowspan="{count($aliases)+1}">{$oDocument->getTitle()}</td>
+    <td rowspan="{count($aliases)+1}">{htmlspecialchars($oDocument->getTitle())}</td>
     {@ $bFirst = true; }
     <!--@foreach($aliases as $val)-->
     <!--@if(!$bFirst)-->
 <tr>
     {@ $bFirst = false; }
     <!--@end-->
-    <td>{$val->alias_title}</td>
+    <td>{htmlspecialchars($val->alias_title)}</td>
     <td><a href="#" onclick="deleteByFilter('{$val->alias_srl}', delete_alias);"><img src="images/buttonDeleteX.gif" alt="" /></a>
     </td>
 </tr>

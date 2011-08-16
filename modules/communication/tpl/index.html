@@ -14,13 +14,13 @@
         <td>
             <select name="editor_skin" onchange="getEditorSkinColorList(this.value)">
             <!--@foreach($editor_skin_list as $editor_skin)-->
-            <option value="{$editor_skin}" <!--@if($editor_skin==$communication_config->editor_skin)-->selected="selected"<!--@end-->>{$editor_skin}</option>
+            <option value="{htmlspecialchars($editor_skin)}" <!--@if($editor_skin==$communication_config->editor_skin)-->selected="selected"<!--@end-->>{htmlspecialchars($editor_skin)}</option>
             <!--@end-->
             </select>
             <select name="editor_colorset" id="sel_editor_colorset" style="display:none">
             </select>
             <script type="text/javascript">//<![CDATA[
-                getEditorSkinColorList('{$communication_config->editor_skin}','{$communication_config->editor_colorset}');
+                getEditorSkinColorList('{htmlspecialchars($communication_config->editor_skin)}','{htmlspecialchars($communication_config->editor_colorset)}');
             //]]></script>
         </td>
     </tr>
@@ -30,7 +30,7 @@
         <td>
             <select name="skin" onchange="doGetSkinColorset(this.options[this.selectedIndex].value);return false;">
             <!--@foreach($communication_skin_list as $key=>$val)-->
-            <option value="{$key}" <!--@if($key==$communication_config->skin)-->selected="selected"<!--@end-->>{$val->title}</option>
+            <option value="{htmlspecialchars($key)}" <!--@if($key==$communication_config->skin)-->selected="selected"<!--@end-->>{htmlspecialchars($val->title)}</option>
             <!--@end-->
             </select>
         </td>
@@ -50,5 +50,5 @@
 </form>
 
 <script type="text/javascript">
-    jQuery(function() { doGetSkinColorset("{$communication_config->skin}"); });
+    jQuery(function() { doGetSkinColorset("{htmlspecialchars($communication_config->skin)}"); });
 </script>

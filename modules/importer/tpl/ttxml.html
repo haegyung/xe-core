@@ -26,7 +26,7 @@
         <table cellspacing="0" class="rowTable">
         <tr>
             <td>
-                {$lang->user_id} : <input type="text" name="user_id" value="{$logged_info->user_id}" class="inputTypeText w200" />
+                {$lang->user_id} : <input type="text" name="user_id" value="{htmlspecialchars($logged_info->user_id)}" class="inputTypeText w200" />
                 <p>{$lang->about_ttxml_user_id}</p>
             </td>
         </tr>
@@ -41,7 +41,7 @@
                 <p>ex2) http://...../module.xml</p>
             </td>
         </tr>
-        <tr>    
+        <tr>
             <th class="button">
                 <select name="unit_count">
                     <option value="10" selected="selected">10</option>
