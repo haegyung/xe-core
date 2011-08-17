@@ -32,7 +32,7 @@
             <select name="search_target">
                 <option value="">{$lang->search_target}</option>
                 <!--@foreach($lang->search_target_list as $key => $val)-->
-                <option value="{$key}" <!--@if($search_target==$key)-->selected="selected"<!--@end-->>{$val}</option>
+                <option value="{$key}" <!--@if($search_target==$key)-->selected="selected"<!--@end-->>{htmlspecialchars($val)}</option>
                 <!--@end-->
             </select>
             <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" class="inputTypeText" />
@@ -73,11 +73,11 @@
         <td rowspan="2"><div class="w200"><a href="{$val->url}" onclick="window.open(this.href); return false;">{htmlspecialchars($val->blog_name)}</a></div></td>
         <td ><a href="{getUrl('','document_srl',$val->document_srl)}#trackback_{$val->trackback_srl}" onclick="window.open(this.href);return false;">{htmlspecialchars($val->title)}</a></td>
         <td class="date center nowrap">{zdate($val->regdate,"Y-m-d")}</td>
-        <td class="number left nowrap"><a href="{getUrl('search_target','ipaddress','search_keyword',$val->ipaddress)}">{$val->ipaddress}</a></td>
+        <td class="number left nowrap"><a href="{getUrl('search_target','ipaddress','search_keyword',$val->ipaddress)}">{htmlspecialchars($val->ipaddress)}</a></td>
     </tr>
     <tr>
         <td colspan="3">
-            {$val->excerpt}
+            {nl2br(htmlspecialchars($val->excerpt))}
         </td>
     </tr>
     <!--@end-->

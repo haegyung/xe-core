@@ -10,20 +10,20 @@
     <table cellspacing="0" class="rowTable">
     <tr>
         <th scope="row"><div>{$lang->skin}</div></th>
-        <td class="wide" >{$skin_info->title}</td>
+        <td class="wide" >{htmlspecialchars($skin_info->title)}</td>
     </tr>
     <tr>
         <th scope="row"><div>{$lang->skin_author}</div></th>
         <td>
             <!--@foreach($skin_info->author as $author)-->
-            {$author->name} <!--@if($author->homepage || $author->email_address)-->(<!--@if($author->homepage)--><a href="{$author->homepage}" onclick="window.open(this.href);return false;">{$author->homepage}</a><!--@end--><!--@if($author->homepage && $author->email_address)-->, <!--@end--><!--@if($author->email_address)--><a href="mailto:{$author->email_address}">{$author->email_address}</a><!--@end-->)<!--@end--><br />
+            {htmlspecialchars($author->name)} <!--@if($author->homepage || $author->email_address)-->(<!--@if($author->homepage)--><a href="{htmlspecialchars($author->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($author->homepage)}</a><!--@end--><!--@if($author->homepage && $author->email_address)-->, <!--@end--><!--@if($author->email_address)--><a href="mailto:{htmlspecialchars($author->email_address)}">{htmlspecialchars($author->email_address)}</a><!--@end-->)<!--@end--><br />
             <!--@endforeach-->
         </td>
     </tr>
 <!--@if($skin_info->homepage)-->
     <tr>
         <th scope="row"><div>{$lang->homepage}</div></th>
-        <td><a href="{$skin_info->homepage}" onclick="window.open(this.href);return false;">{$skin_info->homepage}</a></td>
+        <td><a href="{htmlspecialchars($skin_info->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($skin_info->homepage)}</a></td>
     </tr><!--@end-->
     <tr>
         <th scope="row"><div>{$lang->date}</div></th>
@@ -33,9 +33,9 @@
     <tr>
         <th scope="row"><div>{$lang->skin_license}</div></th>
         <td>
-            {nl2br(trim($skin_info->license))}
+            {nl2br(trim(htmlspecialchars($skin_info->license)))}
         <!--@if($skin_info->license_link)-->
-            <p><a href="{$skin_info->license_link}" onclick="window.close(); return false;">{$skin_info->license_link}</a></p>
+            <p><a href="{htmlspecialchars($skin_info->license_link)}" onclick="window.close(); return false;">{htmlspecialchars($skin_info->license_link)}</a></p>
         <!--@end-->
         </td>
     </tr><!--@end-->

@@ -17,7 +17,7 @@
             <!--@foreach($lang_list as $key => $val)-->
             <tr>
                 <td>
-                    <div class="fl"><a href="#" onclick="doInsertLangCode('{$val->name}','{$target}'); return false;">{$val->name}</a></div>
+                    <div class="fl"><a href="#" onclick="doInsertLangCode('{$val->name}','{$target}'); return false;">{htmlspecialchars($val->name)}</a></div>
                     <div class="fr">
                         <a href="{getUrl('name',$val->name)}" class="buttonSet buttonActive"><span>{$lang->cmd_select}</span></a>
                         <a href="#" onclick="if(confirm('{$lang->confirm_delete}')) doDeleteLang('{$val->name}','{$target}'); return false;" class="buttonSet buttonDelete"><span>{$lang->cmd_select}</span></a>
@@ -41,9 +41,9 @@
                 </tr>
                 <!--@foreach($lang_supported as $key => $val)-->
                 <tr>
-                    <th scope="row"><div>{$val}</div></th>
+                    <th scope="row"><div>{htmlspecialchars($val)}</div></th>
                     <td>
-                        <textarea name="{$key}" class="inputTypeTextArea" style="height:40px; width:90%;">{$selected_lang[$key]}</textarea>
+                        <textarea name="{$key}" class="inputTypeTextArea" style="height:40px; width:90%;">{htmlspecialchars($selected_lang[$key])}</textarea>
                     </td>
                 </tr>
                 <!--@end-->

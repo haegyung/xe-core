@@ -10,7 +10,7 @@
 
     <table cellspacing="0" class="rowTable">
     <tr>
-        <th scope="row"><div>{$lang->category_title}</div></th>
+        <th scope="row"><div>{htmlspecialchars($lang->category_title)}</div></th>
         <td><input type="text" name="title" value="{$selected_category->title}" class="inputTypeText w300" /></td>
     </tr>
     <tr class="row2">

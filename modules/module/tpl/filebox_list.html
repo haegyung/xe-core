@@ -34,7 +34,7 @@
                 <!--@end-->
             </div>
         </td>
-        <td class="wide">{$val->comment}&nbsp;</td>
+        <td class="wide">{nl2br(htmlspecialchars($val->comment))}&nbsp;</td>
         <td class="nowrap">{zdate($val->regdate,'Y-m-d H:i')}</td>
         <td>
             <!--@if(!$filter || (is_array($arrfilter) && in_array($val->fileextension,$arrfilter)))-->

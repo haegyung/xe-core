@@ -1,6 +1,6 @@
 <!--%import("../../admin/tpl/css/admin.css")-->
 <div id="popHeader" class="wide">
-    <h3 class="xeAdmin">{$skin_info->title}</h3>
+    <h3 class="xeAdmin">{htmlspecialchars($skin_info->title)}</h3>
 </div>
 
 <div id="popBody">
@@ -9,20 +9,20 @@
     <col />
     <tr>
         <th scope="row"><label for="textfield1">{$lang->title}</label></th>
-        <td>{$skin_info->title}</td>
+        <td>{htmlspecialchars($skin_info->title)}</td>
     </tr>
     <tr>
         <th scope="row"><label for="textfield2">{$lang->author}</label></th>
         <td class="blue">
             <!--@foreach($skin_info->author as $author)-->
-            {$author->name} <!--@if($author->homepage || $author->email_address)-->(<!--@if($author->homepage)--><a href="{$author->homepage}" onclick="window.open(this.href);return false;">{$author->homepage}</a><!--@end--><!--@if($author->homepage && $author->email_address)-->, <!--@end--><!--@if($author->email_address)--><a href="mailto:{$author->email_address}">{$author->email_address}</a><!--@end-->)<!--@end--><br />
+            {htmlspecialchars($author->name)} <!--@if($author->homepage || $author->email_address)-->(<!--@if($author->homepage)--><a href="{htmlspecialchars($author->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($author->homepage)}</a><!--@end--><!--@if($author->homepage && $author->email_address)-->, <!--@end--><!--@if($author->email_address)--><a href="mailto:{htmlspecialchars($author->email_address)}">{htmlspecialchars($author->email_address)}</a><!--@end-->)<!--@end--><br />
             <!--@endforeach-->
         </td>
     </tr>
     <!--@if($skin_info->homepage)-->
     <tr>
         <th scope="row"><label for="textfield2">{$lang->homepage}</label></th>
-        <td class="blue"><a href="{$skin_info->homepage}" onclick="window.open(this.href);return false;">{$skin_info->homepage}</a></td>
+        <td class="blue"><a href="{htmlspecialchars($skin_info->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($skin_info->homepage)}</a></td>
     </tr>
     <!--@endif-->
     <tr>
@@ -33,9 +33,9 @@
     <tr>
         <th scope="row">{$lang->skin_license}</th>
         <td>
-            {nl2br(trim($skin_info->license))}
+            {nl2br(trim(htmlspecialchars($skin_info->license)))}
         <!--@if($skin_info->license_link)-->
-            <p><a href="{$skin_info->license_link}" onclick="window.close(); return false;">{$skin_info->license_link}</a></p>
+            <p><a href="{htmlspecialchars($skin_info->license_link)}" onclick="window.close(); return false;">{htmlspecialchars($skin_info->license_link)}</a></p>
         <!--@end-->
         </td>
     </tr>
@@ -43,7 +43,7 @@
     <!--@if($skin_info->description)-->
     <tr>
         <th scope="row" class="borderBottomNone">{$lang->description}</th>
-        <td class="borderBottomNone">{nl2br(trim($skin_info->description))}</td>
+        <td class="borderBottomNone">{nl2br(trim(htmlspecialchars($skin_info->description)))}</td>
     </tr>
     <!--@end-->
     </table>
@@ -62,23 +62,23 @@
     <!--@foreach($skin_info->history as $history)-->
     <tr>
         <th scope="row">
-            {$history->version}<br />
-            {$history->date}
+            {htmlspecialchars($history->version)}<br />
+            {htmlspecialchars($history->date)}
         </th>
         <td>
             <!--@foreach($history->author as $author)-->
-            <p>{$author->name} (<a href="{$author->homepage}" onclick="window.open(this.href);return false;">{$author->homepage}</a> / <a href="mailto:{$author->email_address}">{$author->email_address}</a>)</p>
+            <p>{htmlspecialchars($author->name)} (<a href="{htmlspecialchars($author->homepage)}" onclick="window.open(this.href);return false;">{htmlspecialchars($author->homepage)}</a> / <a href="mailto:{htmlspecialchars($author->email_address)}">{htmlspecialchars($author->email_address)}</a>)</p>
             <!--@endforeach-->
             <!--@if($history->description)-->
-            <p>{nl2br(trim($history->description))}</p>
+            <p>{nl2br(trim(htmlspecialchars($history->description)))}</p>
             <!--@endif-->
             <!--@if($history->logs)-->
             <ul>
                 <!--@foreach($history->logs as $log)-->
                 <!--@if($log->link)-->
-                <li><a href="{$log->link}">{$log->text}</a></li>
+                <li><a href="{htmlspecialchars($log->link)}">{htmlspecialchars($log->text)}</a></li>
                 <!--@else-->
-                <li>{$log->text}</li>
+                <li>{htmlspecialchars($log->text)}</li>
                 <!--@endif-->
                 <!--@endforeach-->
             </ul>

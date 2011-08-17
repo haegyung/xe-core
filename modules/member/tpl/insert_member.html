@@ -92,7 +92,7 @@
         <td>
             <select name="allow_message">
                 <!--@foreach($lang->allow_message_type as $key => $val)-->
-                <option value="{$key}" <!--@if($member_info->allow_message == $key)-->selected="selected"<!--@end-->>{$val}</option>
+                <option value="{$key}" <!--@if($member_info->allow_message == $key)-->selected="selected"<!--@end-->>{htmlspecialchars($val)}</option>
                 <!--@end-->
             </select>
             <p>{$lang->about_allow_message}</p>
@@ -140,7 +140,7 @@
         <td>
             <!--@foreach($group_list as $key=>$val)-->
                 <input type="checkbox" name="group_srl_list" value="{$key}" id="group_{$key}" <!--@if($member_info->group_list[$key])-->checked="checked"<!--@end--> class="checkbox" />
-                <label for="group_{$key}">{$val->title}</label>
+                <label for="group_{$key}">{htmlspecialchars($val->title)}</label>
             <!--@end-->
             <p>{$lang->about_group}</p>
         </td>
