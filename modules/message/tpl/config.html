@@ -10,7 +10,7 @@
         <td class="wide">
             <select name="skin">
                 <!--@foreach($skin_list as $key => $val)-->
-                <option value="{$key}" <!--@if($key==$config->skin)-->selected="selected"<!--@end-->>{$val->title}</option>
+                <option value="{$key}" <!--@if($key==$config->skin)-->selected="selected"<!--@end-->>{htmlspecialchars($val->title)}</option>
                 <!--@end-->
             </select>
         </td>
