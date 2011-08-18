@@ -4,12 +4,12 @@
     <!--@else-->
         {@ $_width = 200; $_height = 20; $_talign = "left"; }
     <!--@end-->
-<div style="float:left;text-align:{htmlspecialchars($_talign)};margin-bottom:1em;width:{htmlspecialchars($_width)}px;height:{htmlspecialchars($_height)}px;margin-right:10px;">
-    <input type="radio" name="colorset" value="{htmlspecialchars($val->name)}" id="colorset_{htmlspecialchars($key)}" <!--@if($communication_config->colorset==$val->name)-->checked="checked"<!--@end-->/>
-    <label for="colorset_{htmlspecialchars($key)}">{htmlspecialchars($val->title)}</label>
+<div style="float:left;text-align:{$_talign};margin-bottom:1em;width:{$_width}px;height:{$_height}px;margin-right:10px;">
+    <input type="radio" name="colorset" value="{$val->name}" id="colorset_{$key}" <!--@if($communication_config->colorset==$val->name)-->checked="checked"<!--@end-->/>  
+    <label for="colorset_{$key}">{$val->title}</label>
     <!--@if($val->screenshot)-->
     <br />
-    <img src="{htmlspecialchars($val->screenshot)}" alt="{htmlspecialchars($val->title)}" style="border:1px solid #888888;padding:2px;margin:2px;"/>
+    <img src="{$val->screenshot}" alt="{$val->title}" style="border:1px solid #888888;padding:2px;margin:2px;"/>
     <!--@end-->
 </div>
 <!--@if($key%2==1)--><div class="clear"></div><!--@end-->

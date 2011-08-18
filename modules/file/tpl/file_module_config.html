@@ -7,14 +7,14 @@
     <tr class="row2">
         <th scope="col"><div>{$lang->allowed_filesize}</div></th>
         <td>
-            <input type="text" name="allowed_filesize" value="{htmlspecialchars($file_config->allowed_filesize)}" class="inputTypeText" size="3" />MB
+            <input type="text" name="allowed_filesize" value="{$file_config->allowed_filesize}" class="inputTypeText" size="3" />MB
             <p>{$lang->about_allowed_filesize}</p>
         </td>
     </tr>
     <tr>
         <th scope="col"><div>{$lang->allowed_attach_size}</div></th>
         <td>
-            <input type="text" name="allowed_attach_size" value="{htmlspecialchars($file_config->allowed_attach_size)}" class="inputTypeText" size="3" />MB
+            <input type="text" name="allowed_attach_size" value="{$file_config->allowed_attach_size}" class="inputTypeText" size="3" />MB
             / {ini_get('upload_max_filesize')}
             <p>{$lang->about_allowed_attach_size}</p>
         </td>
@@ -22,7 +22,7 @@
     <tr class="row2">
         <th scope="col"><div>{$lang->allowed_filetypes}</div></th>
         <td>
-            <input type="text" name="allowed_filetypes" value="{htmlspecialchars($file_config->allowed_filetypes)}" class="inputTypeText w100" />
+            <input type="text" name="allowed_filetypes" value="{$file_config->allowed_filetypes}" class="inputTypeText w100" />
             <p>{$lang->about_allowed_filetypes}</p>
         </td>
     </tr>
@@ -30,8 +30,8 @@
         <th scope="col"><div>{$lang->enable_download_group}</div></th>
         <td>
             <!--@foreach($group_list as $k => $v)-->
-            <input type="checkbox" class="checkbox" name="download_grant" value="{$v->group_srl}" id="grant_{htmlspecialchars($key)}_{$v->group_srl}" <!--@if(in_array($v->group_srl, $file_config->download_grant))-->checked="checked"<!--@end-->/>
-            <label for="grant_{htmlspecialchars($key)}_{$v->group_srl}">{htmlspecialchars($v->title)}</label>
+            <input type="checkbox" class="checkbox" name="download_grant" value="{$v->group_srl}" id="grant_{$key}_{$v->group_srl}" <!--@if(in_array($v->group_srl, $file_config->download_grant))-->checked="checked"<!--@end-->/> 
+            <label for="grant_{$key}_{$v->group_srl}">{$v->title}</label>
             &nbsp;
             <!--@end-->
         </td>

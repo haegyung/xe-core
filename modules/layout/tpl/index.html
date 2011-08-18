@@ -23,9 +23,9 @@
     <tr class="row{$cycle_idx}">
         <td class="number center">{$no+1}</td>
         <td>
-            {htmlspecialchars($val->layout)}
+            {$val->layout}
             <!--@if($val->module_srl)-->
-            (module)
+            (module) 
             <!--@end-->
         </td>
         <td class="wide">{htmlspecialchars($val->title)}</td>

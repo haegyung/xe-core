@@ -2,8 +2,8 @@
 
 <rss version="1.0">
     <channel>
-        <title>{htmlspecialchars($info->title)}</title>
-        <link>{htmlspecialchars($info->link)}</link>
+        <title>{$info->title}</title>
+        <link>{$info->link}</link>
         <description>{str_replace('\'', '&apos;', htmlspecialchars($info->description))}</description>
         <language>{$info->language}</language>
         <pubDate>{$info->date}</pubDate>

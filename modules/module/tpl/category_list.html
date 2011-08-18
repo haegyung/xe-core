@@ -25,7 +25,7 @@
     <!--@end-->
     <!--@foreach($category_list as $key => $val)-->
     <tr>
-        <td class="wide">{htmlspecialchars($val->title)}</td>
+        <td class="wide">{$val->title}</td>
         <td class="nowrap">{zdate($val->regdate,"Y-m-d H:i:s")}</td>
         <td><a href="{getUrl('module_category_srl',$val->module_category_srl)}" class="buttonSet buttonSetting"><span>{$lang->cmd_modify}</span></a></td>
         <td><a href="#" onclick="doUpdateCategory('{$val->module_category_srl}','delete','{$lang->confirm_delete}');return false;" class="buttonSet buttonDelete"><span>{$lang->cmd_delete}</span></a></td>

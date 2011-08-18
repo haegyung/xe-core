@@ -9,7 +9,7 @@
 			<li><a href="#" onclick="toggleAdminLang();return false;">Language</a>
 				<ul id="adminLang">
                     <!--@foreach($lang_supported as $key => $val)-->
-					<li <!--@if($key == $lang_type)-->class="open"<!--@end-->><a href="#" onclick="doChangeLangType('{htmlspecialchars($key)}'); return false;">{htmlspecialchars($val)}</a></li>
+					<li <!--@if($key == $lang_type)-->class="open"<!--@end-->><a href="#" onclick="doChangeLangType('{$key}'); return false;">{$val}</a></li>
                     <!--@end-->
 				</ul>
 			</li>
@@ -19,7 +19,7 @@
 			<li class="core <!--@if(strstr($act, 'Autoinstall'))-->selected<!--@end-->"><a href="{getUrl('','module','admin','act','dispAutoinstallAdminIndex')}">{$lang->autoinstall}</a></li>
 
             <!--@foreach($package_modules as $key => $val)-->
-                <li class="{$val->position} <!--@if($val->selected)-->selected<!--@end-->"><a href="{getUrl('','module','admin','act',$val->index_act)}" title="{trim(htmlspecialchars($val->description))}">{htmlspecialchars($val->title)}</a></li>
+                <li class="{$val->position} <!--@if($val->selected)-->selected<!--@end-->"><a href="{getUrl('','module','admin','act',$val->index_act)}" title="{trim($val->description)}">{$val->title}</a></li>
             <!--@end-->
 		</ul>
 	</div>
@@ -43,11 +43,11 @@
 						<!--@else-->
 							{@$_cs = false;}
 						<!--@end-->
-					<li id="module_{$key}" class="parent <!--@if($_cs)-->close<!--@end--> <!--@if($key==$selected_module_category)-->active<!--@end-->"><a href="#"  onclick="toggleModuleMenu('{$key}'); return false;" class="parent">{htmlspecialchars($val)}</a>
+					<li id="module_{$key}" class="parent <!--@if($_cs)-->close<!--@end--> <!--@if($key==$selected_module_category)-->active<!--@end-->"><a href="#"  onclick="toggleModuleMenu('{$key}'); return false;" class="parent">{$val}</a>
 						<ul>
                             <!--@foreach($installed_modules as $k => $v)-->
                             <!--@if($v->category == $key)-->
-                            <li <!--@if($v->selected)-->class="active"<!--@end-->><a href="{getUrl('','module','admin','act',$v->index_act)}" title="{htmlspecialchars($v->description)}">{htmlspecialchars($v->title)}</a></li>
+                            <li <!--@if($v->selected)-->class="active"<!--@end-->><a href="{getUrl('','module','admin','act',$v->index_act)}" title="{$v->description}">{$v->title}</a></li>
                             <!--@end-->
                             <!--@end-->
 						</ul>

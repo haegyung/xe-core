@@ -64,7 +64,7 @@
 				foreach($drComponentList as $i => $drComponent){
 					unset($obj);
 					$obj = $this->getDrComponentXmlInfo($drComponent);
-					Context::loadLang(sprintf('%s%s/lang/',$drComponentPath,$drComponent));
+					Context::loadLang(sprintf('%s%s/lang/',$drComponentPath,$drComponent));					
 					$path = sprintf('%s%s/tpl/',$drComponentPath,$drComponent);
 					$obj->html = $oTemplate->compile($path,$drComponent);
 					$drComponentInfo[$drComponent] = $obj;
@@ -232,7 +232,7 @@
             Context::set('skin', $skin);
 
 			if($skin=='dreditor'){
-				$this->loadDrComponents();
+				$this->loadDrComponents();	
 			}
 
             /**
@@ -567,7 +567,7 @@
             if(!file_exists($cache_file)) return;
             @include($cache_file);
 			$logged_info = Context::get('logged_info');
-			if($logged_info && is_array($logged_info->group_list))
+			if($logged_info && is_array($logged_info->group_list)) 
 			{
 				$group_list = array_keys($logged_info->group_list);
 			}
@@ -592,15 +592,15 @@
 					if($val->target_group)
 					{
 						if(!$logged_info) {
-							$val->enabled = "N";
+							$val->enabled = "N";	
 						}
 						else {
 							$is_granted = false;
 							foreach($group_list as $group_srl)
 							{
-								if(in_array($group_srl, $val->target_group)) $is_granted = true;
+								if(in_array($group_srl, $val->target_group)) $is_granted = true;	
 							}
-							if(!$is_granted) $val->enabled = "N";
+							if(!$is_granted) $val->enabled = "N"; 
 						}
 					}
 					if($val->enabled != "N" && $val->mid_list)

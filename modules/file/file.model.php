@@ -114,14 +114,12 @@
             if(!$config->allow_outlink_format) $config->allow_outlink_format = $file_module_config->allow_outlink_format;
             if(!$config->download_grant) $config->download_grant = $file_module_config->download_grant;
 
-            // 그래도 없으면 default로
+            // 그래도 없으면 default로 
             if(!$config->allowed_filesize) $config->allowed_filesize = '2';
             if(!$config->allowed_attach_size) $config->allowed_attach_size = '3';
             if(!$config->allowed_filetypes) $config->allowed_filetypes = '*.*';
             if(!$config->allow_outlink) $config->allow_outlink = 'Y';
             if(!$config->download_grant) $config->download_grant = array();
-
-			$config->allowed_filetypes = strip_tags($config->allowed_filetypes);
 
             return $config;
         }
@@ -225,10 +223,10 @@
 
 			$oDocumentModel = &getModel('document');
 			$oDocument = $oDocumentModel->getDocument($file_info->upload_target_srl);
-			if ($oDocument->isExists()) $document_grant = $oDocument->isGranted();
-
+			if ($oDocument->isExists()) $document_grant = $oDocument->isGranted(); 
+			
 			$file_grant->is_deletable = ($document_grant || $member_info->is_admin == 'Y' || $member_info->member_srl == $file_info->member_srl || $grant->manager);
-
+			
 			return $file_grant;
 		}
     }

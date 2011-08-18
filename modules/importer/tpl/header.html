@@ -11,7 +11,7 @@
 <div class="header4">
     <ul class="localNavigation">
         <!--@foreach($type_list as $key => $val)-->
-        <li <!--@if($source_type==$key)-->class="on"<!--@end-->><a href="{getUrl('source_type',$key)}">{htmlspecialchars($val)}</a></li>
+        <li <!--@if($source_type==$key)-->class="on"<!--@end-->><a href="{getUrl('source_type',$key)}">{$val}</a></li>
         <!--@end-->
     </ul>
 </div>

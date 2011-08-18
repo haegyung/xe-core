@@ -9,8 +9,8 @@
 <!--// step 1. import하려는 XML파일의 성격 및 대상 모듈을 지정 -->
 <div id="step1">
     <form action="./" method="get">
-        <input type="hidden" name="module" value="{htmlspecialchars($module)}" />
-        <input type="hidden" name="act" value="{htmlspecialchars($act)}" />
+        <input type="hidden" name="module" value="{$module}" />
+        <input type="hidden" name="act" value="{$act}" />
 
         <h4 class="xeAdmin">{$lang->import_step_title[1]} - {$lang->import_step_desc[1]}</h4>
         <table cellspacing="0" class="rowTable">

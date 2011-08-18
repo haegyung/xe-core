@@ -3,12 +3,12 @@
 		<div class="content">
             <!--@if($logged_info->is_admin == 'Y')-->
             <p class="path">
-                <a href="{getUrl('','module','admin')}">{htmlspecialchars($lang->admin_index)}</a>
+                <a href="{getUrl('','module','admin')}">{$lang->admin_index}</a> 
                 <!--@if($selected_module_info)-->
-                &gt; <a href="{getUrl('','mid',$mid,'module',$module,'act',$selected_module_info->admin_index_act)}">{htmlspecialchars($selected_module_info->title)}</a>
+                &gt; <a href="{getUrl('','mid',$mid,'module',$module,'act',$selected_module_info->admin_index_act)}">{$selected_module_info->title}</a>
                 <!--@end-->
                 <!--@if($module_info)-->
-                &gt; <a href="{getUrl('','mid',$mid,'module',$module,'act',$selected_module_info->admin_index_act)}">{htmlspecialchars($module_info->browser_title)}</a>
+                &gt; <a href="{getUrl('','mid',$mid,'module',$module,'act',$selected_module_info->admin_index_act)}">{$module_info->browser_title}</a>
                 [<a href="{getSiteUrl($module_info->domain,'','mid',$module_info->mid)}" onclick="window.open(this.href);return false;">{$lang->cmd_view}</a>]
                 <!--@end-->
             </p>

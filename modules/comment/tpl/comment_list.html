@@ -4,14 +4,14 @@
 <!-- 검색 -->
 <div class="fl">
     <form action="./" method="get" class="adminSearch">
-    <input type="hidden" name="module" value="{htmlspecialchars($module)}" />
-    <input type="hidden" name="act" value="{htmlspecialchars($act)}" />
-    <input type="hidden" name="module_srl" value="{htmlspecialchars($module_srl)}" />
+    <input type="hidden" name="module" value="{$module}" />
+    <input type="hidden" name="act" value="{$act}" />
+    <input type="hidden" name="module_srl" value="{$module_srl}" />
         <fieldset>
             <select name="search_target">
                 <option value="">{$lang->search_target}</option>
                 <!--@foreach($lang->search_target_list as $key => $val)-->
-                <option value="{htmlspecialchars($key)}" <!--@if($search_target==$key)-->selected="selected"<!--@end-->>{htmlspecialchars($val)}</option>
+                <option value="{$key}" <!--@if($search_target==$key)-->selected="selected"<!--@end-->>{$val}</option>
                 <!--@end-->
             </select>
             <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" class="inputTypeText" />
@@ -47,12 +47,12 @@
     <!--@foreach($comment_list as $no => $val)-->
 	{@ $comment = cut_str(trim(htmlspecialchars(strip_tags($val->content))), 200, '...')}
     <tr>
-        <td class="number center">{htmlspecialchars($no)}</td>
-        <td class="center"><input type="checkbox" name="cart" value="{htmlspecialchars($val->comment_srl)}" /></td>
-        <td class="left"><a href="{getUrl('','document_srl',$val->document_srl)}#comment_{htmlspecialchars($val->comment_srl)}" onclick="window.open(this.href);return false;"><!--@if(strlen($comment))-->{htmlspecialchars($comment)}<!--@else--><em style="font-style:italic;">{$lang->no_text_comment}</em><!--@end--></a></td>
-        <td class="nowrap"><span class="member_{htmlspecialchars($val->member_srl)}">{htmlspecialchars($val->nick_name)}</span></td>
+        <td class="number center">{$no}</td>
+        <td class="center"><input type="checkbox" name="cart" value="{$val->comment_srl}" /></td>
+        <td class="left"><a href="{getUrl('','document_srl',$val->document_srl)}#comment_{$val->comment_srl}" onclick="window.open(this.href);return false;"><!--@if(strlen($comment))-->{$comment}<!--@else--><em style="font-style:italic;">{$lang->no_text_comment}</em><!--@end--></a></td>
+        <td class="nowrap"><span class="member_{$val->member_srl}">{htmlspecialchars($val->nick_name)}</span></td>
         <td class="date center nowrap">{(zdate($val->regdate,"Y-m-d\nH:i:s"))}</td>
-        <td class="number left nowrap"><a href="{getUrl('search_target','ipaddress','search_keyword',$val->ipaddress)}">{htmlspecialchars($val->ipaddress)}</a></td>
+        <td class="number left nowrap"><a href="{getUrl('search_target','ipaddress','search_keyword',$val->ipaddress)}">{$val->ipaddress}</a></td>
     </tr>
     <!--@end-->
 </tbody>
@@ -62,12 +62,12 @@
 
 <!-- 페이지 네비게이션 -->
 <div class="pagination a1">
-    <a href="{getUrl('page','','module_srl',$module_srl)}" class="prevEnd">{$lang->first_page}</a>
+    <a href="{getUrl('page','','module_srl',$module_srl)}" class="prevEnd">{$lang->first_page}</a> 
     <!--@while($page_no = $page_navigation->getNextPage())-->
         <!--@if($page == $page_no)-->
-            <strong>{$page_no}</strong>
+            <strong>{$page_no}</strong> 
         <!--@else-->
-            <a href="{getUrl('page',$page_no,'module_srl',$module_srl)}">{$page_no}</a>
+            <a href="{getUrl('page',$page_no,'module_srl',$module_srl)}">{$page_no}</a> 
         <!--@end-->
     <!--@end-->
     <a href="{getUrl('page',$page_navigation->last_page,'module_srl',$module_srl)}" class="nextEnd">{$lang->last_page}</a>

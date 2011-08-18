@@ -16,28 +16,28 @@
     <tr class="row2">
         <th scope="col"><div>{$lang->allow_outlink_format}</div></th>
         <td>
-            <input type="text" name="allow_outlink_format" value="{htmlspecialchars($config->allow_outlink_format)}" class="inputTypeText" />
+            <input type="text" name="allow_outlink_format" value="{$config->allow_outlink_format}" class="inputTypeText" />
             <p>{$lang->about_allow_outlink_format}</p>
         </td>
     </tr>
     <tr class="row2">
         <th scope="col"><div>{$lang->allow_outlink_site}</div></th>
         <td>
-            <textarea name="allow_outlink_site" class="fullWidth">{htmlspecialchars($config->allow_outlink_site)}</textarea>
+            <textarea name="allow_outlink_site" class="fullWidth">{$config->allow_outlink_site}</textarea>
             <p>{$lang->about_allow_outlink_site}</p>
         </td>
     </tr>
     <tr class="row2">
         <th scope="col"><div>{$lang->allowed_filesize}</div></th>
         <td>
-            <input type="text" name="allowed_filesize" value="{htmlspecialchars($config->allowed_filesize)}" class="inputTypeText" size="3" />MB
+            <input type="text" name="allowed_filesize" value="{$config->allowed_filesize}" class="inputTypeText" size="3" />MB
             <p>{$lang->about_allowed_filesize}</p>
         </td>
     </tr>
     <tr>
         <th scope="col"><div>{$lang->allowed_attach_size}</div></th>
         <td>
-            <input type="text" name="allowed_attach_size" value="{htmlspecialchars($config->allowed_attach_size)}" class="inputTypeText" size="3" />MB
+            <input type="text" name="allowed_attach_size" value="{$config->allowed_attach_size}" class="inputTypeText" size="3" />MB
             / {ini_get('upload_max_filesize')}
             <p>{$lang->about_allowed_attach_size}</p>
         </td>
@@ -45,7 +45,7 @@
     <tr class="row2">
         <th scope="col"><div>{$lang->allowed_filetypes}</div></th>
         <td>
-            <input type="text" name="allowed_filetypes" value="{htmlspecialchars($config->allowed_filetypes)}" class="inputTypeText w100" />
+            <input type="text" name="allowed_filetypes" value="{$config->allowed_filetypes}" class="inputTypeText w100" />
             <p>{$lang->about_allowed_filetypes}</p>
         </td>
     </tr>

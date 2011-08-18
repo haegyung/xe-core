@@ -10,7 +10,7 @@
         <td class="center">
             <select name="skin" onchange="doDisplaySkinColorset(this);return false;">
             <!--@foreach($skin_list as $key => $val)-->
-                <option value="{$key}" <!--@if($config->skin == $key)-->selected="selected"<!--@end-->>{htmlspecialchars($val->title)} ({htmlspecialchars($key)})</option>
+                <option value="{$key}" <!--@if($config->skin == $key)-->selected="selected"<!--@end-->>{$val->title} ({$key})</option>
             <!--@end-->
             </select>
         </td>
@@ -20,7 +20,7 @@
         <td class="center">
             <select name="colorset" id="poll_colorset">
             <!--@foreach($colorset_list as $key => $val)-->
-                <option value="{$val->name}" <!--@if($config->colorset == $val->name)-->selected="selected"<!--@end-->>{htmlspecialchars($val->title)} ({htmlspecialchars($val->name)})</option>
+                <option value="{$val->name}" <!--@if($config->colorset == $val->name)-->selected="selected"<!--@end-->>{$val->title} ({$val->name})</option>
             <!--@end-->
             </select>
         </td>

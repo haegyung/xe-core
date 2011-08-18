@@ -49,7 +49,7 @@
     <tr class="row{$cycle_idx}">
         <td>{count($ip_list)-$no}</td>
         <td>{$val->ipaddress}</td>
-        <td class="wide">{htmlspecialchars($val->description)}</td>
+        <td class="wide">{$val->description}</td>
         <td>{zdate($val->regdate,"Y-m-d")}</td>
         <td><a href="#" onclick="doDeleteDeniedIP('{$val->ipaddress}');return false;" title="{$lang->cmd_delete}" class="buttonSet buttonDelete"><span>{$lang->cmd_delete}</span></a></td>
     </tr>
