@@ -786,7 +786,10 @@
             // 기존의 extra_keys 가져옴
             $extra_keys = $this->getExtraKeys($module_srl);
             Context::set('extra_keys', $extra_keys);
-
+			
+			$security = new Security();				
+			$security->encodeHTML('extra_keys..name','extra_keys..eid');
+			
             // grant 정보를 추출
             $oTemplate = &TemplateHandler::getInstance();
             return $oTemplate->compile($this->module_path.'tpl', 'extra_keys');
