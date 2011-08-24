@@ -40,7 +40,7 @@
 
 			//Security
 			$security = new Security();
-			$security->encodeHTML('module_category..title', 'module_info.');
+			$security->encodeHTML('module_category..title');
 
             // 템플릿 경로 구함 (page의 경우 tpl에 관리자용 템플릿 모아놓음)
             $this->setTemplatePath($this->module_path.'tpl');
@@ -77,6 +77,7 @@
 			$security = new Security();
 			$security->encodeHTML('page_list..browser_title');
 			$security->encodeHTML('page_list..mid');
+			$security->encodeHTML('module_info.');
 
             // 템플릿 파일 지정
             $this->setTemplateFile('index');
@@ -135,6 +136,9 @@
 
             // 템플릿 파일 지정
             $this->setTemplateFile('addition_setup');
+
+			$security = new Security();
+			$security->encodeHTML('module_info.');
         }
 
         /**
@@ -276,6 +280,9 @@
 
             // 템플릿 파일 지정
             $this->setTemplateFile('page_delete');
+
+			$security = new Security();
+			$security->encodeHTML('module_info.');
         }
 
         /**
@@ -288,6 +295,9 @@
             Context::set('grant_content', $grant_content);
 
             $this->setTemplateFile('grant_list');
+
+			$security = new Security();
+			$security->encodeHTML('module_info.');
         }
     }
 ?>
