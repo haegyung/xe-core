@@ -56,9 +56,9 @@
         <tr class="row{$cycle_idx}">
             <td rowspan="2">{$no}</td>
             <td rowspan="2"><input type="checkbox" name="cart" value="{$val->member_srl}"/></td>
-            <td><a href="{getUrl('act','dispMemberAdminInfo','member_srl',$val->member_srl)}">{htmlspecialchars($val->user_id)}</a></td>
-            <td>{htmlspecialchars($val->user_name)}</td>
-            <td><span class="member_{$val->member_srl}">{htmlspecialchars($val->nick_name)}</span></td>
+            <td><a href="{getUrl('act','dispMemberAdminInfo','member_srl',$val->member_srl)}">{$val->user_id}</a></td>
+            <td>{$val->user_name}</td>
+            <td><span class="member_{$val->member_srl}">{$val->nick_name}</span></td>
             <td>{zdate($val->regdate,"Y-m-d H:i:s")}</td>
             <td>{zdate($val->last_login,"Y-m-d H:i:s")}</td>
             <td class="nowrap">

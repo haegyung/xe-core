@@ -21,7 +21,7 @@
             // 위젯 목록을 세팅
             $oWidgetModel = &getModel('widget');
             $widget_list = $oWidgetModel->getDownloadedWidgetList();
-            Context::set('widget_list', $widget_list);
+            Context::set('widget_list', $widget_list);			
 
             $this->setTemplateFile('downloaded_widget_list');
         }
@@ -47,6 +47,9 @@
             $editor = $oEditorModel->getModuleEditor('document',$module_srl, $module_srl,'module_srl','content');
             Context::set('editor', $editor);
 
+			$security = new Security();
+			$security->encodeHTML('member_config..');
+			
             $this->setLayoutFile("popup_layout");
             $this->setTemplateFile('add_content_widget');
 

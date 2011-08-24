@@ -23,7 +23,7 @@
             // 애드온 목록을 세팅
             $oAddonModel = &getAdminModel('addon');
             $addon_list = $oAddonModel->getAddonList($site_module_info->site_srl);
-            Context::set('addon_list', $addon_list);
+            Context::set('addon_list', $addon_list);z
 
             // 템플릿 패스 및 파일을 지정
             $this->setTemplateFile('addon_list');

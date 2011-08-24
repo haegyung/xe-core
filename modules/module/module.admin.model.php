@@ -96,6 +96,11 @@
             $group_list = $oMemberModel->getGroups($module_info->site_srl);
             Context::set('group_list', $group_list);
 
+			//Security			
+			$security = new Security();
+			$security->encodeHTML('group_list..title');
+			$security->encodeHTML('group_list..description');
+			
             // grant 정보를 추출
             $oTemplate = &TemplateHandler::getInstance();
             return $oTemplate->compile($this->module_path.'tpl', 'module_grants');
