@@ -139,7 +139,13 @@
             Context::set('module_info', $module_info);
             Context::set('mid', $module_info->mid);
             Context::set('skin_info', $skin_info);
-            Context::set('skin_vars', $skin_vars);
+            Context::set('skin_vars', $skin_vars);	
+			
+			//Security
+			$security = new Security(); 
+			$security->encodeHTML('mid');
+			$security->encodeHTML('module_info.browser_title');
+			$security->encodeHTML('skin_info...');
 
             $oTemplate = &TemplateHandler::getInstance();
             return $oTemplate->compile($this->module_path.'tpl', 'skin_config');

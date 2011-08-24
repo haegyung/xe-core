@@ -47,7 +47,6 @@
             $module_info = $oModuleModel->getModuleInfoXml(Context::get('selected_module'));
             Context::set('module_info', $module_info);
 			
-			debugPrint($module_info);
 			$security = new Security();				
 			$security->encodeHTML('module_info...');
 
@@ -134,8 +133,6 @@
             $layout_list = $oLayoutMode->getLayoutList();
             Context::set('layout_list', $layout_list);
 			
-			debugPrint($skin_list);
-
             // 모듈 카테고리 목록을 구함
             $module_category = $oModuleModel->getModuleCategories();
             Context::set('module_category', $module_category);
@@ -211,7 +208,7 @@
             Context::set('group_list', $group_list);
 			
 			$security = new Security();				
-			$security->encodeHTML('group_list...');
+			$security->encodeHTML('group_list..title');
 
             // 레이아웃을 팝업으로 지정
             $this->setLayoutFile('popup_layout');
