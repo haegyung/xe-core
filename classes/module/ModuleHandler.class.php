@@ -286,7 +286,8 @@
                         }   
 					}
 					if ($kind == 'admin'){
-						if($logged_info->is_admin!='Y') {
+						$grant = $oModuleModel->getGrant($this->module_info, $logged_info);		
+						if($grant->is_admin!='Y') {
                             $this->error = 'msg_is_not_administrator';
                             $oMessageObject = &ModuleHandler::getModuleInstance('message',$type);
                             $oMessageObject->setError(-1);
