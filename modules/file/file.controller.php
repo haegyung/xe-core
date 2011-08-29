@@ -233,7 +233,7 @@
             header("Content-Transfer-Encoding: binary\n"); 
 
 			// if file size is lager than 10MB, use fread function (#18675748)
-			if (filesize($uploaded_filename) > pow(1024, 10240)) {
+			if (filesize($uploaded_filename) > 1024 * 1024) {
 				while(!feof($fp)) echo fread($fp, 1024);
 				fclose($fp);
 			} else {
