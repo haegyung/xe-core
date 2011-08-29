@@ -296,13 +296,13 @@ String.prototype.setQuery = function(key, val) {
 
 		jQuery.each(args, function(key,val){
 			if (!jQuery.trim(val)) return;
-			q_list.push(key+'='+decodeURI(val));
+			q_list.push(decodeURIComponent(key)+'='+decodeURIComponent(val));
 		});
 
 		query_string = q_list.join('&');
 		uri = uri+(query_string?'?'+query_string:'');
     } else {
-        if(val.toString().trim()) uri = uri+"?"+key+"="+val;
+        if(val.toString().trim()) uri = uri+"?"+decodeURIComponent(key)+"="+decodeURIComponent(val);
     }
 
     var re = /https:\/\/([^:\/]+)(:\d+|)/i;
@@ -345,7 +345,7 @@ String.prototype.setQuery = function(key, val) {
             uri = uri.replace(re,toReplace);
         }
     }
-
+	
     return encodeURI(uri);
 }
 
