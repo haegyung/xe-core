@@ -505,9 +505,11 @@
 
 			// otherwise try to load xml, css, js file
 			} else {
-				if(substr($target,0,1)!='/') $source_filename = $base_path.$target;
+				if(substr($target,0,1)!='/' && !preg_match('/^(http|https)/i',$target)) $source_filename = $base_path.$target;
 				else $source_filename = $target;
-				$source_filename = str_replace(array('/./','//'),'/',$source_filename);
+
+				if(!preg_match('/^(http|https)/i',$source_filename)) 
+					$source_filename = str_replace(array('/./','//'),'/',$source_filename);
 
 				// get filename and path
 				$tmp_arr = explode("/",$source_filename);
