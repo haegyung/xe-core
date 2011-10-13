@@ -99,6 +99,8 @@
                 }
             } else {
                 $grant = $oModuleModel->getGrant($module_info, $logged_info, $xml_info);
+				if( substr_count($this->act, 'Member') || substr_count($this->act, 'Communication'))
+					$grant->access = 1;
             }
 
             // 현재 모듈의 access 권한이 없으면 권한 없음 표시
