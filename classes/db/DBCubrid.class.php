@@ -714,7 +714,7 @@
                 $name = $val['name'];
                 $value = $val['value'];
 
-                if (substr ($value, -2) != '+1' || $output->column_type[$name] != 'number') {
+                if (strcmp(substr ($value, -2), '+1') || $output->column_type[$name] != 'number') {
                     $check_click_count = false;
                 }
 
