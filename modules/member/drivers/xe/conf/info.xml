@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<driver>
+    <title xml:lang="ko">XE 기본 회원 드라이버</title>
+    <title xml:lang="en">XE default member driver</title>
+    <description xml:lang="ko">회원 모듈의 기본 드라이버입니다.</description>
+    <description xml:lang="en">This is default driver of member module.</description>
+    <version>1.0</version>
+    <date>2011-12-20</date>
+    <available_service signup="Y" signin_form="Y" signin_button="Y" signin_button_text="Y" signin_banner="Y" />
+
+    <author email_address="developers@xpressengine.com" link="http://xpressengine.com/">
+        <name xml:lang="ko">NHN</name>
+        <name xml:lang="en">NHN</name>
+    </author>
+</module>
