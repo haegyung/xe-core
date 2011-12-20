@@ -7,6 +7,10 @@ class MemberDriver {
 	function checkUpdate(){
 	}
 
+	function driverUpdate(){
+		debugPrint("super driverUpdate");
+	}
+
 	function getMemberInfo(){
 	}
 
@@ -24,4 +28,5 @@ class MemberDriver {
 
 	function convertDataQuery(){
 	}
+}
 ?>
