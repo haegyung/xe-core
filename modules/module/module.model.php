@@ -1127,6 +1127,21 @@
                 $table_count = count($tmp_files);
                 // Check if the table is created
                 $created_table_count = 0;
+
+				// Check drivers 
+				if(is_dir(FileHandler::getRealPath($path."drivers"))){
+					$drivers = FileHandler::readDir($path."drivers");
+					foreach($drivers as $driverName){
+						$driverSchemas = FileHandler::readDir($path."drivers/".$driverName."/schemas");
+						$table_count += count($driverSchemas);
+
+						foreach($driverSchemas as $tableXML){
+							list($tableName) = explode(".",$tableXML);
+							if($oDB->isTableExists($tableName)) $created_table_count ++;
+						}
+					}
+				}
+
                 for($j=0;$j<count($tmp_files);$j++) {
                     list($table_name) = explode(".",$tmp_files[$j]);
                     if($oDB->isTableExists($table_name)) $created_table_count ++;

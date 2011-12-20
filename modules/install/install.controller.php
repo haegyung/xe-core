@@ -447,6 +447,20 @@
                 if(!$file || substr($file,-4)!='.xml') continue;
                 $output = $oDB->createTableByXmlFile($file);
             }
+
+			// Create a table if the schema xml in drivers
+			if(is_dir(FileHandler::getRealPath($module_path."/drivers"))){
+				$drivers = FileHandler::readDir($module_path."/drivers");
+				foreach($drivers as $driverName){
+					$driverSchemas = FileHandler::readDir($module_path."/drivers/".$driverName."/schemas", '/(\.xml)$/' , false, true);
+
+					foreach($driverSchemas as $tableXML){
+						$output = $oDB->createTableByXmlFile($tableXML);
+						if (!$output) return $this->stop(sprintf('Failed install "%s" table', $tableXML));
+					}
+				}
+			}
+
             // Create a table and module instance and then execute install() method
             unset($oModule);
             $oModule = &getClass($module);
