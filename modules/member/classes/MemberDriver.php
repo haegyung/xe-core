@@ -1,32 +1,92 @@
 <?php
 
-class MemberDriver {
-	function getInstance(){
+/**
+ * @brief Super class of member dirvers
+ * @developer NHN (developers@xpressengine.com)
+ */
+class MemberDriver
+{
+	/**
+	 * @brief Get instance of driver
+	 * @access public
+	 * @return Instance of driver class
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function getInstance()
+	{
 	}
 
-	function checkUpdate(){
+	/**
+	 * @brief Check update for driver
+	 * @access public
+	 * @return boolean
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function checkUpdate()
+	{
 	}
 
-	function driverUpdate(){
+	/**
+	 * @brief Process of update
+	 * @access public
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function driverUpdate()
+	{
 		debugPrint("super driverUpdate");
 	}
 
-	function getMemberInfo(){
+	/**
+	 * @brief Get MemberInfo
+	 * @access public
+	 * @return stdClass
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function getMemberInfo()
+	{
 	}
 
-	function insertMember(){
+	/**
+	 * @brief Insert member
+	 * @access public
+	 * @return stdClass
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function insertMember()
+	{
 	}
 
-	function deleteMember(){
+	/**
+	 * @brief Delete member
+	 * @access public
+	 * @return stdClass
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function deleteMember()
+	{
 	}
 
-	function updateMember(){
+	/**
+	 * @brief Update member info
+	 * @access public
+	 * @return stdClass
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function updateMember()
+	{
 	}
 
-	function validateLoginInfo(){
-	}
-
-	function convertDataQuery(){
+	/**
+	 * @brief Validate Login Info
+	 * @access public
+	 * @return boolean
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function validateLoginInfo()
+	{
 	}
 }
-?>
+
+/* End of file MemberDriver.php */
+/* Location: ./modules/member/classes/MemberDriver.php */

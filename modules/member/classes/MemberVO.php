@@ -1,5 +1,11 @@
 <?php
-class MemberVO{
+
+/**
+ * @brief Class of member value object
+ * @developer NHN (developers@xpressengine.com)
+ */
+class MemberVO
+{
 	var $memberInfo; //stdclass
 	
 	var $memberSrl;
@@ -12,8 +18,17 @@ class MemberVO{
 	var $isAdmin;
 	var $description;
 
-	function getDisplayName(){
+	/**
+	 * @brief Get display name
+	 * @access public
+	 * @return String
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function getDisplayName()
+	{
 		return 'anonymous';	
 	}
 }
-?>
+
+/* End of file MemberVO.php */
+/* Location: ./modules/member/classes/MemberVO.php */
