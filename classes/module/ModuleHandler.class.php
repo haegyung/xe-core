@@ -691,6 +691,82 @@
             return $GLOBALS['_loaded_module'][$module][$type][$kind];
         }
 
+		/**
+		 * @brief create a instance of driver
+		 * @access public
+		 * @param $moduleName name of module
+		 * @param $driverName name of driver
+		 * @return instance of driver
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		function &getDriverInstance($moduleName, $driverName)
+		{
+			// If there is no instance of driver in global variable, create a new one
+			if(!$GLOBALS['__LOADED_DRIVERS__'][$moduleName][$driverName])
+			{
+				// Check module's path
+				$modulePath = ModuleHandler::getModulePath($moduleName);
+				if(!is_dir(FileHandler::getRealPath($modulePath)))
+				{
+					return NULL;
+				}
+
+				// Get super driver's name
+				$superInstanceName = sprintf('%sDriver', ucFirst($moduleName));
+				$superClassFile = sprintf('%sdrivers/%s.php', $modulePath, $superInstanceName);
+				$superClassFile = FileHandler::getRealPath($superClassFile);
+
+				if(!is_readable($superClassFile))
+				{
+					return NULL;
+				}
+
+				// Load super driver
+				require_once($superClassFile);
+				if(!class_exists($superInstanceName))
+				{
+					return NULL;
+				}
+
+				// Get driver's name
+				$instanceName = sprintf('%sDriver%s', ucFirst($moduleName), ucFirst($driverName));
+				$classFile = sprintf('%sdrivers/%s/%s.php', $modulePath, $driverName, $instanceName);
+				$classFile = FileHandler::getRealPath($classFile);
+
+				if(!is_readable($classFile))
+				{
+					return NULL;
+				}
+
+				// Create an instance of driver
+				require_once($classFile);
+				if(!class_exists($instanceName))
+				{
+					return NULL;
+				}
+
+				$tmpFunc = create_function('', "return new {$instanceName}();");
+				$oDriver = $tmpFunc();
+				if(!is_object($oDriver))
+				{
+					return NULL;
+				}
+
+				// Set name of module and driver
+				$oDriver->setModuleName($moduleName);
+				$oDriver->setDriverName($driverName);
+
+				// Load language files for driver
+				$langPath = sprintf('%sdrivers/%s/lang', $modulePath, $driverName);
+				Context::loadLang($langPath);
+
+				// Store the created instance into GLOBAL variable
+				$GLOBALS['__LOADED_DRIVERS__'][$moduleName][$driverName] = $oDriver;
+			}
+
+			return $GLOBALS['__LOADED_DRIVERS__'][$moduleName][$driverName];
+		}
+
         /**
          * @brief call a trigger
          * @param[in] $trigger_name trigger's name to call
