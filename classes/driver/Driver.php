@@ -4,11 +4,11 @@
  * @brief Super class of Driver
  * @developer NHN (Developers@xpressengine.com)
  */
-class Driver extends Object
+abstract class Driver extends Object
 {
-	var $moduleName = NULL;
-	var $driverName = NULL;
-	var $driverPath = NULL;
+	private $moduleName = NULL;
+	private $driverName = NULL;
+	private $driverPath = NULL;
 
 	/**
 	 * @brief Set module name
@@ -17,7 +17,7 @@ class Driver extends Object
 	 * @return void
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function setModuleName($moduleName)
+	public function setModuleName($moduleName)
 	{
 		$this->moduleName = $moduleName;
 		$this->computeDriverPath();
@@ -29,7 +29,7 @@ class Driver extends Object
 	 * @return string
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function getModuleName()
+	public function getModuleName()
 	{
 		return $this->moduleName;
 	}
@@ -41,7 +41,7 @@ class Driver extends Object
 	 * @return void
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function setDriverName($driverName)
+	public function setDriverName($driverName)
 	{
 		$this->driverName = $driverName;
 		$this->computeDriverPath();
@@ -53,7 +53,7 @@ class Driver extends Object
 	 * @return string
 	 * @developer NHN (devlopers@xpressengine.com)
 	 */
-	function getDriverName()
+	public function getDriverName()
 	{
 		return $this->driverName;
 	}
@@ -64,7 +64,7 @@ class Driver extends Object
 	 * @return void
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function computeDriverPath()
+	private function computeDriverPath()
 	{
 		if(!isset($this->moduleName, $this->driverName))
 		{
@@ -82,7 +82,7 @@ class Driver extends Object
 	 * @return string
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function getDriverPath()
+	public function getDriverPath()
 	{
 		return $this->driverPath;
 	}
@@ -93,10 +93,7 @@ class Driver extends Object
 	 * @return boolean
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function checkUpdate()
-	{
-		return FALSE;
-	}
+	abstract public function checkUpdate();
 
 	/**
 	 * @brief Update Driver (Child must overide this method)
@@ -104,10 +101,7 @@ class Driver extends Object
 	 * @return Object
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function updateDriver()
-	{
-		return new Object();
-	}
+	abstract public function updateDriver();
 }
 
 /* End of file Driver.php */

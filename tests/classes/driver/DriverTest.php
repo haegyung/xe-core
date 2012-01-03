@@ -9,6 +9,7 @@ require_once _XE_PATH_.'classes/object/Object.class.php';
 require_once _XE_PATH_.'classes/handler/Handler.class.php';
 require_once _XE_PATH_.'classes/module/ModuleHandler.class.php';
 require_once _XE_PATH_ . 'classes/driver/Driver.php';
+require_once 'ChildDriver.php';
 
 class DriverTest extends PHPUnit_Framework_TestCase
 {
@@ -16,7 +17,7 @@ class DriverTest extends PHPUnit_Framework_TestCase
 
 	public static function setUpBeforeClass()
 	{
-		self::$driver = new Driver();
+		self::$driver = new ChildDriver();
 	}
 
 	public function testGetModuleName()

@@ -1,5 +1,5 @@
 <?php
 
-class ModulenameDriver extends Driver
+abstract class ModulenameDriver extends Driver
 {
 }

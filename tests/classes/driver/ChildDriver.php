@@ -1,6 +1,6 @@
 <?php
 
-class ModulenameDriverDrivername extends ModulenameDriver
+class ChildDriver extends Driver
 {
 	public function checkUpdate()
 	{
@@ -12,3 +12,6 @@ class ModulenameDriverDrivername extends ModulenameDriver
 		return new Object();
 	}
 }
+
+/* End of file ChildDriver.php */
+/* Location: ./tests/classes/driver/ChildDriver.php */
