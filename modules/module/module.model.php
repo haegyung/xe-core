@@ -1296,8 +1296,9 @@
                 if($oDummy && method_exists($oDummy, "checkUpdate"))
 				{
                     $info->need_update = $oDummy->checkUpdate();
-					$list[] = $info;
 				}
+
+				$list[] = $info;
 
 				$driverList = $this->getDrivers($module_name);
 				if (count($driverList) > 0)
