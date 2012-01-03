@@ -12,6 +12,7 @@
 			<exclude>./classes/db/</exclude>
 			<exclude>./classes/frontendfile/FrontEndFileHandlerTest.php</exclude>
 			<exclude>./classes/module/ModuleHandlerTest.php</exclude>
+			<exclude>./modules/module/moduleModelTest.php</exclude>
 		</testsuite>
 	</testsuites>
 	<logging>

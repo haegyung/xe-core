@@ -668,6 +668,127 @@
             return $info;
         }
 
+		/**
+		 * @brief Get Driver information by xml
+		 * @access public
+		 * @param $module Name of module
+		 * @param $driver Name of driver
+		 * @return stdClass
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		function getDriverInfoXml($module, $driver)
+		{
+			// Get module path
+			$modulePath = ModuleHandler::getModulePath($module);
+			if(!$modulePath)
+			{
+				return;
+			}
+
+			// Get info.xml path
+			$xmlFile = sprintf('%sdrivers/%s/conf/info.xml', $modulePath, $driver);
+			$xmlFile = FileHandler::getRealPath($xmlFile);
+			if(!is_readable($xmlFile))
+			{
+				return;
+			}
+
+			// Parse xml
+			$oXmlParser = new XmlParser();
+			$xmlObj = $oXmlParser->loadXmlFile($xmlFile);
+			$xmlObj = $xmlObj->driver;
+
+			if(!$xmlObj)
+			{
+				return;
+			}
+
+			// Make info
+			$driverInfo = new stdClass();
+			$driverInfo->title = $xmlObj->title->body;
+			$driverInfo->description = $xmlObj->description->body;
+			$driverInfo->version = $xmlObj->version->body;
+			$driverInfo->homepage = $xmlObj->homepage->body;
+			sscanf($xmlObj->date->body, '%d-%d-%d', $year, $month, $day);
+			$driverInfo->date = sprintf('%04d%02d%02d', $year, $month, $day);
+			$driverInfo->license = $xmlObj->license->body;
+			$driverInfo->license_link = $xmlObj->license->attrs->link;
+
+			if(!is_array($xmlObj->author))
+			{
+				$authorList[] = $xmlObj->author;
+			}
+			else
+			{
+				$authorList = $xmlObj->author;
+			}
+
+			foreach($authorList as $author)
+			{
+				$authorObj = new stdClass();
+				$authorObj->name = $author->name->body;
+				$authorObj->email_address = $author->attrs->email_address;
+				$authorObj->homepage = $author->attrs->link;
+				$driverInfo->author[] = $authorObj;
+			}
+
+			if(!is_array($xmlObj->options->option))
+			{
+				$optionList[] = $xmlObj->options->option;
+			}
+			else
+			{
+				$optionList = $xmlObj->options->option;
+			}
+
+			foreach($optionList as $option)
+			{
+				$optionObj = new stdClass();
+				$optionObj->name = $option->attrs->name;
+				$optionObj->value = $option->attrs->value;
+				$driverInfo->options[] = $optionObj;
+			}
+
+			return $driverInfo;
+		}
+
+		/**
+		 * @brief Get a list of driver for the module
+		 * @access public
+		 * @param $module Name of module
+		 * @return array
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		function getDrivers($module)
+		{
+			// Get driver path
+			$modulePath = ModuleHandler::getModulePath($module);
+			if(!$modulePath)
+			{
+				return Array();
+			}
+			$driverPath = sprintf('%sdrivers', $modulePath);
+			$list = FileHandler::readDir($driverPath);
+			if(!count($list))
+			{
+				return Array();
+			}
+
+			natcasesort($list);
+
+			foreach($list as $driverName)
+			{
+				$driverInfo = $this->getDriverInfoXml($module, $driverName);
+				if(!$driverInfo)
+				{
+					$driverInfo->title = $driverName;
+				}
+
+				$driverList[$driverName] = $driverInfo;
+			}
+
+			return $driverList;
+		}
 
         /**
          * @brief Get a list of skins for the module

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<driver>
+	<title xml:lang="ko">DriverName 드라이버</title>
+	<title xml:lang="en">Driver DriverName</title>
+    <description xml:lang="ko">ModuleName 모듈의 DriverName 드라이버입니다.</description>
+    <description xml:lang="en">This is Driver of ModuleName module.</description>
+	<homepage>http://homepage.com</homepage>
+	<license link="http://licenselink.com">License</license>
+    <version>1.0</version>
+    <date>2012-01-03</date>
+
+    <author email_address="email1@author1.com" link="http://author1.com/">
+        <name xml:lang="ko">Author1</name>
+        <name xml:lang="en">Author1</name>
+    </author>
+    <author email_address="email2@author2.com" link="http://author2.com/">
+        <name xml:lang="ko">Author2</name>
+        <name xml:lang="en">Author2</name>
+    </author>
+
+	<options>
+		<option name="option1" value="option1_value" />
+		<option name="option2" value="option2_value" />
+		<option name="option3" value="option3_value" />
+	</options>
+</driver>
