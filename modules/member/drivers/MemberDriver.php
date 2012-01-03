@@ -4,7 +4,7 @@
  * @brief Super class of member dirvers
  * @developer NHN (developers@xpressengine.com)
  */
-class MemberDriver
+abstract class MemberDriver extends Driver
 {
 	/**
 	 * @brief Get instance of driver

@@ -778,6 +778,10 @@
 
 			foreach($list as $driverName)
 			{
+				if(!is_dir(FileHandler::getRealPath($driverPath.'/'.$driverName)))
+				{
+					continue;
+				}
 				$driverInfo = $this->getDriverInfoXml($module, $driverName);
 				if(!$driverInfo)
 				{
@@ -1236,7 +1240,8 @@
             $searched_count = count($searched_list);
             if(!$searched_count) return;
 
-            for($i=0;$i<$searched_count;$i++) {
+            for($i=0;$i<$searched_count;$i++) 
+			{
                 // module name
                 $module_name = $searched_list[$i];
 
@@ -1250,23 +1255,28 @@
                 $created_table_count = 0;
 
 				// Check drivers 
-				if(is_dir(FileHandler::getRealPath($path."drivers"))){
+				if(is_dir(FileHandler::getRealPath($path."drivers")))
+				{
 					$drivers = FileHandler::readDir($path."drivers");
-					foreach($drivers as $driverName){
+					foreach($drivers as $driverName)
+					{
 						$driverSchemas = FileHandler::readDir($path."drivers/".$driverName."/schemas");
 						$table_count += count($driverSchemas);
 
-						foreach($driverSchemas as $tableXML){
+						foreach($driverSchemas as $tableXML)
+						{
 							list($tableName) = explode(".",$tableXML);
 							if($oDB->isTableExists($tableName)) $created_table_count ++;
 						}
 					}
 				}
 
-                for($j=0;$j<count($tmp_files);$j++) {
+                for($j=0;$j<count($tmp_files);$j++) 
+				{
                     list($table_name) = explode(".",$tmp_files[$j]);
                     if($oDB->isTableExists($table_name)) $created_table_count ++;
                 }
+
                 // Get information of the module
                 $info = $this->getModuleInfoXml($module_name);
                 unset($obj);
@@ -1283,15 +1293,32 @@
                 // Check if it is upgraded to module.class.php on each module
                 $oDummy = null;
                 $oDummy = &getModule($module_name, 'class');
-                if($oDummy && method_exists($oDummy, "checkUpdate")) {
+                if($oDummy && method_exists($oDummy, "checkUpdate"))
+				{
                     $info->need_update = $oDummy->checkUpdate();
-                }
-                else
-                {
-                    continue;
-                }
+					$list[] = $info;
+				}
 
-                $list[] = $info;
+				$driverList = $this->getDrivers($module_name);
+				if (count($driverList) > 0)
+				{
+					foreach ($driverList as $name => $value)
+					{
+						$driverInfo = $value;
+						$driverInfo->isDriver = TRUE;
+						$driverInfo->module = $module_name;
+						$driverInfo->driver = $name;
+						$driverInfo->path = sprintf('%sdrivers/%s/',$path, $name);
+
+						$oDriverDummy = &getDriver($module_name, $name);
+						if ($oDriverDummy && method_exists($oDriverDummy, "checkUpdate"))
+						{
+							$driverInfo->need_update = $oDriverDummy->checkUpdate();
+						}
+						$list[] = $driverInfo;
+					}
+				}
+				
             }
             return $list;
         }

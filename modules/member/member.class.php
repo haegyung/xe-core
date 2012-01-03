@@ -189,19 +189,6 @@
 			if (!is_readable('./files/ruleset/login.xml')) return true;
 			if (!is_readable('./files/ruleset/find_member_account_by_question.xml')) return true;
 
-			if (is_dir($this->module_path.'drivers/')){
-				$drivers = FileHandler::readDir($this->module_path."/drivers");
-				if (count($drivers) > 0) {
-					$parentDriverFile = $this->module_path."/classes/MemberDriver.php";
-					if (is_readable($parentDriverFile)) require_once($parentDriverFile);
-					$isUpdate = false;
-					foreach($drivers as $driverName){
-						$driverObj = $this->getDriver($driverName);	
-						if($driverObj->checkUpdate()) return true;
-					}
-				}
-			}
-
             return false;
         }
 

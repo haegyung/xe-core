@@ -4,7 +4,7 @@
  * @brief class of XE driver
  * @developer NHN (developers@xpressengine.com)
  */
-class XeMemberDriver extends MemberDriver
+class MemberDriverDefault extends MemberDriver
 {
 	/**
 	 * @brief Check update for driver
@@ -16,6 +16,17 @@ class XeMemberDriver extends MemberDriver
 	{
 		return TRUE;
 	}
+
+	/**
+	 * @brief Update for driver
+	 * @access public
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	function updateDriver()
+	{
+		return new Object();
+	}
 }
-/* End of file XeMemberDriver.php */
-/* Location: ./modules/member/driver/xe/XeMeberDriver.php */
+/* End of file MemberDriverDefault.php */
+/* Location: ./modules/member/driver/xe/MeberDriverDefault.php */
