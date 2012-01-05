@@ -42,6 +42,22 @@ class DriverTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('./modules/MODULE_NAME/drivers/DRIVER_NAME/', self::$driver->getDriverPath());
 	}
+
+	/**
+	 * @depends testGetDriverName
+	 */
+	public function testGetDriverTplPath()
+	{
+		$this->assertEquals('./modules/MODULE_NAME/drivers/DRIVER_NAME/tpl/', self::$driver->getDriverTplPath());
+	}
+
+	/**
+	 * @depends testGetDriverName
+	 */
+	public function testGetModulePath()
+	{
+		$this->assertEquals('./modules/MODULE_NAME/', self::$driver->getModulePath());
+	}
 }
 
 if(!class_exists('Context'))

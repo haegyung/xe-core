@@ -1122,6 +1122,42 @@
         }
 
         /**
+         * @brief Return the module configuration of mid
+         * Manage mid configurations which depend on module
+         **/
+        function getDriverConfig($moduleName, $driverName, $moduleSrl = 0) {
+			// cache controll
+			$oCacheHandler = &CacheHandler::getInstance('object');
+			if($oCacheHandler->isSupport())
+			{
+				$cache_key = 'object_driver_config:'.$moduleName.'_'.$driverName.'_'.$moduleSrl;
+				$config = $oCacheHandler->get($cache_key);
+			}
+
+			if(!$config)
+			{
+				if(!$GLOBALS['__DriverConfig__'][$moduleName][$driverName][$moduleSrl])
+				{
+					$args->module = $moduleName;
+					$args->driver = $driverName;
+					$args->moduleSrl = $moduleSrl;
+					
+					$output = executeQuery('module.getDriverConfig', $args);
+					$config = unserialize($output->data->config);
+					//insert in cache
+					if($oCacheHandler->isSupport())
+					{
+						if($config) $oCacheHandler->put($cache_key,$config);
+					}
+					$GLOBALS['__DriverConfig__'][$moduleName][$driverName][$moduleSrl] = $config;
+				}
+				return $GLOBALS['__DriverConfig__'][$moduleName][$driverName][$moduleSrl];
+			}
+
+			return $config;
+
+        }
+        /**
          * @brief Get all of module configurations for each mid
          **/
         function getModulePartConfigs($module, $site_srl = 0) {

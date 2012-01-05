@@ -27,17 +27,6 @@
             return $output;
         }
 
-        /**
-         * @brief Delete action forward
-         **/
-        function deleteActionForward($module, $type, $act) {
-            $args->module = $module;
-            $args->type = $type;
-            $args->act = $act;
-
-            $output = executeQuery('module.deleteActionForward', $args);
-            return $output;
-        }
 
         /**
          * @brief Add module trigger
@@ -150,13 +139,13 @@
 			}
 
 			return $this->insertModuleConfig($module, $origin_config, $site_srl);
-                        //remove from cache
-                        $oCacheHandler = &CacheHandler::getInstance('object');
-                        if($oCacheHandler->isSupport())
-                        {
-                            $cache_key = 'object:module_config:module_'.$module.'_site_srl_'.$site_srl;
-                            $oCacheHandler->delete($cache_key);
-                        }
+			//remove from cache
+			$oCacheHandler = &CacheHandler::getInstance('object');
+			if($oCacheHandler->isSupport())
+			{
+				$cache_key = 'object:module_config:module_'.$module.'_site_srl_'.$site_srl;
+				$oCacheHandler->delete($cache_key);
+			}
 		}
 
         /**
@@ -202,6 +191,58 @@
             return $output;
         }
 
+        /**
+         * @brief Save driver configurations
+         * @access public
+		 * @param $module name of module
+		 * @param $driver name of dirver
+		 * @param $config Configuration of driver
+		 * @param $moduleSrl
+		 * @developer NHN (developers@xpressengine.com)
+         **/
+        function insertDriverConfig($module, $driver, $config, $moduleSrl = NULL)
+		{
+            $args->module = $module;
+            $args->driver = $driver;
+            $args->moduleSrl = $moduleSrl;
+            $args->config = serialize($config);
+
+            $output = $this->deleteDriverConfig($module, $driver, $moduleSrl);
+			if(!$output->toBool())
+			{
+				return $output;
+			}
+
+            //remove from cache
+            $oCacheHandler = &CacheHandler::getInstance('object');
+            if($oCacheHandler->isSupport())
+            {
+                $cacheKey = 'object_driver_config:' . $module . '_' .  $driver . '_' . $moduleSrl;
+                $oCacheHandler->delete($cacheKey);
+            }
+
+            $output = executeQuery('module.insertDriverConfig', $args);
+
+            return $output;
+        }
+
+        /**
+         * @brief Delete driver configurations
+         * @access public
+		 * @param $module name of module
+		 * @param $driver name of dirver
+		 * @param $moduleSrl
+		 * @developer NHN (developers@xpressengine.com)
+         **/
+        function deleteDriverConfig($module, $driver, $moduleSrl = NULL)
+		{
+            $args->module = $module;
+            $args->driver = $driver;
+            $args->moduleSrl = $moduleSrl;
+
+            $output = executeQuery('module.deleteDriverConfig', $args);
+            return $output;
+        }
         /**
          * @brief create virtual site
          **/

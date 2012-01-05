@@ -7,8 +7,10 @@
 abstract class Driver extends Object
 {
 	private $moduleName = NULL;
+	private $modulePath = NULL;
 	private $driverName = NULL;
 	private $driverPath = NULL;
+	private $driverTplPath = NULL;
 
 	/**
 	 * @brief Set module name
@@ -20,7 +22,25 @@ abstract class Driver extends Object
 	public function setModuleName($moduleName)
 	{
 		$this->moduleName = $moduleName;
+		$this->computeModulePath();
 		$this->computeDriverPath();
+	}
+
+	/**
+	 * @brief Set module path
+	 * @access private
+	 * @return void
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	private function computeModulePath()
+	{
+		if(!isset($this->moduleName))
+		{
+			$this->modulePath = NULL;
+			return;
+		}
+
+		$this->modulePath = ModuleHandler::getModulePath($this->moduleName);
 	}
 
 	/**
@@ -32,6 +52,17 @@ abstract class Driver extends Object
 	public function getModuleName()
 	{
 		return $this->moduleName;
+	}
+
+	/**
+	 * @brief Get module path
+	 * @access public
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getModulePath()
+	{
+		return $this->modulePath;
 	}
 
 	/**
@@ -72,8 +103,8 @@ abstract class Driver extends Object
 			return;
 		}
 
-		$modulePath = ModuleHandler::getModulePath($this->moduleName);
-		$this->driverPath = sprintf('%sdrivers/%s/', $modulePath, $this->driverName);
+		$this->driverPath = sprintf('%sdrivers/%s/', $this->modulePath, $this->driverName);
+		$this->driverTplPath = sprintf('%sdrivers/%s/tpl/', $this->modulePath, $this->driverName);
 	}
 
 	/**
@@ -85,6 +116,17 @@ abstract class Driver extends Object
 	public function getDriverPath()
 	{
 		return $this->driverPath;
+	}
+
+	/**
+	 * @brief Get driver template path
+	 * @access public
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getDriverTplPath()
+	{
+		return $this->driverTplPath;
 	}
 
 	/**

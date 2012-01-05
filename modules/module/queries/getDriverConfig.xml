@@ -1,0 +1,13 @@
+<query id="getDriverConfig" action="select">
+    <tables>
+        <table name="driver_config" />
+    </tables>
+    <columns>
+        <column name="config" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="module" var="module" notnull="notnull" />
+        <condition operation="equal" column="driver" var="driver" notnull="notnull" pipe="and" />
+        <condition operation="equal" column="module_srl" var="moduleSrl" pipe="and" />
+    </conditions>
+</query>
