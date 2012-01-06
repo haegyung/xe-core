@@ -43,6 +43,30 @@
         }
 
         /**
+         * @brief Upate the module
+         **/
+        function procInstallAdminUpdateDriver() 
+		{
+			set_time_limit(0);
+            $moduleName = Context::get('module_name');
+			$driverName = Context::get('driver_name');
+            if(!$moduleName || !$driverName)
+			{
+				return new object(-1, 'invalid_request');
+			}
+
+            $oDriver = &getDriver($moduleName, $driverName);
+            if($oDriver)
+			{
+				$output = $oDriver->updateDriver();
+			}
+            else 
+			{
+				$output = new Object(-1, 'invalid_request');
+			}
+            return $output;
+        }
+        /**
          * @brief Change settings
          **/
         function procInstallAdminSaveTimeZone() {

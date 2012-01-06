@@ -323,8 +323,35 @@
 			if (!is_readable('./files/ruleset/find_member_account_by_question.xml'))
 				$oMemberAdminController->_createFindAccountByQuestion($config->identifier);
 
+			if (is_dir($this->module_path.'drivers/')){
+				$drivers = FileHandler::readDir($this->module_path."/drivers");
+				if (count($drivers) > 0) {
+					$parentDriverFile = $this->module_path."/classes/MemberDriver.php";
+					if (is_readable($parentDriverFile)) require_once($parentDriverFile);
+					$isUpdate = false;
+					foreach($drivers as $driverName){
+						$driverObj = $this->getDriver($driverName);	
+						if($driverObj->checkUpdate()) $driverObj->driverUpdate();
+					}
+				}
+			}
             return new Object(0, 'success_updated');
         }
+
+		function getDriver($driverName){
+			$className = ucfirst($driverName)."MemberDriver";
+			$driverFile = $this->module_path."/drivers/".$driverName.'/'.$className.".php";
+			if (is_readable($driverFile)) require_once($driverFile);
+			if (class_exists($className)){
+				$tmpFunction = create_function('', "return new {$className}();");
+				$driverObj = $tmpFunction();
+				if (is_object($driverObj)){
+					return $driverObj;
+				}
+			}
+			
+			return NULL;
+		}
 
         /**
          * @brief Re-generate the cache file

@@ -23,7 +23,8 @@
 			<!--@if($value->need_install)-->
 			<li><a href="{getUrl('','module','admin','act',$val->admin_index_act)}">{$value->module}</a> - <a href="#" onclick="doInstallModule('{$value->module}');return false;">{$lang->cmd_install}</a></li>
 			<!--@else if($value->need_update)-->
-			<li><a href="{getUrl('','module','admin','act',$val->admin_index_act)}">{$value->module}</a> - <a href="#" onclick="doUpdateModule('{$value->module}')">{$lang->cmd_update}</a></li>
+			<li cond="!$value->isDriver"><a href="{getUrl('','module','admin','act',$val->admin_index_act)}">{$value->module}</a> - <a href="#" onclick="doUpdateModule('{$value->module}')">{$lang->cmd_update}</a></li>
+			<li cond="$value->isDriver"><a href="{getUrl('','module','admin','act',$val->admin_index_act)}">{$value->module} > {$value->driver}</a> - <a href="#" onclick="doUpdateModuleDriver('{$value->module}', '{$value->driver}')">{$lang->cmd_update}</a></li>
 			<!--@end-->
 		<!--@end-->
 		</ul>

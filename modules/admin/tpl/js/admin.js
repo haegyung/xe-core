@@ -1165,6 +1165,12 @@ function doUpdateModule(module) {
 	showWaitingFogLayer();
 }
 
+function doUpdateModuleDriver(module, driver) {
+	var params = {module_name:module, driver_name:driver};
+	exec_xml('install', 'procInstallAdminUpdateDriver', params, completeInstallModule);
+	showWaitingFogLayer();
+}
+
 function completeInstallModule(ret_obj) {
     alert(ret_obj['message']);
     location.reload();

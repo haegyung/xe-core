@@ -27,13 +27,58 @@
             // get column properties from the table
             $table_file = sprintf('%s%s/%s/schemas/%s.xml', _XE_PATH_, 'modules', $module, $table_name);
             if (!file_exists($table_file)) {
-                $searched_list = FileHandler::readDir(_XE_PATH_ . 'modules');
-                $searched_count = count($searched_list);
-                for ($i = 0; $i < $searched_count; $i++) {
-                    $table_file = sprintf('%s%s/%s/schemas/%s.xml', _XE_PATH_, 'modules', $searched_list[$i], $table_name);
-                    if (file_exists($table_file))
-                        break;
-                }
+				$foundFile = FALSE;
+
+				// Search module dirvers
+				$searchedList = FileHandler::readDir(sprintf('%s%s/%s/drivers', _XE_PATH_, 'modules', $module));
+				if(is_array($searchedList))
+				{
+					foreach($searchedList as $driver)
+					{
+						$table_file = sprintf('%s%s/%s/drivers/%s/schemas/%s.xml', _XE_PATH_, 'modules', $module, $driver, $table_name);
+						if(file_exists($table_file))
+						{
+							$foundFile = TRUE;
+							break;
+						}
+					}
+				}
+
+				// Search all modules
+				if(!$foundFile)
+				{
+					$searched_list = FileHandler::readDir(_XE_PATH_ . 'modules');
+					$searched_count = count($searched_list);
+					for ($i = 0; $i < $searched_count; $i++) {
+						if($foundFile)
+						{
+							break;
+						}
+
+						$table_file = sprintf('%s%s/%s/schemas/%s.xml', _XE_PATH_, 'modules', $searched_list[$i], $table_name);
+						if (file_exists($table_file))
+						{
+							break;
+						}
+						else
+						{
+							// Search module dirvers
+							$searchedList2 = FileHandler::readDir(sprintf('%s%s/%s/drivers', _XE_PATH_, 'modules', $searched_list[$i]));
+							if(is_array($searchedList2))
+							{
+								foreach($searchedList2 as $driver)
+								{
+									$table_file = sprintf('%s%s/%s/drivers/%s/schemas/%s.xml', _XE_PATH_, 'modules', $searched_list[$i], $driver, $table_name);
+									if(file_exists($table_file))
+									{
+										$foundFile = TRUE;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
             }
 
             if (file_exists($table_file)) {

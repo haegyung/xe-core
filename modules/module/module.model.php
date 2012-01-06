@@ -668,6 +668,131 @@
             return $info;
         }
 
+		/**
+		 * @brief Get Driver information by xml
+		 * @access public
+		 * @param $module Name of module
+		 * @param $driver Name of driver
+		 * @return stdClass
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		function getDriverInfoXml($module, $driver)
+		{
+			// Get module path
+			$modulePath = ModuleHandler::getModulePath($module);
+			if(!$modulePath)
+			{
+				return;
+			}
+
+			// Get info.xml path
+			$xmlFile = sprintf('%sdrivers/%s/conf/info.xml', $modulePath, $driver);
+			$xmlFile = FileHandler::getRealPath($xmlFile);
+			if(!is_readable($xmlFile))
+			{
+				return;
+			}
+
+			// Parse xml
+			$oXmlParser = new XmlParser();
+			$xmlObj = $oXmlParser->loadXmlFile($xmlFile);
+			$xmlObj = $xmlObj->driver;
+
+			if(!$xmlObj)
+			{
+				return;
+			}
+
+			// Make info
+			$driverInfo = new stdClass();
+			$driverInfo->title = $xmlObj->title->body;
+			$driverInfo->description = $xmlObj->description->body;
+			$driverInfo->version = $xmlObj->version->body;
+			$driverInfo->homepage = $xmlObj->homepage->body;
+			sscanf($xmlObj->date->body, '%d-%d-%d', $year, $month, $day);
+			$driverInfo->date = sprintf('%04d%02d%02d', $year, $month, $day);
+			$driverInfo->license = $xmlObj->license->body;
+			$driverInfo->license_link = $xmlObj->license->attrs->link;
+
+			if(!is_array($xmlObj->author))
+			{
+				$authorList[] = $xmlObj->author;
+			}
+			else
+			{
+				$authorList = $xmlObj->author;
+			}
+
+			foreach($authorList as $author)
+			{
+				$authorObj = new stdClass();
+				$authorObj->name = $author->name->body;
+				$authorObj->email_address = $author->attrs->email_address;
+				$authorObj->homepage = $author->attrs->link;
+				$driverInfo->author[] = $authorObj;
+			}
+
+			if(!is_array($xmlObj->options->option))
+			{
+				$optionList[] = $xmlObj->options->option;
+			}
+			else
+			{
+				$optionList = $xmlObj->options->option;
+			}
+
+			foreach($optionList as $option)
+			{
+				$optionObj = new stdClass();
+				$optionObj->name = $option->attrs->name;
+				$optionObj->value = $option->attrs->value;
+				$driverInfo->options[] = $optionObj;
+			}
+
+			return $driverInfo;
+		}
+
+		/**
+		 * @brief Get a list of driver for the module
+		 * @access public
+		 * @param $module Name of module
+		 * @return array
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		function getDrivers($module)
+		{
+			// Get driver path
+			$modulePath = ModuleHandler::getModulePath($module);
+			if(!$modulePath)
+			{
+				return Array();
+			}
+			$driverPath = sprintf('%sdrivers', $modulePath);
+			$list = FileHandler::readDir($driverPath);
+			if(!count($list))
+			{
+				return Array();
+			}
+
+			natcasesort($list);
+
+			foreach($list as $driverName)
+			{
+				if(!is_dir(FileHandler::getRealPath($driverPath.'/'.$driverName)))
+				{
+					continue;
+				}
+				$driverInfo = $this->getDriverInfoXml($module, $driverName);
+				if(!$driverInfo)
+				{
+					$driverInfo->title = $driverName;
+				}
+
+				$driverList[$driverName] = $driverInfo;
+			}
+
+			return $driverList;
+		}
 
         /**
          * @brief Get a list of skins for the module
@@ -997,6 +1122,42 @@
         }
 
         /**
+         * @brief Return the module configuration of mid
+         * Manage mid configurations which depend on module
+         **/
+        function getDriverConfig($moduleName, $driverName, $moduleSrl = 0) {
+			// cache controll
+			$oCacheHandler = &CacheHandler::getInstance('object');
+			if($oCacheHandler->isSupport())
+			{
+				$cache_key = 'object_driver_config:'.$moduleName.'_'.$driverName.'_'.$moduleSrl;
+				$config = $oCacheHandler->get($cache_key);
+			}
+
+			if(!$config)
+			{
+				if(!$GLOBALS['__DriverConfig__'][$moduleName][$driverName][$moduleSrl])
+				{
+					$args->module = $moduleName;
+					$args->driver = $driverName;
+					$args->moduleSrl = $moduleSrl;
+					
+					$output = executeQuery('module.getDriverConfig', $args);
+					$config = unserialize($output->data->config);
+					//insert in cache
+					if($oCacheHandler->isSupport())
+					{
+						if($config) $oCacheHandler->put($cache_key,$config);
+					}
+					$GLOBALS['__DriverConfig__'][$moduleName][$driverName][$moduleSrl] = $config;
+				}
+				return $GLOBALS['__DriverConfig__'][$moduleName][$driverName][$moduleSrl];
+			}
+
+			return $config;
+
+        }
+        /**
          * @brief Get all of module configurations for each mid
          **/
         function getModulePartConfigs($module, $site_srl = 0) {
@@ -1115,7 +1276,8 @@
             $searched_count = count($searched_list);
             if(!$searched_count) return;
 
-            for($i=0;$i<$searched_count;$i++) {
+            for($i=0;$i<$searched_count;$i++) 
+			{
                 // module name
                 $module_name = $searched_list[$i];
 
@@ -1127,10 +1289,30 @@
                 $table_count = count($tmp_files);
                 // Check if the table is created
                 $created_table_count = 0;
-                for($j=0;$j<count($tmp_files);$j++) {
+
+				// Check drivers 
+				if(is_dir(FileHandler::getRealPath($path."drivers")))
+				{
+					$drivers = FileHandler::readDir($path."drivers");
+					foreach($drivers as $driverName)
+					{
+						$driverSchemas = FileHandler::readDir($path."drivers/".$driverName."/schemas");
+						$table_count += count($driverSchemas);
+
+						foreach($driverSchemas as $tableXML)
+						{
+							list($tableName) = explode(".",$tableXML);
+							if($oDB->isTableExists($tableName)) $created_table_count ++;
+						}
+					}
+				}
+
+                for($j=0;$j<count($tmp_files);$j++) 
+				{
                     list($table_name) = explode(".",$tmp_files[$j]);
                     if($oDB->isTableExists($table_name)) $created_table_count ++;
                 }
+
                 // Get information of the module
                 $info = $this->getModuleInfoXml($module_name);
                 unset($obj);
@@ -1147,15 +1329,33 @@
                 // Check if it is upgraded to module.class.php on each module
                 $oDummy = null;
                 $oDummy = &getModule($module_name, 'class');
-                if($oDummy && method_exists($oDummy, "checkUpdate")) {
+                if($oDummy && method_exists($oDummy, "checkUpdate"))
+				{
                     $info->need_update = $oDummy->checkUpdate();
-                }
-                else
-                {
-                    continue;
-                }
+				}
 
-                $list[] = $info;
+				$list[] = $info;
+
+				$driverList = $this->getDrivers($module_name);
+				if (count($driverList) > 0)
+				{
+					foreach ($driverList as $name => $value)
+					{
+						$driverInfo = $value;
+						$driverInfo->isDriver = TRUE;
+						$driverInfo->module = $module_name;
+						$driverInfo->driver = $name;
+						$driverInfo->path = sprintf('%sdrivers/%s/',$path, $name);
+
+						$oDriverDummy = &getDriver($module_name, $name);
+						if ($oDriverDummy && method_exists($oDriverDummy, "checkUpdate"))
+						{
+							$driverInfo->need_update = $oDriverDummy->checkUpdate();
+						}
+						$list[] = $driverInfo;
+					}
+				}
+				
             }
             return $list;
         }
