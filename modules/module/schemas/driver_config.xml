@@ -1,7 +1,0 @@
-<table name="driver_config">
-    <column name="module" type="varchar" size="250" notnull="notnull" />
-    <column name="driver" type="varchar" size="250" notnull="notnull" />
-    <column name="module_srl" type="number" size="11" />
-    <column name="config" type="text" />
-    <column name="regdate" type="date" />
-</table>

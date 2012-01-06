@@ -172,19 +172,6 @@
         return getModule($module_name, 'wap');
     }
 
-	/**
-	 * @breif create a driver instance of the module
-	 * @access public
-	 * @param $moduleName name of module
-	 * @param $driverName name of driver
-	 * @return driver class instance
-	 * @developer NHN (developers@xpressengine.com)
-	 */
-	function &getDriver($moduleName, $driverName)
-	{
-        return ModuleHandler::getDriverInstance($moduleName, $driverName);
-	}
-
     /**
      * @brief create a class instance of the module
      * @param module_name

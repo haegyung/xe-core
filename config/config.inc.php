@@ -177,7 +177,6 @@
 		require(_XE_PATH_.'classes/editor/EditorHandler.class.php');
 		require(_XE_PATH_.'classes/module/ModuleObject.class.php');
 		require(_XE_PATH_.'classes/module/ModuleHandler.class.php');
-		require(_XE_PATH_.'classes/driver/Driver.php');
 		require(_XE_PATH_.'classes/display/DisplayHandler.class.php');
 		require(_XE_PATH_.'classes/template/TemplateHandler.class.php');
 		require(_XE_PATH_.'classes/mail/Mail.class.php');

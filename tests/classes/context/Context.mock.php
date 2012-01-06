@@ -67,10 +67,6 @@ class Context
 	public static function getRequestUrl() {
 		return self::$requestUrl;
 	}
-
-	public static function loadLang()
-	{
-	}
 }
 
 /* End of file Context.mock.php */
