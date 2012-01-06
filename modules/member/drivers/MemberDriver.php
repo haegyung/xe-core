@@ -6,85 +6,82 @@
  */
 abstract class MemberDriver extends Driver
 {
-	/**
-	 * @brief Get instance of driver
-	 * @access public
-	 * @return Instance of driver class
-	 * @developer NHN (developers@xpressengine.com)
-	 */
-	function getInstance()
-	{
-	}
+	private static $commonExtractVars = array('allow_mailing', 'allow_message', 'denied', 'limit_date', 'regdate', 'last_login', 'is_admin', 'description', 'extra_vars', 'list_order', 'mid', 'error_return_url', 'success_return_url', 'ruleset', 'captchaType', 'secret_text', 'group_srl_list', 'body', 'accept_agreement', 'signature', 'password', 'password2');
 
 	/**
-	 * @brief Check update for driver
+	 * @brief Get common extract variables
 	 * @access public
-	 * @return boolean
+	 * @return array
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function checkUpdate()
+	public static function getCommonExtractVars()
 	{
-	}
-
-	/**
-	 * @brief Process of update
-	 * @access public
-	 * @return Object
-	 * @developer NHN (developers@xpressengine.com)
-	 */
-	function driverUpdate()
-	{
-		debugPrint("super driverUpdate");
+		return self::$commonExtractVars;
 	}
 
 	/**
 	 * @brief Get MemberInfo
 	 * @access public
+	 * @param $memberSrl
 	 * @return stdClass
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function getMemberInfo()
-	{
-	}
+	abstract public function getMemberInfo($memberSrl);
 
 	/**
 	 * @brief Insert member
 	 * @access public
+	 * @param $memberInfo insert member information (type of stdClass)
 	 * @return stdClass
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function insertMember()
-	{
-	}
+	abstract public function insertMember($memberInfo, $passwordIsHashed = FALSE);
+
 
 	/**
 	 * @brief Delete member
 	 * @access public
+	 * @param $memberSrl
 	 * @return stdClass
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function deleteMember()
-	{
-	}
-
+	abstract public function deleteMember($memberSrl);
+	
 	/**
 	 * @brief Update member info
 	 * @access public
+	 * @param $memberInfo update member information (type of stdClass) 
 	 * @return stdClass
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function updateMember()
-	{
-	}
-
+	abstract public function updateMember($memberInfo);
+	
 	/**
 	 * @brief Validate Login Info
 	 * @access public
+	 * @param $loginInfo login information (ex : user_id/email_address, password)
 	 * @return boolean
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	function validateLoginInfo()
+	abstract public function validateLoginInfo($loginInfo);
+
+	/**
+	 * @brief Extract extra variables
+	 * @access public
+	 * @param $memberInfo member information
+	 * @return stdClass
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function extractExtraVars($memberInfo)
 	{
+		$extraVars = clone $memberInfo;
+		
+		foreach(self::$commonExtractVars as $column)
+		{
+			unset($extraVars->{$column});
+		}
+
+		return $extraVars;
 	}
 }
 

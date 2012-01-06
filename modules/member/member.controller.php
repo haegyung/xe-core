@@ -475,75 +475,32 @@
          **/
         function procMemberInsert() {
             if (Context::getRequestMethod () == "GET") return new Object (-1, "msg_invalid_request");
+			$driver = Context::get('driver');
+
             $oMemberModel = &getModel ('member');
-            $config = $oMemberModel->getMemberConfig ();
+            $config = $oMemberModel->getMemberConfig();
 
             // call a trigger (before)
             $trigger_output = ModuleHandler::triggerCall ('member.procMemberInsert', 'before', $config);
-            if (!$trigger_output->toBool ()) return $trigger_output;
+            if (!$trigger_output->toBool ())
+			{
+				return $trigger_output;
+			}
+
             // Check if an administrator allows a membership
-            if ($config->enable_join != 'Y') return $this->stop ('msg_signup_disabled');
-            // Check if the user accept the license terms (only if terms exist)
-            if ($config->agreement && Context::get('accept_agreement')!='Y') return $this->stop('msg_accept_agreement');
-
-            // Extract the necessary information in advance
-			$getVars = array();
-			if ($config->signupForm){
-				foreach($config->signupForm as $formInfo){
-					if($formInfo->isDefaultForm && $formInfo->isUse && ($formInfo->required || $formInfo->mustRequired)){
-						$getVars[] = $formInfo->name;
-					}
-				}
+            if($config->enable_join != 'Y')
+			{
+				return $this->stop ('msg_signup_disabled');
 			}
-			foreach($getVars as $val){
-				$args->{$val} = Context::get($val);
+            
+			// Check if the user accept the license terms (only if terms exist)
+            if($config->agreement && Context::get('accept_agreement')!='Y')
+			{
+				return $this->stop('msg_accept_agreement');
 			}
-            $args->member_srl = getNextSequence();
-            $args->list_order = -1 * $args->member_srl;
-			$args->find_account_answer = Context::get('find_account_answer');
-			$args->allow_mailing = Context::get('allow_mailing');
-			$args->allow_message = Context::get('allow_message');
 
-			if($args->password1) $args->password = $args->password1;
-
-            // Remove some unnecessary variables from all the vars
-            $all_args = Context::getRequestVars();
-            unset($all_args->module);
-            unset($all_args->act);
-            unset($all_args->is_admin);
-            unset($all_args->description);
-            unset($all_args->group_srl_list);
-            unset($all_args->body);
-            unset($all_args->accept_agreement);
-            unset($all_args->signature);
-            unset($all_args->password);
-            unset($all_args->password2);
-            unset($all_args->mid);
-            unset($all_args->error_return_url);
-            unset($all_args->ruleset);
-            unset($all_args->captchaType);
-            unset($all_args->secret_text);
-
-            // Set the user state as "denied" when using mail authentication
-            if ($config->enable_confirm == 'Y') $args->denied = 'Y';
-            // Add extra vars after excluding necessary information from all the requested arguments
-            $extra_vars = delObjectVars($all_args, $args);
-            $args->extra_vars = serialize($extra_vars);
-            // Execute insert or update depending on the value of member_srl
-
-			if (!$args->user_id) $args->user_id = 't'.$args->member_srl;
-			if (!$args->user_name) $args->user_name = $args->member_srl;
-			if (!$args->nick_name) $args->nick_name = $args->member_srl;
-
-			// remove whitespace
-			$checkInfos = array('user_id', 'nick_name', 'email_address');
-			$replaceStr = array("\r\n", "\r", "\n", " ", "\t", "\xC2\xAD");
-			foreach($checkInfos as $val){
-				if(isset($args->{$val})){
-					$args->{$val} = str_replace($replaceStr, '', $args->{$val});
-				}
-			}
-            $output = $this->insertMember($args);
+			$memerInfo = Context::getRequestVars();		
+            $output = $this->insertMember($memberInfo, FALSE, $driver);
             if(!$output->toBool()) return $output;
 
 			// insert ProfileImage, ImageName, ImageMark
@@ -1610,7 +1567,7 @@
         /**
          * @brief Add users to the member table
          **/
-        function insertMember(&$args, $password_is_hashed = false) {
+        function insertMember(&$args, $password_is_hashed = FALSE, $driver = 'default') {
             // Call a trigger (before)
             $output = ModuleHandler::triggerCall('member.insertMember', 'before', $args);
             if(!$output->toBool()) return $output;
@@ -1618,149 +1575,104 @@
             $oModuleModel = &getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
 
-            $logged_info = Context::get('logged_info');
-            // If the date of the temporary restrictions limit further information on the date of
-            if($config->limit_day) $args->limit_date = date("YmdHis", time()+$config->limit_day*60*60*24);
+			// If the date of the temporary restrictions limit further information on the date of
+			if($config->limit_day)
+			{
+				$args->limit_date = date("YmdHis", time()+$config->limit_day*60*60*24);
+			}
 
             $args->member_srl = getNextSequence();
-            // Enter the user's identity changed to lowercase
-			if (!$args->user_id) $args->user_id = 't'.$args->member_srl;
-			else $args->user_id = strtolower($args->user_id);
-            // Control of essential parameters
-            if($args->allow_mailing!='Y') $args->allow_mailing = 'N';
-            if($args->denied!='Y') $args->denied = 'N';
-            $args->allow_message= 'Y';
 
-            if($logged_info->is_admin == 'Y') {
-                if($args->is_admin!='Y') $args->is_admin = 'N';
-            } else {
+			// Control of essential parameters
+			$args->allow_mailing = ($args->allow_mailing != 'Y') ? 'N' : 'Y';
+			$args->denied = ($args->denied != 'Y') ? 'N' : 'Y';
+			$args->allow_message = ($args->allow_message != 'Y') ? 'N' : 'Y';
+
+			$logged_info = Context::get('logged_info');
+            if($logged_info->is_admin == 'Y')
+			{
+				$args->is_admin = ($args->is_admin != 'Y') ? 'N' : 'Y';
+            }
+			else 
+			{
                 unset($args->is_admin);
             }
 
-            list($args->email_id, $args->email_host) = explode('@', $args->email_address);
-            // Website, blog, checks the address
-            if($args->homepage && !preg_match("/^[a-z]+:\/\//i",$args->homepage)) $args->homepage = 'http://'.$args->homepage;
-            if($args->blog && !preg_match("/^[a-z]+:\/\//i",$args->blog)) $args->blog = 'http://'.$args->blog;
-            // Create a model object
-            $oMemberModel = &getModel('member');
-            // ID check is prohibited
-            if($oMemberModel->isDeniedID($args->user_id)) return new Object(-1,'denied_user_id');
-            // ID, nickname, email address of the redundancy check
-            $member_srl = $oMemberModel->getMemberSrlByUserID($args->user_id);
-            if($member_srl) return new Object(-1,'msg_exists_user_id');
+            // Insert data into the DB
+            $args->list_order = -1 * $args->member_srl;
 
-            $member_srl = $oMemberModel->getMemberSrlByNickName($args->nick_name);
-            if($member_srl) return new Object(-1,'msg_exists_nick_name');
+			$oDriver = getDriver('member', $driver);
+			if(!$oDriver)
+			{
+				return $this->stop('msg_invalid_request');
+			}
 
-            $member_srl = $oMemberModel->getMemberSrlByEmailAddress($args->email_address);
-            if($member_srl) return new Object(-1,'msg_exists_email_address');
+			$args->extra_vars = serialize($oDriver->extractExtraVars($args));
 
             $oDB = &DB::getInstance();
             $oDB->begin();
-            // Insert data into the DB
-            $args->list_order = -1 * $args->member_srl;
-			$args->nick_name = htmlspecialchars($args->nick_name);
-			$args->homepage = htmlspecialchars($args->homepage);
-			$args->blog = htmlspecialchars($args->blog);
-
-            if($args->password && !$password_is_hashed) $args->password = md5($args->password);
-            elseif(!$args->password) unset($args->password);
-
-			if (!$args->user_id) $args->user_id = 't'.$args->member_srl;
-			if (!$args->user_name) $args->user_name = $args->member_srl;
 
             $output = executeQuery('member.insertMember', $args);
-            if(!$output->toBool()) {
+            if(!$output->toBool()) 
+			{
                 $oDB->rollback();
                 return $output;
             }
 
-			if(is_array($args->group_srl_list)) $group_srl_list = $args->group_srl_list;
-			else $group_srl_list = explode('|@|', $args->group_srl_list);
-            // If no value is entered the default group, the value of group registration
-            if(!$args->group_srl_list) {
-				$columnList = array('site_srl', 'group_srl');
-                $default_group = $oMemberModel->getDefaultGroup(0, $columnList);
-                // Add to the default group
-                $output = $this->addMemberToGroup($args->member_srl,$default_group->group_srl);
-                if(!$output->toBool()) {
-                    $oDB->rollback();
-                    return $output;
-                }
-            // If the value is the value of the group entered the group registration
-            } else {
-                for($i=0;$i<count($group_srl_list);$i++) {
-                    $output = $this->addMemberToGroup($args->member_srl,$group_srl_list[$i]);
+			$oMemberModel = getModel('member');
+			if($logged_info->is_admin == 'Y')
+			{
+				if(is_array($args->group_srl_list)) 
+				{
+					$group_srl_list = $args->group_srl_list;
+				}
+				else
+				{
+					$group_srl_list = explode('|@|', $args->group_srl_list);
+				}
 
-                    if(!$output->toBool()) {
-                        $oDB->rollback();
-                        return $output;
-                    }
-                }
-            }
+				// If no value is entered the default group, the value of group registration
+				if(!$args->group_srl_list) 
+				{
+					$columnList = array('site_srl', 'group_srl');
+					$default_group = $oMemberModel->getDefaultGroup(0, $columnList);
+					// Add to the default group
+					$output = $this->addMemberToGroup($args->member_srl,$default_group->group_srl);
+					if(!$output->toBool()) 
+					{
+						$oDB->rollback();
+						return $output;
+					}
+				// If the value is the value of the group entered the group registration
+				} 
+				else 
+				{
+					foreach($group_srl_list as $groupSrl) 
+					{
+						$output = $this->addMemberToGroup($args->member_srl, $groupSrl);
 
-			$member_config = $oModuleModel->getModuleConfig('member');
-            // When using email authentication mode (when you subscribed members denied a) certified mail sent
-            if ($args->denied == 'Y') {
-                // Insert data into the authentication DB
-                $auth_args->user_id = $args->user_id;
-                $auth_args->member_srl = $args->member_srl;
-                $auth_args->new_password = $args->password;
-                $auth_args->auth_key = md5(rand(0, 999999));
-                $auth_args->is_register = 'Y';
-
-                $output = executeQuery('member.insertAuthMail', $auth_args);
-                if (!$output->toBool()) {
-                    $oDB->rollback();
-                    return $output;
-                }
-                // Get content of the email to send a member
-                Context::set('auth_args', $auth_args);
-
-				global $lang;
-				if (is_array($member_config->signupForm)){
-					$exceptForm=array('password', 'find_account_question');
-					foreach($member_config->signupForm as $form){
-						if(!in_array($form->name, $exceptForm) && $form->isDefaultForm && ($form->required || $form->mustRequired)){
-							$memberInfo[$lang->{$form->name}] = $args->{$form->name};
+						if(!$output->toBool()) 
+						{
+							$oDB->rollback();
+							return $output;
 						}
 					}
-				}else{
-					$memberInfo[$lang->user_id] = $args->user_id;
-					$memberInfo[$lang->user_name] = $args->user_name;
-					$memberInfo[$lang->nick_name] = $args->nick_name;
-					$memberInfo[$lang->email_address] = $args->email_address;
 				}
-                Context::set('memberInfo', $memberInfo);
+			}
 
-                if(!$member_config->skin) $member_config->skin = "default";
-                if(!$member_config->colorset) $member_config->colorset = "white";
+			$output = $oDriver->insertMember($args, $password_is_hashed);
+			if(!$output->toBool())
+			{
+				$oDB->rollback();
+				return $output;
+			}
 
-                Context::set('member_config', $member_config);
-
-                $tpl_path = sprintf('%sskins/%s', $this->module_path, $member_config->skin);
-                if(!is_dir($tpl_path)) $tpl_path = sprintf('%sskins/%s', $this->module_path, 'default');
-
-                $auth_url = getFullUrl('','module','member','act','procMemberAuthAccount','member_srl',$args->member_srl, 'auth_key',$auth_args->auth_key);
-                Context::set('auth_url', $auth_url);
-
-                $oTemplate = &TemplateHandler::getInstance();
-                $content = $oTemplate->compile($tpl_path, 'confirm_member_account_mail');
-                // Get information of the Webmaster
-                $oModuleModel = &getModel('module');
-                $member_config = $oModuleModel->getModuleConfig('member');
-                // Send a mail
-                $oMail = new Mail();
-                $oMail->setTitle( Context::getLang('msg_confirm_account_title') );
-                $oMail->setContent($content);
-                $oMail->setSender( $member_config->webmaster_name?$member_config->webmaster_name:'webmaster', $member_config->webmaster_email);
-                $oMail->setReceiptor( $args->user_name, $args->email_address );
-                $oMail->send();
-            }
             // Call a trigger (after)
-            if($output->toBool()) {
+            if($output->toBool()) 
+			{
                 $trigger_output = ModuleHandler::triggerCall('member.insertMember', 'after', $args);
-                if(!$trigger_output->toBool()) {
+                if(!$trigger_output->toBool()) 
+				{
                     $oDB->rollback();
                     return $trigger_output;
                 }

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="msg_missing_required_value">
+		<value xml:lang="ko"><![CDATA[필수 속성의 값이 없습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Missing required value.]]></value>
+	</item>
+</lang>

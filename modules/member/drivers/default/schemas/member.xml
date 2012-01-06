@@ -12,6 +12,7 @@
     <column name="homepage" type="varchar" size="250" />
     <column name="blog" type="varchar" size="250" />
     <column name="birthday" type="char" size="8" />
+	<column name="wait_auth" type="char" size="1" default="N" />
     <column name="allow_mailing" type="char" size="1" default="Y" notnull="notnull" index="idx_allow_mailing" />
     <column name="allow_message" type="char" size="1" default="Y" notnull="notnull" />
     <column name="denied" type="char" size="1" default="N" index="idx_is_denied" />
