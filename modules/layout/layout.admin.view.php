@@ -21,7 +21,7 @@
 			// Set a layout list
 			$oLayoutModel = &getModel('layout');
 			$layout_list = $oLayoutModel->getDownloadedLayoutList('P', true);
-			
+
 			// get Theme layout
 			$oAdminModel = &getAdminModel('admin');
 			$themeList = $oAdminModel->getThemeList();
@@ -42,11 +42,11 @@
 
 			$security = new Security($layout_list);
 			$layout_list = $security->encodeHTML('..', '..author..');
-			
+
 			//Security
 			$security = new Security();
-			$security->encodeHTML('layout_list..layout','layout_list..title');						
-			
+			$security->encodeHTML('layout_list..layout','layout_list..title');
+
 			foreach($layout_list as $no => $layout_info)
 			{
 				$layout_list[$no]->description = nl2br(trim($layout_info->description));
@@ -114,10 +114,10 @@
 			$oModel = &getModel('layout');
 			$type = Context::get('type');
 			if (!in_array($type, array('P', 'M'))) $type = 'P';
-			
+
 			//Security
 			$security = new Security();
-			$security->encodeHTML('layout_list..layout','layout_list..title');						
+			$security->encodeHTML('layout_list..layout','layout_list..title');
 
 			// Get layout info
 			$layout = Context::get('layout');
@@ -265,12 +265,12 @@
 			$security = new Security($layout_info);
 			$layout_info = $security->encodeHTML('.', '.author..');
 			Context::set('selected_layout', $layout_info);
-			
+
 			//Security
 			$security = new Security();
-			$security->encodeHTML('layout_list..');	
-			$security->encodeHTML('layout_list..author..');	
-			
+			$security->encodeHTML('layout_list..');
+			$security->encodeHTML('layout_list..author..');
+
 			$security = new Security();
 			$security->encodeHTML('layout_code_css', 'layout_code', 'widget_list..title');
         }
@@ -338,13 +338,13 @@
             $layout_info = $oLayoutModel->getLayoutInfo(Context::get('selected_layout'));
             Context::set('layout_info', $layout_info);
             // Set the layout to be pop-up
-            $this->setLayoutFile('popup_layout');			
-			
+            $this->setLayoutFile('popup_layout');
+
 			$security = new Security();
-			$security->encodeHTML('layout_list..');	
-			$security->encodeHTML('layout_list..author..');				
+			$security->encodeHTML('layout_list..');
+			$security->encodeHTML('layout_list..author..');
 			$security->encodeHTML('layout_list..history..');
-			$security->encodeHTML('layout_list..history..author..');				
+			$security->encodeHTML('layout_list..history..author..');
             // Set a template file
             $this->setTemplateFile('layout_detail_info');
         }
@@ -354,46 +354,9 @@
          * @brief Modify admin layout of faceoff
          **/
         function dispLayoutAdminLayoutModify(){
-            // Get layout_srl
-            $current_module_info = Context::get('current_module_info');
-            $layout_srl = $current_module_info->layout_srl;
-            // Remove the remaining tmp files because of temporarily saving
-            // This part needs to be modified
-            $delete_tmp = Context::get('delete_tmp');
-            if($delete_tmp =='Y'){
-                $oLayoutAdminController = &getAdminController('layout');
-                $oLayoutAdminController->deleteUserLayoutTempFile($layout_srl);
-            }
-
-            $oLayoutModel = &getModel('layout');
-            // layout file is used as a temp.
-            $oLayoutModel->setUseUserLayoutTemp();
-            // Apply CSS in inline style
-            $faceoffcss = $oLayoutModel->_getUserLayoutFaceOffCss($current_module_info->layout_srl);
-
-            $css = FileHandler::readFile($faceoffcss);
-            $match = null;
-            preg_match_all('/([^\{]+)\{([^\}]*)\}/is',$css,$match);
-            for($i=0,$c=count($match[1]);$i<$c;$i++) {
-                $name = trim($match[1][$i]);
-                $css = trim($match[2][$i]);
-                if(!$css) continue;
-                $css = str_replace('./images/',Context::getRequestUri().$oLayoutModel->getUserLayoutImagePath($layout_srl),$css);
-                $style[] .= sprintf('"%s":"%s"',$name,$css);
-            }
-
-            if(count($style)) {
-                $script = '<script type="text/javascript"> var faceOffStyle = {'.implode(',',$style).'}; </script>';
-                Context::addHtmlHeader($script);
-            }
-
-            $oTemplate = &TemplateHandler::getInstance();
-            Context::set('content', $oTemplate->compile($this->module_path.'tpl','about_faceoff'));
-            // Change widget codes in Javascript mode
-            $oWidgetController = &getController('widget');
-            $oWidgetController->setWidgetCodeInJavascriptMode();
             // Set a template file
-            $this->setTemplateFile('faceoff_layout_edit');
+            //$this->setTemplateFile('faceoff_layout_edit');
+            $this->setTemplateFile('faceoff_deprecated');
         }
 
 		// deprecated
