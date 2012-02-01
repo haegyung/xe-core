@@ -126,8 +126,30 @@
                 <title xml:lang="tr">Beyaz</title>
             </options>
         </var>
+        <var name="logo_text" type="text">
+            <title xml:lang="ko">로고 텍스트</title>
+            <title xml:lang="jp">Logo text</title>
+            <title xml:lang="zh-CN">Logo text</title>
+            <title xml:lang="zh-TW">Logo text</title>
+            <title xml:lang="en">Logo text</title>
+            <title xml:lang="ge">Logo text</title>
+            <title xml:lang="ru">Logo text</title>
+            <title xml:lang="es">Logo text</title>
+	    	<title xml:lang="vi">Logo text</title>
+            <title xml:lang="tr">Logo text</title>
+            <description xml:lang="ko">레이아웃의 상단에 표시될 로고 텍스트를 입력하세요.</description>
+            <description xml:lang="jp">Please input a logo text which will be displayed on the top of the layout.</description>
+            <description xml:lang="zh-CN">Please input a logo text which will be displayed on the top of the layout.</description>
+            <description xml:lang="zh-TW">Please input a logo text which will be displayed on the top of the layout.</description>
+            <description xml:lang="en">Please input a logo text which will be displayed on the top of the layout.</description>
+            <description xml:lang="ge">Please input a logo text which will be displayed on the top of the layout.</description>
+            <description xml:lang="ru">Please input a logo text which will be displayed on the top of the layout.</description>
+            <description xml:lang="es">Please input a logo text which will be displayed on the top of the layout.</description>
+	    	<description xml:lang="vi">Please input a logo text which will be displayed on the top of the layout.</description>
+            <description xml:lang="tr">Please input a logo text which will be displayed on the top of the layout.</description>
+        </var>
         <var name="logo_image" type="image">
-            <title xml:lang="ko">로고이미지</title>
+            <title xml:lang="ko">로고 이미지</title>
             <title xml:lang="jp">ロゴイメージ</title>
             <title xml:lang="zh-CN">LOGO图片</title>
             <title xml:lang="zh-TW">Logo圖片</title>
@@ -137,7 +159,7 @@
             <title xml:lang="es">Imagen del logotipo</title>
 	    	<title xml:lang="vi">Hình Logo</title>
             <title xml:lang="tr">Logo resmi</title>
-            <description xml:lang="ko">레이아웃의 상단에 표시될 로고이미지를 입력하세요. (세로길이가 23px인 투명이미지가 가장 어울립니다)</description>
+            <description xml:lang="ko">레이아웃의 상단에 표시될 로고 이미지를 입력하세요. (세로길이가 23px인 투명이미지가 가장 어울립니다)</description>
             <description xml:lang="jp">レイアウトの上段に表示されるロゴイメージを入力して下さい。 (縦幅が23pxである透明イメージをお勧めします。。)</description>
             <description xml:lang="zh-CN">请输入显示在布局顶部的LOGO图片(高度为23px的透明图片为适)。</description>
             <description xml:lang="zh-TW">請輸入要顯示在版面上端的 Logo 圖片。(適當高度為23px的透明圖片。)</description>
@@ -169,7 +191,7 @@
             <description xml:lang="es">Ingresar el URL de la página web para redireccionar al pulsar el logotipo</description>
 	    	<description xml:lang="vi">Hãy nhập địa chỉ bạn muốn chuyển đến khi bấm vào Logo</description>
             <description xml:lang="tr">Lütfen kullanıcılar resme tıkladıkları zaman yönlendirilecekleri bir URL giriniz.</description>
-             </var>
+        </var>
         <var name="background_image" type="image">
             <title xml:lang="ko">배경 이미지</title>
             <title xml:lang="jp">背景イメージ</title>

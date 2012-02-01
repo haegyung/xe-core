@@ -233,7 +233,5 @@ class HTMLDisplayHandler {
 	function _addMetaTag()
 	{
 		$oContext =& Context::getInstance();
-		$oContext->addMetaTag('Content-Type', 'text/html; charset=UTF-8', true);
-		$oContext->addMetaTag('imagetoolbar', 'no');
 	}
 }
