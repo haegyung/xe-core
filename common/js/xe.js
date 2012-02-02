@@ -2057,6 +2057,27 @@ function filterAlertMessage(ret_obj) {
 	location.href = url;
 }
 
+/* Admin Bar */
+jQuery(function($){
+	var abar = $('.adminBar');
+	var html = $('html');
+	var t = $(this);
+	function adminShow(){
+		abar.addClass('active');
+		abar.animate({opacity:'.75'}, 200);
+		html.animate({marginTop: abar.outerHeight()}, 200);
+	}
+	function adminHide(){
+		setTimeout(function(){
+			abar.removeClass('active');
+			abar.animate({opacity:'0'}, 200);
+			html.animate({marginTop:'0'}, 1000);
+		},3000);
+	}
+	abar.mouseover(adminShow).mouseleave(adminHide).find('a').focus(adminShow);
+	abar.nextAll().find('a,input,button,select,textarea').eq(0).focus(adminHide);
+});
+
 /**
  * @brief Function to process filters
  * @deprecated
