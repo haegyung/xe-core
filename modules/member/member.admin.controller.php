@@ -16,96 +16,52 @@
         /**
          * @brief Add a user (Administrator)
          **/
-        function procMemberAdminInsert() {
-           // if(Context::getRequestMethod() == "GET") return new Object(-1, "msg_invalid_request");
-            // Extract the necessary information in advance
-            $args = Context::gets('member_srl','email_address','find_account_answer', 'allow_mailing','allow_message','denied','is_admin','description','group_srl_list','limit_date');
-            $oMemberModel = &getModel ('member');
-            $config = $oMemberModel->getMemberConfig ();
-			$getVars = array();
-			if ($config->signupForm){
-				foreach($config->signupForm as $formInfo){
-					if($formInfo->isDefaultForm && ($formInfo->isUse || $formInfo->required || $formInfo->mustRequired)){
-						$getVars[] = $formInfo->name;
-					}
-				}
-			}
-			foreach($getVars as $val){
-				$args->{$val} = Context::get($val);
-			}
-			$args->member_srl = Context::get('member_srl');
-			if (Context::get('reset_password'))
-				$args->password = Context::get('reset_password');
-			else unset($args->password);
-
-            // Remove some unnecessary variables from all the vars
-            $all_args = Context::getRequestVars();
-            unset($all_args->module);
-            unset($all_args->act);
-            unset($all_args->mid);
-            unset($all_args->error_return_url);
-            unset($all_args->success_return_url);
-            unset($all_args->ruleset);
-            if(!isset($args->limit_date)) $args->limit_date = "";
-            // Add extra vars after excluding necessary information from all the requested arguments
-            $extra_vars = delObjectVars($all_args, $args);
-            $args->extra_vars = serialize($extra_vars);
-            // Check if an original member exists having the member_srl
-            if($args->member_srl) {
-                // Create a member model object
-                $oMemberModel = &getModel('member');
-                // Get memebr profile
-				$columnList = array('member_srl');
-                $member_info = $oMemberModel->getMemberInfoByMemberSrl($args->member_srl, 0, $columnList);
-                // If no original member exists, make a new one
-                if($member_info->member_srl != $args->member_srl) unset($args->member_srl);
-            }
-
-			// remove whitespace
-			$checkInfos = array('user_id', 'nick_name', 'email_address');
-			$replaceStr = array("\r\n", "\r", "\n", " ", "\t", "\xC2\xAD");
-			foreach($checkInfos as $val){
-				if(isset($args->{$val})){
-					$args->{$val} = str_replace($replaceStr, '', $args->{$val});
-				}
+        function procMemberAdminInsert()
+		{
+			if(Context::getRequestMethod() == 'GET')
+			{
+				return new Object(-1, 'msg_invalid_request');
 			}
 
-            $oMemberController = &getController('member');
-            // Execute insert or update depending on the value of member_srl
-            if(!$args->member_srl) {
-				$args->password = Context::get('password');
-                $output = $oMemberController->insertMember($args);
-                $msg_code = 'success_registed';
-            } else {
-                $output = $oMemberController->updateMember($args);
-                $msg_code = 'success_updated';
-            }
-
-            if(!$output->toBool()) return $output;
-            // Save Signature
-            $signature = Context::get('signature');
-            $oMemberController->putSignature($args->member_srl, $signature);
-            // Return result
-            $this->add('member_srl', $args->member_srl);
-            $this->setMessage($msg_code);
-
-			$profile_image = $_FILES['profile_image'];
-			if (is_uploaded_file($profile_image['tmp_name'])){
-				$oMemberController->insertProfileImage($args->member_srl, $profile_image['tmp_name']);
+			$driver = Context::get('driver');
+			if(empty($driver))
+			{
+				return new Object(-1, 'msg_invalid_request');
 			}
 
-			$image_mark = $_FILES['image_mark'];
-			if (is_uploaded_file($image_mark['tmp_name'])){
-				$oMemberController->insertImageMark($args->member_srl, $image_mark['tmp_name']);
+			$args = Context::getRequestVars();
+
+			$oDriver = getDriver('member', $driver);
+			$output = $oDriver->isValidateAdminInsert($args);
+
+			if(!$output->toBool())
+			{
+				return $output;
 			}
 
-			$image_name = $_FILES['image_name'];
-			if (is_uploaded_file($image_name['tmp_name'])){
-				$oMemberController->insertImageName($args->member_srl, $image_name['tmp_name']);
+			$memberSrl = Context::get('member_srl');
+			$args = Context::getRequestVars();
+
+			$oMemberController = getController('member');
+
+			if($memberSrl)
+			{
+				$output = $oMemberController->updateMember($args, $driver);
 			}
-			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
+			else
+			{
+				$output = $oMemberController->insertMember($args, FALSE, $driver);
+			}
+
+			if(!$output->toBool())
+			{
+				return $output;
+			}
+
+			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON')))
+			{
 				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispMemberAdminList');
-				header('location:'.$returnUrl);
+				$this->setRedirectUrl($returnUrl);
 				return;
 			}
         }
@@ -128,204 +84,59 @@
 		function procMemberAdminInsertConfig(){
             $input_args = Context::gets(
 				'enable_join',
-				'enable_confirm',
 				'webmaster_name',
 				'webmaster_email',
 				'limit_day',
-				'change_password_date',
-				'agreement',
 				'after_login_url',
 				'after_logout_url',
 				'redirect_url',
 				'skin',
-				'colorset',
-                'profile_image', 'profile_image_max_width', 'profile_image_max_height',
-                'image_name', 'image_name_max_width', 'image_name_max_height',
-                'image_mark', 'image_mark_max_width', 'image_mark_max_height'
+				'colorset'
             );
 
-			$list_order = Context::get('list_order');
-			$usable_list = Context::get('usable_list');
-			$all_args = Context::getRequestVars();
-
 			$oModuleController = &getController('module');
-            $oMemberModel = &getModel('member');
 
 			// default setting start
-            if($input_args->enable_join != 'Y'){
+            if($input_args->enable_join != 'Y')
+			{
 				$args->enable_join = 'N';
-			}else{
+			}
+			else
+			{
 				$args = $input_args;
 				$args->enable_join = 'Y';
-				if($args->enable_confirm !='Y') $args->enable_confirm = 'N';
 				$args->limit_day = (int)$args->limit_day;
-				if(!$args->change_password_date) $args->change_password_date = 0; 
-				if(!trim(strip_tags($args->agreement))) $args->agreement = null;
-				if(!trim(strip_tags($args->after_login_url))) $args->after_login_url = null;
-				if(!trim(strip_tags($args->after_logout_url))) $args->after_logout_url = null;
-				if(!trim(strip_tags($args->redirect_url))) $args->redirect_url = null;
-
-				if(!$args->skin) $args->skin = "default";
-				if(!$args->colorset) $args->colorset = "white";
-
-				$args->profile_image = $args->profile_image?'Y':'N';
-				$args->image_name = $args->image_name?'Y':'N';
-				$args->image_mark = $args->image_mark?'Y':'N';
-				if($args->signature!='Y') $args->signature = 'N';
-				$args->identifier = $all_args->identifier;
-
-				// signupForm
-				global $lang;
-				$signupForm = array();
-				$items = array('user_id', 'password', 'user_name', 'nick_name', 'email_address', 'find_account_question', 'homepage', 'blog', 'birthday', 'signature', 'profile_image', 'image_name', 'image_mark', 'profile_image_max_width', 'profile_image_max_height', 'image_name_max_width', 'image_name_max_height', 'image_mark_max_width', 'image_mark_max_height');
-				$mustRequireds = array('email_address', 'nick_name', 'password', 'find_account_question');
-				$extendItems = $oMemberModel->getJoinFormList();
-				foreach($list_order as $key){
-					unset($signupItem);
-					$signupItem->isIdentifier = ($key == $all_args->identifier);
-					$signupItem->isDefaultForm = in_array($key, $items);
-					
-					$signupItem->name = $key;
-					if(in_array($key, $items)) $signupItem->title = $key;
-					else $signupItem->title = $lang->{$key};
-					$signupItem->mustRequired = in_array($key, $mustRequireds);
-					$signupItem->imageType = (strpos($key, 'image') !== false);
-					$signupItem->required = ($all_args->{$key} == 'required') || $signupItem->mustRequired || $signupItem->isIdentifier;
-					$signupItem->isUse = in_array($key, $usable_list) || $signupItem->required;
-
-					if ($signupItem->imageType){
-						$signupItem->max_width = $all_args->{$key.'_max_width'};
-						$signupItem->max_height = $all_args->{$key.'_max_height'};
-					}
-
-					// set extends form
-					if (!$signupItem->isDefaultForm){
-						$extendItem = $extendItems[$all_args->{$key.'_member_join_form_srl'}];
-						$signupItem->type = $extendItem->column_type;
-						$signupItem->member_join_form_srl = $extendItem->member_join_form_srl;
-						$signupItem->title = $extendItem->column_title;
-						$signupItem->description = $extendItem->description;
-
-						// check usable value change, required/option
-						if ($signupItem->isUse != ($extendItem->is_active == 'Y') || $signupItem->required != ($extendItem->required == 'Y')){
-							unset($update_args);
-							$update_args->member_join_form_srl = $extendItem->member_join_form_srl;
-							$update_args->is_active = $signupItem->isUse?'Y':'N';
-							$update_args->required = $signupItem->required?'Y':'N';
-
-							$update_output = executeQuery('member.updateJoinForm', $update_args);
-						}
-						unset($extendItem);
-					}
-					$signupForm[] = $signupItem;
+				if(!trim(strip_tags($args->after_login_url)))
+				{
+					$args->after_login_url = null;
 				}
-				$args->signupForm = $signupForm;
+				if(!trim(strip_tags($args->after_logout_url)))
+				{
+					$args->after_logout_url = null;
+				}
+				if(!trim(strip_tags($args->redirect_url)))
+				{
+					$args->redirect_url = null;
+				}
 
-				// create Ruleset
-				$this->_createSignupRuleset($signupForm, $args->agreement);
-				$this->_createLoginRuleset($args->identifier);
-				$this->_createFindAccountByQuestion($args->identifier);
+				if(!$args->skin)
+				{
+					$args->skin = "default";
+				}
+				if(!$args->colorset)
+				{
+					$args->colorset = "white";
+				}
 			}
 			$output = $oModuleController->updateModuleConfig('member', $args);
 			// default setting end
 
- 			if($output->toBool() && !in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
+ 			if($output->toBool() && !in_array(Context::getRequestMethod(), array('XMLRPC','JSON')))
+			{
 				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispMemberAdminConfig');
 				$this->setRedirectUrl($returnUrl);
 				return;
  			}
-		}
-
-		function _createSignupRuleset($signupForm, $agreement = null){
-			$xml_file = './files/ruleset/insertMember.xml';
-			$buff = '<?xml version="1.0" encoding="utf-8"?>'
-					.'<ruleset version="1.5.0">'
-				    .'<customrules>'
-					.'</customrules>'
-					.'<fields>%s</fields>'						
-					.'</ruleset>';
-
-			$fields = array();
-			
-			if ($agreement){
-				$fields[] = '<field name="accept_agreement"><if test="$act == \'procMemberInsert\'" attr="required" value="true" /></field>';
-			}
-			foreach($signupForm as $formInfo){
-				if ($formInfo->required || $formInfo->mustRequired){
-					if($formInfo->type == 'tel' || $formInfo->type == 'kr_zip'){
-						$fields[] = sprintf('<field name="%s[]" required="true" />', $formInfo->name);
-					}else if($formInfo->name == 'password'){
-						$fields[] = '<field name="password"><if test="$act == \'procMemberInsert\'" attr="required" value="true" /><if test="$act == \'procMemberInsert\'" attr="length" value="3:20" /></field>';
-						$fields[] = '<field name="password2"><if test="$act == \'procMemberInsert\'" attr="required" value="true" /><if test="$act == \'procMemberInsert\'" attr="equalto" value="password" /></field>';
-					}else if($formInfo->name == 'find_account_question'){
-						$fields[] = '<field name="find_account_question"><if test="$act != \'procMemberAdminInsert\'" attr="required" value="true" /></field>';
-						$fields[] = '<field name="find_account_answer"><if test="$act != \'procMemberAdminInsert\'" attr="required" value="true" /><if test="$act != \'procMemberAdminInsert\'" attr="length" value=":250" /></field>';
-					}else if($formInfo->name == 'email_address'){
-						$fields[] = sprintf('<field name="%s" required="true" rule="email"/>', $formInfo->name);
-					}else if($formInfo->name == 'user_id'){
-						$fields[] = sprintf('<field name="%s" required="true" rule="userid" length="3:20" />', $formInfo->name);
-					}else if(strpos($formInfo->name, 'image') !== false){
-						$fields[] = sprintf('<field name="%s"><if test="$act != \'procMemberAdminInsert\' &amp;&amp; $__%s_exist != \'true\'" attr="required" value="true" /></field>', $formInfo->name, $formInfo->name);
-					}else{
-						$fields[] = sprintf('<field name="%s" required="true" />', $formInfo->name);
-					}
-				}
-			}
-
-			$xml_buff = sprintf($buff, implode('', $fields));
-            FileHandler::writeFile($xml_file, $xml_buff);
-			unset($xml_buff);
-
-			$validator   = new Validator($xml_file);
-			$validator->setCacheDir('files/cache');
-			$validator->getJsPath();
-		}
-
-		function _createLoginRuleset($identifier){
-			$xml_file = './files/ruleset/login.xml';
-			$buff = '<?xml version="1.0" encoding="utf-8"?>'
-					.'<ruleset version="1.5.0">'
-				    .'<customrules>'
-					.'</customrules>'
-					.'<fields>%s</fields>'						
-					.'</ruleset>';
-
-			$fields = array();
-			$trans = array('email_address'=>'email', 'user_id'=> 'userid');
-			$fields[] = sprintf('<field name="user_id" required="true" rule="%s"/>', $trans[$identifier]);
-			$fields[] = '<field name="password" required="true" />';
-
-			$xml_buff = sprintf($buff, implode('', $fields));
-            Filehandler::writeFile($xml_file, $xml_buff);
-
-			$validator   = new Validator($xml_file);
-			$validator->setCacheDir('files/cache');
-			$validator->getJsPath();
-		}
-
-		function _createFindAccountByQuestion($identifier){
-			$xml_file = './files/ruleset/find_member_account_by_question.xml';
-			$buff = '<?xml version="1.0" encoding="utf-8"?>'
-					.'<ruleset version="1.5.0">'
-				    .'<customrules>'
-					.'</customrules>'
-					.'<fields>%s</fields>'						
-					.'</ruleset>';
-
-			$fields = array();
-			if ($identifier == 'user_id')
-				$fields[] = '<field name="user_id" required="true" rule="userid" />';
-
-			$fields[] = '<field name="email_address" required="true" rule="email" />';
-			$fields[] = '<field name="find_account_question" required="true" />';
-			$fields[] = '<field name="find_account_answer" required="true" length=":250"/>';
-
-			$xml_buff = sprintf($buff, implode('', $fields));
-            Filehandler::writeFile($xml_file, $xml_buff);
-
-			$validator   = new Validator($xml_file);
-			$validator->setCacheDir('files/cache');
-			$validator->getJsPath();
 		}
 
         /**
@@ -393,82 +204,125 @@
          * @brief Add a join form
          **/
         function procMemberAdminInsertJoinForm() {
+			$driver = $args->driver = Context::get('driver');
             $args->member_join_form_srl = Context::get('member_join_form_srl');
-
             $args->column_type = Context::get('column_type');
             $args->column_name = strtolower(Context::get('column_name'));
             $args->column_title = Context::get('column_title');
             $args->default_value = explode("\n", str_replace("\r", '', Context::get('default_value')));
             $args->required = Context::get('required');
 			$args->is_active = (isset($args->required));
-            if(!in_array(strtoupper($args->required), array('Y','N')))$args->required = 'N';
+
+
+            if(!in_array(strtoupper($args->required), array('Y','N')))
+			{
+				$args->required = 'N';
+			}
             $args->description = Context::get('description');
+
             // Default values
-            if(in_array($args->column_type, array('checkbox','select','radio')) && count($args->default_value) ) {
+            if(in_array($args->column_type, array('checkbox','select','radio')) && count($args->default_value) )
+			{
                 $args->default_value = serialize($args->default_value);
-            } else {
+            }
+			else
+			{
                 $args->default_value = '';
             }
+
+			$oDB = DB::getInstance();
+			$oDB->begin();
+
+			// Check duplicate
+			$output = executeQuery('member.getJoinFormByNameDriver', $args, array('member_join_form_srl'));
+			if($output->data)
+			{
+				if(!$args->member_join_form_srl || ($output->data->member_join_form_srl != $args->member_join_form_srl))
+				{
+					return $this->stop('msg_already_inserted_item');
+				}
+			}
+
             // Fix if member_join_form_srl exists. Add if not exists.
-            $isInsert;
-			if(!$args->member_join_form_srl){
-				$isInsert = true;
+            $isInsert = FALSE;
+			if(!$args->member_join_form_srl)
+			{
+				$isInsert = TRUE;
 				$args->list_order = $args->member_join_form_srl = getNextSequence();
                 $output = executeQuery('member.insertJoinForm', $args);
-            }else{
+            }
+			else
+			{
                 $output = executeQuery('member.updateJoinForm', $args);
             }
 
-            if(!$output->toBool()) return $output;
-
-			// memberConfig update
-			$signupItem->name = $args->column_name;
-			$signupItem->title = $args->column_title;
-			$signupItem->type = $args->column_type;
-			$signupItem->member_join_form_srl = $args->member_join_form_srl;
-			$signupItem->required = ($args->required == 'Y');
-			$signupItem->isUse = ($args->is_active == 'Y');
-			$signupItem->description = $args->description;
-
-			$oMemberModel = &getModel('member');
-			$config = $oMemberModel->getMemberConfig();
-
-			if($isInsert){
-				$config->signupForm[] = $signupItem;	
-			}else{
-				foreach($config->signupForm as $key=>$val){
-					if ($val->member_join_form_srl == $signupItem->member_join_form_srl){
-						$config->signupForm[$key] = $signupItem;
-					}
-				}
+            if(!$output->toBool())
+			{
+				return $output;
 			}
-			$oModuleController = &getController('module');
-			$output = $oModuleController->updateModuleConfig('member', $config);
 
+			$oDriver = getDriver('member', $driver);
+			if(!$oDriver)
+			{
+				$oDB->rollback();
+				return $this->stop('msg_invalid_request');
+			}
+			$output = $oDriver->afterInsertJoinForm($args, $isInsert);
+
+			if(!$output->toBool())
+			{
+				$oDB->rollback();
+				return $output;
+			}
+
+			$this->add('member_join_form_srl', $args->member_join_form_srl);
+			$this->add('is_insert', $isInsert);
             $this->setMessage('success_registed');
 
-			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
+			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON')))
+			{
 				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispMemberAdminJoinFormList');
 				$this->setRedirectUrl($returnUrl);
 				return;
 			}
         }
 
-		function procMemberAdminDeleteJoinForm(){
+		function procMemberAdminDeleteJoinForm()
+		{
             $member_join_form_srl = Context::get('member_join_form_srl');
-			$this->deleteJoinForm($member_join_form_srl);
+			$driver = Context::get('driver');
 
-			$oMemberModel = &getModel('member');
-			$config = $oMemberModel->getMemberConfig();
-
-			foreach($config->signupForm as $key=>$val){
-				if ($val->member_join_form_srl == $member_join_form_srl){
-					unset($config->signupForm[$key]);
-					break;
-				}
+			if(!$member_join_form_srl || !$driver)
+			{
+				return $this->stop('msg_invalid_request');
 			}
-			$oModuleController = &getController('module');
-			$output = $oModuleController->updateModuleConfig('member', $config);
+
+			$oDB = DB::getInstance();
+			$oDB->begin();
+
+            $args->member_join_form_srl = $member_join_form_srl;
+			$args->driver = $driver;
+            $output = executeQuery('member.deleteJoinForm', $args);
+
+            if(!$output->toBool())
+			{
+				return $output;
+			}
+
+			$oDriver = getDriver('member', $driver);
+			if(!$oDriver)
+			{
+				return $this->stop('msg_invalid_request');
+			}
+
+			$output = $oDriver->afterDeleteJoinForm($args);
+
+			if(!$output->toBool())
+			{
+				$oDB->rollback();
+				return $output;
+			}
+
 		}
 
         /**
@@ -500,12 +354,13 @@
         }
 
 		/**
-		 * selected member manager layer in dispAdminList 
+		 * selected member manager layer in dispAdminList
 		 **/
 		function procMemberAdminSelectedMemberManage(){
 			$var = Context::getRequestVars();
 			$groups = $var->groups;
 			$members = $var->member_srls;
+			$driver = Context::get('driver');
 
             $oDB = &DB::getInstance();
             $oDB->begin();
@@ -513,7 +368,7 @@
 			$oMemberController = &getController('member');
 			foreach($members as $key=>$member_srl){
 				unset($args);
-				$args->member_srl = $member_srl; 
+				$args->member_srl = $member_srl;
 				switch($var->type){
 					case 'modify':{
 									  if (count($groups) > 0){
@@ -545,7 +400,7 @@
 								  }
 					case 'delete':{
 									  $oMemberController->memberInfo = null;
-									  $output = $oMemberController->deleteMember($member_srl);
+									  $output = $oMemberController->deleteMember($member_srl, $driver);
 									  if(!$output->toBool()) {
 										  $oDB->rollback();
 										  return $output;
@@ -653,48 +508,6 @@
         }
 
         /**
-         * @brief Add a denied ID
-         **/
-        function procMemberAdminInsertDeniedID() {
-            $user_ids = Context::get('user_id');
-
-			$user_ids = explode(',',$user_ids);
-			$success_ids = array();
-
-			foreach($user_ids as $val){
-				$output = $this->insertDeniedID($val, '');
-				if($output->toBool()) $success_ids[] = $val;
-			}
-
-			$this->add('user_ids', implode(',',$success_ids));
-
-			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
-				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispMemberAdminDeniedIDList');
-				header('location:'.$returnUrl);
-				return;
-			}
-        }
-
-        /**
-         * @brief Update denied ID
-         **/
-        function procMemberAdminUpdateDeniedID() {
-            $user_id = Context::get('user_id');
-            $mode = Context::get('mode');
-
-            switch($mode) {
-                case 'delete' :
-                        $output = $this->deleteDeniedID($user_id);
-                        if(!$output->toBool()) return $output;
-                        $msg_code = 'success_deleted';
-                    break;
-            }
-
-            $this->add('page',Context::get('page'));
-            $this->setMessage($msg_code);
-        }
-
-        /**
          * @brief Add an administrator
          **/
         function insertAdmin($args) {
@@ -724,14 +537,14 @@
          **/
         function insertGroup($args) {
             if(!$args->site_srl) $args->site_srl = 0;
-            // Check the value of is_default. 
+            // Check the value of is_default.
             if($args->is_default!='Y') {
 				$args->is_default = 'N';
 			} else {
 				 $output = executeQuery('member.updateGroupDefaultClear', $args);
 				 if(!$output->toBool()) return $output;
 			}
-			
+
 			if (!$args->group_srl) $args->group_srl = getNextSequence();
             return executeQuery('member.insertGroup', $args);
         }
@@ -740,7 +553,7 @@
          * @brief Modify Group Information
          **/
         function updateGroup($args) {
-            // Check the value of is_default. 
+            // Check the value of is_default.
 			if(!$args->group_srl) return new Object(-1, 'lang->msg_not_founded');
             if($args->is_default!='Y') {
 				$args->is_default = 'N';
@@ -779,7 +592,7 @@
          * Set group config
          **/
 		function procMemberAdminGroupConfig() {
-			$vars = Context::getRequestVars();	
+			$vars = Context::getRequestVars();
 
 			$oMemberModel = &getModel('member');
 			$oModuleController = &getController('module');
@@ -815,7 +628,7 @@
 
         function procMemberAdminUpdateGroupOrder() {
 			$vars = Context::getRequestVars();
-			
+
 			foreach($vars->group_srls as $key => $val){
 				$args->group_srl = $val;
 				$args->list_order = $key + 1;
@@ -826,26 +639,8 @@
         }
 
         /**
-         * @brief Register denied ID
-         **/
-        function insertDeniedID($user_id, $description = '') {
-            $args->user_id = $user_id;
-            $args->description = $description;
-            $args->list_order = -1*getNextSequence();
-
-            return executeQuery('member.insertDeniedID', $args);
-        }
-
-        /**
-         * @brief Delete a denied ID
-         **/
-        function deleteDeniedID($user_id) {
-            $args->user_id = $user_id;
-            return executeQuery('member.deleteDeniedID', $args);
-        }
-
-        /**
          * @brief Delete a join form
+		 * @deprecated
          **/
         function deleteJoinForm($member_join_form_srl) {
             $args->member_join_form_srl = $member_join_form_srl;
@@ -931,5 +726,77 @@
 
             return new Object();
         }
+
+		/**
+		 * @brief Interface of driver process
+		 * @access public
+		 * @return void
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		public function procMemberAdminDriverInterface()
+		{
+			return $this->driverInterface();
+		}
+
+		/**
+		 * @brief save signin form
+		 * @access public
+		 * @return void
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		public function procMemberAdminSaveSigninConfig()
+		{
+			$siginConfig = Context::get('signinConfig');
+			$useDriver = array();
+
+			$xmlParser = new XmlParser();
+			$xml = $xmlParser->parse($siginConfig);
+
+			$config->signinConfig = array();
+
+			$items = $xml->items->item;
+			if(!is_array($items))
+			{
+				$items = array($items);
+			}
+
+			foreach($items as $value)
+			{
+				$item = new stdClass();
+				if($value->attrs->name == 'horizontal')
+				{
+					$item->name = 'horizontal';
+					$item->items = array();
+					$childItems = $value->item;
+					if(!is_array($childItems))
+					{
+						$childItems = array($childItems);
+					}
+					foreach($childItems as $value2)
+					{
+						$useDriver[] = $value2->attrs->name;
+						$item->items[] = $value2->attrs;
+					}
+				}
+				else
+				{
+					$useDriver[] = $value->attrs->name;
+					$item = $value->attrs;
+				}
+				$config->signinConfig[] = $item;
+			}
+
+			$config->usedDriver = array_unique($useDriver);
+
+			$oModuleController = getController('module');
+			$oModuleController->updateModuleConfig('member', $config);
+
+			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON')))
+			{
+				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispMemberAdminSigninConfig');
+				header('location:' . $returnUrl);
+				return;
+			}
+		}
     }
 ?>

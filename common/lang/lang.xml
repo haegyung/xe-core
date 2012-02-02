@@ -461,6 +461,28 @@
 		<value xml:lang="vi"><![CDATA[Xuống]]></value>
 		<value xml:lang="mn"><![CDATA[Доош]]></value>
 	</item>
+	<item name="cmd_move_down">
+		<value xml:lang="ko"><![CDATA[아래로]]></value>
+		<value xml:lang="en"><![CDATA[Down]]></value>
+		<value xml:lang="jp"><![CDATA[下へ]]></value>
+		<value xml:lang="zh-CN"><![CDATA[向下]]></value>
+		<value xml:lang="zh-TW"><![CDATA[向下]]></value>
+		<value xml:lang="fr"><![CDATA[En bas]]></value>
+		<value xml:lang="de"><![CDATA[Nach unten]]></value>
+		<value xml:lang="ru"><![CDATA[Вниз]]></value>
+		<value xml:lang="es"><![CDATA[Abajo]]></value>
+		<value xml:lang="tr"><![CDATA[Aşağı]]></value>
+		<value xml:lang="vi"><![CDATA[Xuống]]></value>
+		<value xml:lang="mn"><![CDATA[Доош]]></value>
+	</item>
+	<item name="cmd_move_left">
+		<value xml:lang="ko"><![CDATA[왼쪽으로]]></value>
+		<value xml:lang="en"><![CDATA[Left]]></value>
+	</item>
+	<item name="cmd_move_right">
+		<value xml:lang="ko"><![CDATA[오른쪽으로]]></value>
+		<value xml:lang="en"><![CDATA[Right]]></value>
+	</item>
 	<item name="cmd_add_indent">
 		<value xml:lang="ko"><![CDATA[들이기]]></value>
 		<value xml:lang="en"><![CDATA[Indent]]></value>
@@ -1087,6 +1109,10 @@
 		<value xml:lang="tr"><![CDATA[Şifre]]></value>
 		<value xml:lang="vi"><![CDATA[Mật khẩu]]></value>
 		<value xml:lang="mn"><![CDATA[Нууц дугаар]]></value>
+	</item>
+	<item name="retype_password">
+		<value xml:lang="ko"><![CDATA[비밀번호 확인]]></value>
+		<value xml:lang="en"><![CDATA[Retype password]]></value>
 	</item>
 	<item name="password1">
 		<value xml:lang="ko"><![CDATA[새 비밀번호]]></value>
@@ -3697,5 +3723,13 @@ Xin vui lòng kiểm tra lại thông tin Database.]]></value>
 		<value xml:lang="es"><![CDATA[If accessing with a smartphone, display content with mobile layout.]]></value>
 		<value xml:lang="tr"><![CDATA[Hareketli görünümü, mobil cihazlarla giriş yapılırken, mobil cihazlara uygun en iyi yerleşim düzenini göstermek içindir.]]></value>
 		<value xml:lang="vi"><![CDATA[Nếu truy cập bằng thiết bị di động, nội dung sẽ được bố trí theo từng loại thiết bị.]]></value>
+	</item>
+	<item name="drivers">
+		<value xml:lang="ko"><![CDATA[드라이버]]></value>
+		<value xml:lang="en"><![CDATA[Drivers]]></value>
+	</item>
+	<item name="driver_information">
+		<value xml:lang="ko"><![CDATA[드라이버 정보]]></value>
+		<value xml:lang="en"><![CDATA[Driver information]]></value>
 	</item>
 </lang>

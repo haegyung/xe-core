@@ -676,7 +676,7 @@
 		 * @return stdClass
 		 * @developer NHN (developers@xpressengine.com)
 		 */
-		function getDriverInfoXml($module, $driver)
+		function getDriverInfoXml($module, $driverName)
 		{
 			// Get module path
 			$modulePath = ModuleHandler::getModulePath($module);
@@ -686,7 +686,7 @@
 			}
 
 			// Get info.xml path
-			$xmlFile = sprintf('%sdrivers/%s/conf/info.xml', $modulePath, $driver);
+			$xmlFile = sprintf('%sdrivers/%s/conf/info.xml', $modulePath, $driverName);
 			$xmlFile = FileHandler::getRealPath($xmlFile);
 			if(!is_readable($xmlFile))
 			{
@@ -706,6 +706,7 @@
 			// Make info
 			$driverInfo = new stdClass();
 			$driverInfo->title = $xmlObj->title->body;
+			$driverInfo->display_name = $xmlObj->display_name->body;
 			$driverInfo->description = $xmlObj->description->body;
 			$driverInfo->version = $xmlObj->version->body;
 			$driverInfo->homepage = $xmlObj->homepage->body;
@@ -746,7 +747,7 @@
 				$optionObj = new stdClass();
 				$optionObj->name = $option->attrs->name;
 				$optionObj->value = $option->attrs->value;
-				$driverInfo->options[] = $optionObj;
+				$driverInfo->options[$option->attrs->name] = $optionObj;
 			}
 
 			return $driverInfo;
@@ -1125,7 +1126,7 @@
          * @brief Return the module configuration of mid
          * Manage mid configurations which depend on module
          **/
-        function getDriverConfig($moduleName, $driverName, $moduleSrl = 0) {
+        function getDriverConfig($moduleName, $driverName, $moduleSrl = NULL) {
 			// cache controll
 			$oCacheHandler = &CacheHandler::getInstance('object');
 			if($oCacheHandler->isSupport())
@@ -1141,7 +1142,7 @@
 					$args->module = $moduleName;
 					$args->driver = $driverName;
 					$args->moduleSrl = $moduleSrl;
-					
+
 					$output = executeQuery('module.getDriverConfig', $args);
 					$config = unserialize($output->data->config);
 					//insert in cache
@@ -1276,7 +1277,7 @@
             $searched_count = count($searched_list);
             if(!$searched_count) return;
 
-            for($i=0;$i<$searched_count;$i++) 
+            for($i=0;$i<$searched_count;$i++)
 			{
                 // module name
                 $module_name = $searched_list[$i];
@@ -1290,7 +1291,7 @@
                 // Check if the table is created
                 $created_table_count = 0;
 
-				// Check drivers 
+				// Check drivers
 				if(is_dir(FileHandler::getRealPath($path."drivers")))
 				{
 					$drivers = FileHandler::readDir($path."drivers");
@@ -1307,7 +1308,7 @@
 					}
 				}
 
-                for($j=0;$j<count($tmp_files);$j++) 
+                for($j=0;$j<count($tmp_files);$j++)
 				{
                     list($table_name) = explode(".",$tmp_files[$j]);
                     if($oDB->isTableExists($table_name)) $created_table_count ++;
@@ -1355,7 +1356,7 @@
 						$list[] = $driverInfo;
 					}
 				}
-				
+
             }
             return $list;
         }
@@ -1637,7 +1638,7 @@
 
         function getModuleFileBoxList(){
         	$oModuleModel = &getModel('module');
-			
+
             $args->page = Context::get('page');
             $args->list_count = 5;
             $args->page_count = 5;
@@ -1645,7 +1646,7 @@
             $output = $oModuleModel->unserializeAttributes($output);
             return $output;
         }
-        
+
         function unserializeAttributes($module_filebox_list)
 		{
 			if(is_array($module_filebox_list))
@@ -1723,7 +1724,7 @@
 				else{
 					$ruleset = str_replace('#', '', $ruleset);
 				}
-					
+
 			}
             // Get a path of the requested module. Return if not exists.
             $class_path = ModuleHandler::getModulePath($module);

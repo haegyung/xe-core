@@ -13,5 +13,6 @@
         <column name="description" var="description" />
         <column name="regdate" default="curdate()" />
         <column name="list_order" var="list_order" default="1" />
+        <column name="driver" var="driver" default="default" />
     </columns>
 </query>

@@ -4,44 +4,16 @@
 	<p>{$XE_VALIDATOR_MESSAGE}</p>
 </div>
 <h1 class="h1">{$lang->cmd_login}</h1>
-<form ruleset="@login" action="./" method="post" id="fo_member_login" class="form">
-	<input type="hidden" name="success_return_url" value="{getUrl('act', '')}" />
-	<ul>
-		<li>
-			<p class="q"><label for="uid">{$lang->user_id}</label></p>
-			<p class="a"><input type="text" name="user_id" id="uid" value="" /></p>
-		</li>
-		<li>
-			<p class="q"><label for="upw">{$lang->password}</label></p>
-			<p class="a"><input type="password" name="password" id="upw" value="" /></p>
-		</li>
-	</ul>	
-	<p style="margin:1em 0">
-		<input type="checkbox" name="keep_signed" id="keepid_opt" value="Y" />
-		<label for="keepid_opt">{$lang->keep_signed}</label>
-	</p>
-	<div class="message info" id="keep_msg">
-		<p>{$lang->about_keep_warning}</p>
-	</div>
-	<div class="btnArea">
-		<span class="btn"><input type="submit" value="{$lang->cmd_login}" /></span>
-		<span class="etc">
-			<a href="{getUrl('act','dispMemberFindAccount')}"><span>{$lang->cmd_find_member_account}</span></a> |
-			<a href="{getUrl('act','dispMemberSignUpForm')}"><span>{$lang->cmd_signup}</span></a>
-		</span>
-	</div>
-</form>
-<script type="text/javascript">
-jQuery(function($){
-	var keep_msg = $('#keep_msg');
-	keep_msg.hide();
-	$('#keepid_opt').change(function(){
-		if($(this).is(':checked')){
-			keep_msg.slideDown(200);
-		} else {
-			keep_msg.slideUp(200);
-		}
-	});
-});
-</script>
+<block loop="$drivers => $value">
+	<block cond="$value->name == 'horizontal'">
+		<div class="horizontal">
+		<block loop="$value->items=>$value2">
+			{$value2->driver->getSigninTpl($value2->type)}
+		</block>
+		</div>
+	</block>
+	<block cond="$value->name != 'horizontal'">
+			{$value->driver->getSigninTpl($value->type)}
+	</block>
+</block>
 <include target="./common_footer.html" />

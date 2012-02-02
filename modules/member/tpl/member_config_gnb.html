@@ -1,0 +1,11 @@
+<h1 class="h1">{$lang->cmd_member_config}</h1>
+<ul cond="count($drivers) > 1">
+	<li>
+		<a cond="$act != 'dispMemberAdminConfig'" href="{getUrl('', 'module', 'admin', 'act', 'dispMemberAdminConfig')}">{$lang->cmd_module_config}</a>
+		<block cond="$act == 'dispMemberAdminConfig'">{$lang->cmd_module_config}</block>
+	</li>
+	<li>
+		<a cond="$act != 'dispMemberAdminSigninConfig'" href="{getUrl('', 'module', 'admin', 'act', 'dispMemberAdminSigninConfig')}">{$lang->cmd_signin_config}</a>
+		<block cond="$act == 'dispMemberAdminSigninConfig'">{$lang->cmd_signin_config}</block>
+	</li>
+</ul>

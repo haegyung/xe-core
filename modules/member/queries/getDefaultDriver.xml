@@ -1,0 +1,11 @@
+<query id="getDefaultDriver" action="select">
+    <tables>
+        <table name="member_common" />
+    </tables>
+    <columns>
+        <column name="driver" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" />
+    </conditions>
+</query>

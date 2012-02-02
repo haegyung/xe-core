@@ -13,9 +13,9 @@
 .xm img{border:0}
 .xm p{line-height:1.5}
 /* Heading */
-.xm .h1, 
-.xm .h2, 
-.xm .h3, 
+.xm .h1,
+.xm .h2,
+.xm .h3,
 .xm .h4{position:relative;border-bottom-style:solid;border-bottom-color:#ccc;zoom:1}
 .xm .h1{border-bottom-width:4px;font-size:24px}
 .xm .h2{border-bottom-width:3px;font-size:20px}
@@ -63,7 +63,7 @@
 .xm .form textarea[disabled=disabled],
 .xm .form select[disabled=disabled]{background:#ddd !important;text-shadow:1px 1px 0 #fff}
 .xm .form textarea{padding:3px 4px;vertical-align:top}
-.xm .form span.desc, 
+.xm .form span.desc,
 .xm .form em.desc{line-height:22px;vertical-align:middle;margin:0 10px}
 .xm .form p.desc{margin:.25em 0;line-height:1.4}
 .xm .form .q{font-weight:bold;margin:0 0 5px 0}
@@ -109,9 +109,16 @@
 .xm .pagination input{width:30px;text-align:center}
 .xm .pagination button{overflow:visible}
 /* Text Button */
-.xm input.text, 
+.xm input.text,
 .xm button.text{border:0;overflow:visible;padding:0;margin:0 4px 0 0;color:#33a;background:none;text-decoration:underline}
 /* Agreement */
 .xm .agreement{margin:1em 0}
-.xm .agreement .text{height:200px;overflow:auto;margin:1em 0}
+.xm .agreement .text{height:200px;overflow:auto;margin:1em 0; border: 1px solid #ccc; padding: 5px;}
 .xm .agreement .confirm{margin:1em 0}
+/* Select Bar */
+.xm .selectBar{margin: 0; padding: 10px 0; list-style: none; text-align: center; background: #efefef; }
+.xm .selectBar li{padding: 10px 20px;display: inline-block; border-right: 1px solid #ccc; border-left: 1px solid #fefefe; position: relative;}
+.xm .selectBar li:first-child{border-left-color: #efefef;}
+.xm .selectBar li:last-child{border-right-color: #efefef;}
+.xm .selectBar li p{font-weight: bold; font-size: 25px; }
+.xm .selectBar li a{display: inline-block; padding: 5px; border: 1px solid #ccc; background: white; text-decoration: none; color: black!important; }

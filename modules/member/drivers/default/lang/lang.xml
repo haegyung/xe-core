@@ -4,4 +4,15 @@
 		<value xml:lang="ko"><![CDATA[필수 속성의 값이 없습니다.]]></value>
 		<value xml:lang="en"><![CDATA[Missing required value.]]></value>
 	</item>
+	<item name="cmd_modify_member_email_address">
+		<value xml:lang="ko"><![CDATA[이메일 주소 변경]]></value>
+		<value xml:lang="en"><![CDATA[Change Email Address]]></value>
+	</item>
+	<item name="about_modify_member_email_address">
+		<value xml:lang="ko"><![CDATA[사용하시는 이메일 주소를 변경할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[You could change EmailAddress.]]></value>
+	</item>
+	<item name="cmd_send_auth_new_emaill_address">
+		<value xml:lang="ko"><![CDATA[신규 이메일로 인증 메일 발송]]></value>
+	</item>
 </lang>

@@ -1,0 +1,23 @@
+<div class="form">
+	<ul>
+		<li>
+			<p class="q"><label for="uid">ID</label></p>
+			<p class="a"><input type="text" id="uid" /></p>
+		</li>
+		<li>
+			<p class="q"><label for="upw">Password</label></p>
+			<p class="a"><input type="text" id="upw" /></p>
+		</li>
+	</ul>
+	<p style="margin:1em 0">
+		<input type="checkbox" name="keep_signed" id="keepid_opt" value="Y" />
+		<label for="keepid_opt">{$lang->keep_signed}</label>
+	</p>
+	<div class="btnArea">
+		<span class="btn"><input type="submit" value="{$lang->cmd_login}" /></span>
+		<span class="etc">
+			<a href="#" onclick="return false;"><span>{$lang->cmd_find_member_account}</span></a> |
+			<a href="#" onclick="return false;" ><span>{$lang->cmd_signup}</span></a>
+		</span>
+	</div>
+</div>

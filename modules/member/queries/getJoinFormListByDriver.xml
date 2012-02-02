@@ -1,0 +1,14 @@
+<query id="getJoinFormListByDriver" action="select">
+    <tables>
+        <table name="member_join_form" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="driver" var="driver" notnull="notnull" />
+	</conditions>
+    <navigation>
+        <index var="sort_index" default="list_order" order="asc" />
+    </navigation>
+</query>

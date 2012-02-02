@@ -1,0 +1,26 @@
+<div class="wrap default"><div class="droppable"></div></div>
+<block loop="$tpls => $value">
+		<block cond="!is_array($value)">
+		<div  class="wrap" data-name="{$value->name}" data-type="{$value->type}">
+			<div class="container selectable">
+				{$value->tpl}
+			</div>
+		</block>
+		<block cond="is_array($value)">
+		<div  class="wrap" data-name="horizontal">
+			<div class="horizon selectable">
+				<div class="items">
+					<div class="wrap default"><div class="droppable"></div></div>
+					<div loop="$value => $value2" class="wrap" data-name="{$value2->name}" data-type="{$value2->type}">
+						<div class="container">
+							{$value2->tpl}
+						</div>
+						<div class="droppable"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</block>
+		<div class="droppable"></div>
+	</div>
+</block>

@@ -1,0 +1,12 @@
+<query id="getJoinFormByNameDriver" action="select">
+    <tables>
+        <table name="member_join_form" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="column_name" var="column_name" notnull="notnull" />
+        <condition operation="equal" column="driver" var="driver" notnull="notnull" pipe="and" />
+    </conditions>
+</query>

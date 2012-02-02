@@ -22,6 +22,7 @@
 
         /**
          * @brief Get a member list
+		 * @deprecated
          **/
         function getMemberList() {
             // Search option
@@ -96,7 +97,7 @@
                 $args->sort_index = "member.".$sort_index;
             } else {
                 $query_id = 'member.getMemberList';
-                $args->sort_index = $sort_index; 
+                $args->sort_index = $sort_index;
             }
             if($sort_order != "desc") $sort_order = "asc";
             $args->sort_order = $sort_order;
@@ -207,7 +208,7 @@
             $this->add('tpl', str_replace("\n"," ",$tpl));
 		}
 		function getMemberAdminIPCheck() {
-		
+
 			$db_info = Context::getDBInfo();
 			$admin_ip_list = $db_info->admin_ip_list;
 			$admin_ip_list = explode(",",$admin_ip_list);
@@ -218,11 +219,11 @@
 				if(preg_match('/^\d{1,3}(?:.(\d{1,3}|\*)){3}\s*$/', $admin_ip_value, $matches) && $ip) {
 					$admin_ip = $matches[0];
 					$admin_ip = str_replace('*','',$admin_ip);
-					$admin_ip_patterns[] = preg_quote($admin_ip);				
-					$admin_ip_pattern = '/^('.implode($admin_ip_patterns,'|').')/';				
+					$admin_ip_patterns[] = preg_quote($admin_ip);
+					$admin_ip_pattern = '/^('.implode($admin_ip_patterns,'|').')/';
 					if(preg_match($admin_ip_pattern, $ip, $matches)) return true;
 					$flag = true;
-				} 
+				}
 
 			}
 			if(!$flag) return true;

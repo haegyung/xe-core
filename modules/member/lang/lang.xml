@@ -851,6 +851,10 @@
 		<value xml:lang="tr"><![CDATA[Kaydol]]></value>
 		<value xml:lang="vi"><![CDATA[Đăng kí]]></value>
 	</item>
+	<item name="do_signup">
+		<value xml:lang="ko"><![CDATA[가입하기]]></value>
+		<value xml:lang="en"><![CDATA[Sign Up]]></value>
+	</item>
 	<item name="cmd_site_signup">
 		<value xml:lang="ko"><![CDATA[가입]]></value>
 		<value xml:lang="en"><![CDATA[Sign Up]]></value>
@@ -862,14 +866,6 @@
 		<value xml:lang="es"><![CDATA[Join]]></value>
 		<value xml:lang="tr"><![CDATA[Kaydol]]></value>
 		<value xml:lang="vi"><![CDATA[Đăng kí]]></value>
-	</item>
-	<item name="cmd_modify_member_email_address">
-		<value xml:lang="ko"><![CDATA[이메일 주소 변경]]></value>
-		<value xml:lang="en"><![CDATA[Change Email Address]]></value>
-	</item>
-	<item name="about_modify_member_email_address">
-		<value xml:lang="ko"><![CDATA[사용하시는 이메일 주소를 변경할 수 있습니다.]]></value>
-		<value xml:lang="en"><![CDATA[You could change EmailAddress.]]></value>
 	</item>
 	<item name="cmd_modify_member_info">
 		<value xml:lang="ko"><![CDATA[회원정보 변경]]></value>
@@ -933,9 +929,6 @@
 		<value xml:lang="tr"><![CDATA[Etkinleştirme Maili Talebinde Bulun]]></value>
 		<value xml:lang="vi"><![CDATA[Xác nhận lại Email]]></value>
 	</item>
-	<item name="cmd_send_auth_new_emaill_address">
-		<value xml:lang="ko"><![CDATA[신규 이메일로 인증 메일 발송]]></value>
-	</item>
 	<item name="cmd_member_list">
 		<value xml:lang="ko"><![CDATA[회원 목록]]></value>
 		<value xml:lang="en"><![CDATA[Member List]]></value>
@@ -959,6 +952,14 @@
 		<value xml:lang="es"><![CDATA[Configuración predefinidos]]></value>
 		<value xml:lang="tr"><![CDATA[Varsayılan Ayar]]></value>
 		<value xml:lang="vi"><![CDATA[Thiết lập mặc định]]></value>
+	</item>
+	<item name="cmd_signin_config">
+		<value xml:lang="ko"><![CDATA[로그인 형식 설정]]></value>
+		<value xml:lang="en"><![CDATA[Signin type configuration]]></value>
+	</item>
+	<item name="cmd_driver_config">
+		<value xml:lang="ko"><![CDATA[드라이버 설정]]></value>
+		<value xml:lang="en"><![CDATA[Driver Setting]]></value>
 	</item>
 	<item name="cmd_member_group">
 		<value xml:lang="ko"><![CDATA[그룹 관리]]></value>
@@ -2415,7 +2416,36 @@ Bạn có thể quản lý thành viên bằng cách tạo những nhóm mới, 
 		<value xml:lang="ko"><![CDATA[회원 설정]]></value>
 		<value xml:lang="en"><![CDATA[Member Configuration]]></value>
 	</item>
+	<item name="available_types">
+		<value xml:lang="ko"><![CDATA[사용 가능한 형식]]></value>
+		<value xml:lang="en"><![CDATA[Available Types]]></value>
+	</item>
+	<item name="login_type_form">
+		<value xml:lang="ko"><![CDATA[로그인 폼]]></value>
+		<value xml:lang="en"><![CDATA[Signin Form]]></value>
+	</item>
+	<item name="login_type_button">
+		<value xml:lang="ko"><![CDATA[버튼]]></value>
+		<value xml:lang="en"><![CDATA[Button]]></value>
+	</item>
+	<item name="login_type_buttontext">
+		<value xml:lang="ko"><![CDATA[버튼 & 텍스트]]></value>
+		<value xml:lang="en"><![CDATA[Button & Text]]></value>
+	</item>
+	<item name="login_type_banner">
+		<value xml:lang="ko"><![CDATA[배너]]></value>
+		<value xml:lang="en"><![CDATA[Banner]]></value>
+	</item>
+	<item name="msg_already_inserted_item">
+		<value xml:lang="ko"><![CDATA[같은 이름의 항목이 이미 등록되었습니다.]]></value>
+		<value xml:lang="en"><![CDATA[There are already inserted item.]]></value>
+	</item>
 	<item name="msg_success_modify_email_address">
 		<value xml:lang="ko"><![CDATA[이메일 주소가 정상적으로 변경되었습니다. 변경된 이메일 주소로 로그인 가능합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Email address has been changed. You can signin with the changed email address.]]></value>
+	</item>
+	<item name="signinConfig">
+		<value xml:lang="ko"><![CDATA[로그인 입력폼 설정]]></value>
+		<value xml:lang="en"><![CDATA[Configuration of signin form]]></value>
 	</item>
 </lang>

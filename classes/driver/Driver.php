@@ -11,6 +11,7 @@ abstract class Driver extends Object
 	private $driverName = NULL;
 	private $driverPath = NULL;
 	private $driverTplPath = NULL;
+	private $driverInfo = NULL;
 
 	/**
 	 * @brief Set module name
@@ -24,6 +25,7 @@ abstract class Driver extends Object
 		$this->moduleName = $moduleName;
 		$this->computeModulePath();
 		$this->computeDriverPath();
+		$this->setDriverInfo();
 	}
 
 	/**
@@ -76,6 +78,36 @@ abstract class Driver extends Object
 	{
 		$this->driverName = $driverName;
 		$this->computeDriverPath();
+		$this->setDriverInfo();
+	}
+
+	/**
+	 * @brief Set driver name
+	 * @access private
+	 * @param $driverName name of driver
+	 * @return void
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	private function setDriverInfo()
+	{
+		if(!isset($this->moduleName, $this->driverName))
+		{
+			$this->driverInfo = NULL;
+		}
+
+		$oModuleModel = getModel('module');
+		$this->driverInfo = $oModuleModel->getDriverInfoXml($this->moduleName, $this->driverName);
+	}
+
+	/**
+	 * @brief Get driver info
+	 * @access public
+	 * @return stdClass
+	 * @developer NHN (devlopers@xpressengine.com)
+	 */
+	public function getDriverInfo()
+	{
+		return $this->driverInfo;
 	}
 
 	/**
@@ -130,7 +162,15 @@ abstract class Driver extends Object
 	}
 
 	/**
-	 * @brief Check update (Child must overide this method)
+	 * @brief Install Driver (Child must override this method)
+	 * @access public
+	 * @return boolean
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	abstract public function installDriver();
+
+	/**
+	 * @brief Check update (Child must override this method)
 	 * @access public
 	 * @return boolean
 	 * @developer NHN (developers@xpressengine.com)
@@ -138,7 +178,7 @@ abstract class Driver extends Object
 	abstract public function checkUpdate();
 
 	/**
-	 * @brief Update Driver (Child must overide this method)
+	 * @brief Update Driver (Child must override this method)
 	 * @access public
 	 * @return Object
 	 * @developer NHN (developers@xpressengine.com)

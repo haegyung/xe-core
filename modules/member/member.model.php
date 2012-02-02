@@ -18,6 +18,107 @@
         function init() {
         }
 
+		public function getExtendsInputForm($extendForm)
+		{
+			global $lang;
+
+			$replace = array('column_name' => $extendForm->column_name,
+							 'value'		=> $extendForm->value);
+			$extentionReplace = array();
+
+			if($extendForm->column_type == 'text' || $extendForm->column_type == 'homepage' || $extendForm->column_type == 'email_address'){
+				$template = '<input type="text" name="%column_name%" value="%value%" />';
+			}elseif($extendForm->column_type == 'tel'){
+				$extentionReplace = array('tel_0' => $extendForm->value[0],
+										  'tel_1' => $extendForm->value[1],
+										  'tel_2' => $extendForm->value[2]);
+				$template = '<input type="text" name="%column_name%[]" value="%tel_0%" size="4" />-<input type="text" name="%column_name%[]" value="%tel_1%" size="4" />-<input type="text" name="%column_name%[]" value="%tel_2%" size="4" />';
+			}elseif($extendForm->column_type == 'textarea'){
+				$template = '<textarea name="%column_name%">%value%</textarea>';
+			}elseif($extendForm->column_type == 'checkbox'){
+				$template = '';
+				if($extendForm->default_value){
+					$__i = 0;
+					foreach($extendForm->default_value as $v){
+						$checked = '';
+						if(is_array($extendForm->value) && in_array($v, $extendForm->value))$checked = 'checked="checked"';
+						$template .= '<input type="checkbox" id="%column_name%'.$__i.'" name="%column_name%[]" value="'.htmlspecialchars($v).'" '.$checked.' /><label for="%column_name%'.$__i.'">'.$v.'</label>';
+						$__i++;
+					}
+				}
+			}elseif($extendForm->column_type == 'radio'){
+				$template = '';
+				if($extendForm->default_value){
+					$template = '<ul class="radio">%s</ul>';
+					$optionTag = array();
+					foreach($extendForm->default_value as $v){
+						if($extendForm->value == $v)$checked = 'checked="checked"';
+						else $checked = '';
+						$optionTag[] = '<li><input type="radio" name="%column_name%" value="'.$v.'" '.$checked.' />'.$v.'</li>';
+					}
+					$template = sprintf($template, implode('', $optionTag));
+				}
+			}elseif($extendForm->column_type == 'select'){
+				$template = '<select name="'.$formInfo->name.'">%s</select>';
+				$optionTag = array();
+				if($extendForm->default_value){
+					foreach($extendForm->default_value as $v){
+						if($v == $extendForm->value) $selected = 'selected="selected"';
+						else $selected = '';
+						$optionTag[] = sprintf('<option value="%s" %s >%s</option>'
+												,$v
+												,$selected
+												,$v);
+					}
+				}
+				$template = sprintf($template, implode('', $optionTag));
+			}elseif($extendForm->column_type == 'kr_zip'){
+				Context::loadFile(array('./modules/member/tpl/js/krzip_search.js', 'body'), true);
+				$extentionReplace = array(
+								 'msg_kr_address'       => $lang->msg_kr_address,
+								 'msg_kr_address_etc'       => $lang->msg_kr_address_etc,
+								 'cmd_search'	=> $lang->cmd_search,
+								 'cmd_search_again'	=> $lang->cmd_search_again,
+								 'addr_0'	=> $extendForm->value[0],
+								 'addr_1'	=> $extendForm->value[1],);
+				$replace = array_merge($extentionReplace, $replace);
+				$template = <<<EOD
+				<div class="krZip">
+					<div class="a" id="zone_address_search_%column_name%" >
+						<label for="krzip_address1_%column_name%">%msg_kr_address%</label><br />
+						<input type="text" id="krzip_address1_%column_name%" value="%addr_0%" />
+						<button type="button">%cmd_search%</button>
+					</div>
+					<div class="a" id="zone_address_list_%column_name%" style="display:none">
+						<select name="%column_name%[]" id="address_list_%column_name%"><option value="%addr_0%">%addr_0%</select>
+						<button type="button">%cmd_search_again%</button>
+					</div>
+					<div class="a address2">
+						<label for="krzip_address2_%column_name%">%msg_kr_address_etc%</label><br />
+						<input type="text" name="%column_name%[]" id="krzip_address2_%column_name%" value="%addr_1%" />
+					</div>
+				</div>
+				<script type="text/javascript">jQuery(function($){ $.krzip('%column_name%') });</script>
+EOD;
+			}elseif($extendForm->column_type == 'jp_zip'){
+				$template = '<input type="text" name="%column_name%" value="%value%" />';
+			}elseif($extendForm->column_type == 'date'){
+				$extentionReplace = array('date' => zdate($extendForm->value, 'Y-m-d'),
+										  'cmd_delete' => $lang->cmd_delete);
+				$template = '<input type="hidden" name="%column_name%" id="date_%column_name%" value="%value%" /><input type="text" class="inputDate" value="%date%" readonly="readonly" /> <input type="button" value="%cmd_delete%" class="dateRemover" />';
+			}
+
+			$replace = array_merge($extentionReplace, $replace);
+			$inputTag = preg_replace('@%(\w+)%@e', '$replace[$1]', $template);
+
+			if($extendForm->description)
+			{
+				$inputTag .= '<p style="color:#999;">'.htmlspecialchars($extendForm->description).'</p>';
+			}
+
+			return $inputTag;
+		}
+
         /**
          * @brief Return member's configuration
          **/
@@ -51,6 +152,20 @@
             if(!$config->group_image_mark) $config->group_image_mark = "N";
 
 			if (!$config->identifier) $config->identifier = 'user_id';
+
+			// Get signin config
+			if(!$config->signinConfig)
+			{
+				$driver->name = 'default';
+				$driver->type = 'form';
+				$config->signinConfig = array($driver);
+			}
+
+			// set default driver
+			if(!$config->usedDriver)
+			{
+				$config->usedDriver = array('default');
+			}
 
             return $config;
         }
@@ -125,22 +240,14 @@
          * @brief Check if logged-in
          **/
         function isLogged() {
-            // if($_SESSION['is_logged']&&$_SESSION['ipaddress']==$_SERVER['REMOTE_ADDR']) return true;
-// 
-            // $_SESSION['is_logged'] = false;
-            // return false;
-
-			return true;
+            if($_SESSION['is_logged']&&$_SESSION['ipaddress']==$_SERVER['REMOTE_ADDR']) return true;
+            return false;
         }
 
         /**
          * @brief Return session information of the logged-in user
          **/
         function getLoggedInfo() {
-			$logged_info->member_srl =4;
-			$logged_info->is_admin = 'Y';
-			Context::set('logged_info', $logged_info);
-
             // Return session info if session info is requested and the user is logged-in
             if($this->isLogged()) {
                 $logged_info = Context::get('logged_info');
@@ -210,7 +317,6 @@
 
 			//columnList size zero... get full member info
             if(!$GLOBALS['__member_info__'][$member_srl] || count($columnList) == 0) {
-            //if(true) {
 	            $oCacheHandler = &CacheHandler::getInstance('object');
 				if($oCacheHandler->isSupport()){
 					$cache_key = 'object:'.$member_srl;
@@ -223,9 +329,9 @@
 	                //insert in cache
 	                if($oCacheHandler->isSupport()) $oCacheHandler->put($cache_key,$output);
 				}
-				
+
 				$this->arrangeMemberInfo($output->data, $site_srl);
-                
+
             }
 
             return $GLOBALS['__member_info__'][$member_srl];
@@ -239,14 +345,6 @@
                 $oModuleModel = &getModel('module');
                 $config = $oModuleModel->getModuleConfig('member');
 
-
-                $info->profile_image = $this->getProfileImage($info->member_srl);
-                $info->image_name = $this->getImageName($info->member_srl);
-                $info->image_mark = $this->getImageMark($info->member_srl);
-                if($config->group_image_mark=='Y'){
-                    $info->group_mark = $this->getGroupImageMark($info->member_srl,$site_srl);
-                }
-                $info->signature = $this->getSignature($info->member_srl);
                 $info->group_list = $this->getMemberGroups($info->member_srl, $site_srl);
 
                 $extra_vars = unserialize($info->extra_vars);
@@ -274,7 +372,7 @@
         }
 
         /**
-         * @brief Get member_srl corresponding to EmailAddress 
+         * @brief Get member_srl corresponding to EmailAddress
          **/
         function getMemberSrlByEmailAddress($email_address) {
             $args->email_address = $email_address;
@@ -328,7 +426,7 @@
                     if($oCacheHandler->isSupport()) $oCacheHandler->put($cache_key,$output);
                 }
                 if(!$output->data) return array();
-                
+
 
                 $group_list = $output->data;
                 if(!is_array($group_list)) $group_list = array($group_list);
@@ -415,7 +513,8 @@
          * To use as extend_filter, the argument should be boolean.
          * When the argument is true, it returns object result in type of filter.
          **/
-        function getJoinFormList($filter_response = false) {
+        function getJoinFormList($filter_response = false)
+		{
             global $lang;
             // Set to ignore if a super administrator.
             $logged_info = Context::get('logged_info');
@@ -479,12 +578,66 @@
         }
 
         /**
+         * @brief Get a list of member join forms by driver
+         * @access public
+		 * @param $driver
+		 * @return array
+		 * @developer NHN (developers@xpressengine.com)
+         **/
+        function getJoinFormListByDriver($driver)
+		{
+            global $lang;
+
+			// Argument setting to sort list_order column
+			$args->sort_index = "list_order";
+			$args->driver = $driver;
+
+			$output = executeQueryArray('member.getJoinFormListByDriver', $args);
+			// NULL if output data deosn't exist
+			$join_form_list = $output->data;
+
+			$list = array();
+			if(!$join_form_list)
+			{
+				return $list;
+			}
+
+			foreach($join_form_list as $joinForm)
+			{
+				$joinForm->column_name = strtolower($joinForm->column_name);
+				$member_join_form_srl = $joinForm->member_join_form_srl;
+				$column_type = $joinForm->column_type;
+				$column_name = $joinForm->column_name;
+				$column_title = $joinForm->column_title;
+				$default_value = $joinForm->default_value;
+				// Add language variable
+				$lang->extend_vars[$column_name] = $column_title;
+				// unserialize if the data type if checkbox, select and so on
+				if(in_array($column_type, array('checkbox','select','radio')))
+				{
+					$joinForm->default_value = unserialize($default_value);
+					if(!$joinForm->default_value[0])
+					{
+						$joinForm->default_value = '';
+					}
+				}
+				else
+				{
+					$joinForm->default_value = '';
+				}
+
+				$list[$member_join_form_srl] = $joinForm;
+			}
+			return $list;
+        }
+
+        /**
          * @brief Combine extend join form and member information (used to modify member information)
          **/
         function getCombineJoinForm($member_info) {
             $extend_form_list = $this->getJoinFormlist();
             if(!$extend_form_list) return;
-            // Member info is open only to an administrator and him/herself when is_private is true. 
+            // Member info is open only to an administrator and him/herself when is_private is true.
             $logged_info = Context::get('logged_info');
 
             foreach($extend_form_list as $srl => $item) {
@@ -769,6 +922,91 @@
 				}
 			}
 			return $groupSrl;
+		}
+
+		/**
+		 * @brief Get drivers
+		 * @access public
+		 * @return Array
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		public function getDrivers($withInstance = FALSE)
+		{
+			$oModuleModel = getModel('module');
+			$originDrivers = $oModuleModel->getDrivers('member');
+
+			$drivers = array();
+			foreach($originDrivers as $name => $originDriver)
+			{
+				$driver = clone $originDriver;
+				if(!is_array($driver->options))
+				{
+					$driver->options = array($driver->options);
+				}
+
+				$driver->type = array();
+				foreach($driver->options as $option)
+				{
+					if($option->value == 'Y')
+					{
+						$driver->type[] = $option->name;
+					}
+				}
+				unset($driver->options);
+
+				if($withInstance == TRUE)
+				{
+					$driver->instance = getDriver('member', $name);
+				}
+				$drivers[$name] = $driver;
+			}
+			return $drivers;
+		}
+
+		/**
+		 * @brief Get preview template of sigin
+		 * @access public
+		 * @return String
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		public function getPreviewSigninTpl()
+		{
+			$config = $this->getMemberConfig();
+
+			$oTemplate = TemplateHandler::getInstance();
+			$tpls = array();
+			foreach($config->signinConfig as $value)
+			{
+				if($value->name == 'horizontal')
+				{
+					$nestedTpls = array();
+					foreach($value->items as $item)
+					{
+						$driver = getDriver('member', $item->name);
+						$driverTpl = new stdClass();
+						$driverTpl->tpl = $driver->getPreviewTpl($item->type);
+						$driverTpl->name = $item->name;
+						$driverTpl->type = $item->type;
+						$nestedTpls[] = $driverTpl;
+					}
+					$tpls[] = $nestedTpls;
+				}
+				else
+				{
+					$driver = getDriver('member', $value->name);
+					$driverTpl = new stdClass();
+					$driverTpl->tpl = $driver->getPreviewTpl($value->type);
+					$driverTpl->name = $value->name;
+					$driverTpl->type = $value->type;
+					$tpls[] = $driverTpl;
+				}
+			}
+
+			Context::set('tpls', $tpls);
+			$tplPath = sprintf('%stpl/', $this->module_path);
+			$tplFile = 'previewSignin';
+
+			return $oTemplate->compile($tplPath, $tplFile);
 		}
     }
 ?>

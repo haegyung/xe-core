@@ -1,0 +1,15 @@
+<load target="css/member.css" />
+<load target="js/member_signup.js" />
+<div class="xm">
+	<h1 class="h1">{$lang->cmd_signup}</h1>
+	<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+	<block cond="count($usedDriver)">
+		<ul class="selectBar">
+			<li loop="$usedDriver => $oDriver">
+				<p>{$oDriver->getDriverInfo()->display_name}</p><a href="{getUrl('act', 'dispMemberDriverSignUpForm', 'driver', $oDriver->getDriverName())}">{$lang->do_signup}</a>
+			</li>
+		</ul>
+	</block>
+</div>

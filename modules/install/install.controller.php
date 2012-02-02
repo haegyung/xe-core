@@ -448,16 +448,16 @@
                 $output = $oDB->createTableByXmlFile($file);
             }
 
+			$oModuleModel = getModel('module');
+			$drivers = $oModuleModel->getDrivers($module);
+			
 			// Create a table if the schema xml in drivers
-			if(is_dir(FileHandler::getRealPath($module_path."/drivers"))){
-				$drivers = FileHandler::readDir($module_path."/drivers");
-				foreach($drivers as $driverName){
-					$driverSchemas = FileHandler::readDir($module_path."/drivers/".$driverName."/schemas", '/(\.xml)$/' , false, true);
+			foreach($drivers as $driverName => $value){
+				$driverSchemas = FileHandler::readDir($module_path."/drivers/".$driverName."/schemas", '/(\.xml)$/' , false, true);
 
-					foreach($driverSchemas as $tableXML){
-						$output = $oDB->createTableByXmlFile($tableXML);
-						if (!$output) return $this->stop(sprintf('Failed install "%s" table', $tableXML));
-					}
+				foreach($driverSchemas as $tableXML){
+					$output = $oDB->createTableByXmlFile($tableXML);
+					if (!$output) return $this->stop(sprintf('Failed install "%s" table', $tableXML));
 				}
 			}
 
@@ -465,6 +465,17 @@
             unset($oModule);
             $oModule = &getClass($module);
             if(method_exists($oModule, 'moduleInstall')) $oModule->moduleInstall();
+
+			// execute installDriver()
+			foreach($drivers as $driverName => $value)
+			{
+				$oDriver = getDriver($module, $driverName);
+				if(method_exists($oDriver, 'installDriver'))
+				{
+					$oDriver->installDriver();
+				}
+			}
+
             return new Object();
         }
 

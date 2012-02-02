@@ -1,0 +1,48 @@
+{Context::loadJavascriptPlugin('ui')}
+<load target="css/signin_config.css" />
+<load target="js/signin_config.js" />
+
+<include target="member_config_gnb.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<div id="drivers">
+	<h2>{$lang->drivers}</h2>
+	<ul>
+		<li loop="$drivers => $name, $driver">
+			<h3>{$driver->title}</h3>
+			<div class="driverConfig"><a href="{getUrl('act', 'dispMemberAdminDriverConfig', 'driver', $name)}">{$lang->cmd_setup}</a></div>
+			<h4>{$lang->available_types}</h4>
+			<div class="type_list">
+				<div class="type" loop="$driver->type => $type" cond="$type != 'signup'">
+					<div class="helper">
+						{Context::getLang('login_type_' . $type)}
+						<span class="add"><button class="text" type="button" onclick="addType(this)">{$lang->add}</button></span>
+					</div>
+					<div class="container" data-name="{$name}" data-type="{$type}">
+						{$driver->instance->getPreviewTpl($type)}
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<div id="preview">
+	<h2>Preview</h2>
+	<div id="preview_content">{$previewTpl}</div>
+	<div class="previewController" style="display:none;">
+		<button type="button" class="text" onclick="delType();">{$lang->cmd_delete}</button>
+		<button type="button" class="text up" onclick="moveUp();">{$lang->cmd_move_up}</button>
+		<button type="button" class="text left" onclick="moveUp();">{$lang->cmd_move_left}</button>
+		<button type="button" class="text down" onclick="moveDown();">{$lang->cmd_move_down}</button>
+		<button type="button" class="text right" onclick="moveDown();">{$lang->cmd_move_right}</button>
+	</div>
+	<button class="text" type="button" onclick="addHorizontalBox();">Add Horizontal box</button>
+	<form action="./" method="post" class="btnArea" onsubmit="return doSubmit(this);">
+		<input type="hidden" name="module" value="member" />
+		<input type="hidden" name="act" value="procMemberAdminSaveSigninConfig" />
+		<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
+		<input type="hidden" id="signinConfig" name="signinConfig" value="" />
+		<span class="btn"><input type="submit" value="{$lang->cmd_save}" /></span>
+	</form>
+</div>

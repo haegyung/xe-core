@@ -2,6 +2,8 @@
 <driver>
     <title xml:lang="ko">XE 기본 회원 드라이버</title>
     <title xml:lang="en">XE default member driver</title>
+    <display_name xml:lang="ko">기본</display_name>
+    <display_name xml:lang="en">Default</display_name>
     <description xml:lang="ko">회원 모듈의 기본 드라이버입니다.</description>
     <description xml:lang="en">This is default driver of member module.</description>
 	<homepage>http://homepage.com</homepage>
@@ -16,9 +18,9 @@
 
     <options>
 		<option name="signup" value="Y" />
-		<option name="signin_form" value="Y" />
-		<option name="signin_button" value="Y" />
-		<option name="signin_button_text" value="Y" />
-		<option name="signin_banner" value="Y" />
+		<option name="form" value="Y" />
+		<option name="button" value="N" />
+		<option name="buttontext" value="N" />
+		<option name="banner" value="N" />
 	</options>
 </driver>

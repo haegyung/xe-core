@@ -360,12 +360,19 @@
 					$module = $id_args[1];
 					$id = $id_args[2];
 				}
+				elseif(count($id_args) == 4 && $id_args[1] = 'driver')
+				{
+					$target = 'modules';
+					$module = sprintf('%s/drivers/%s', $id_args[0], $id_args[2]);
+					$id = $id_args[3];
+				}
 				if(!$target || !$module || !$id){
 					$this->actDBClassFinish();
 					return new Object(-1, 'msg_invalid_queryid');
 				}
 
 				$xml_file = sprintf('%s%s/%s/queries/%s.xml', _XE_PATH_, $target, $module, $id);
+
 				if(!file_exists($xml_file)){
 					$this->actDBClassFinish();
 					return new Object(-1, 'msg_invalid_queryid');

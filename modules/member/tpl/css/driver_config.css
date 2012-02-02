@@ -1,0 +1,19 @@
+#drivers { float: left; width: 450px; margin-right: 20px; }
+#drivers > ul { list-style: none; margin: 0; padding: 5px; }
+#drivers > ul > li { border: 1px solid #ccc; background: white; margin: 0 0 5px 0; padding: 10px; }
+#drivers h3 { margin: 0; padding:0; }
+#preview { float: left; width: 450px;}
+#preview .previewController { background: white; position: absolute; top: 0; display:none; z-index: 20;} 
+#preview_content { border: 1px #ccc solid; min-height: 300px; padding: 10px; }
+.type { border: 1px #ccc solid; margin-bottom: 5px; background: white; }
+.type .helper { height: 25px; background: #eee; }
+.type .helper .add { float: right; }
+.type .container { padding: 5px; }
+#preview_content .container { margin-bottom: 5px; background: white; border: 1px solid white; padding: 5px; position: relative; }
+#preview_content .ui-state-highlight { background: yellow; height: 2px; position: absolute; }
+#preview_content .helper { height: 25px; background: #eee; }
+#preview_content .horizon { border: 1px #ccc dotted; margin-bottom: 5px; position: relative;}
+#preview_content .horizon .sortable { min-height: 25px; padding: 5px; }
+#preview_content .horizon .container { float: left; margin: 0 5px 5px 0; }
+#preview_content .horizon .ui-state-highlight { float: left; margin: 0px 5px 5px 0;}
+#preview_content .select { border: 1px solid yellow; }

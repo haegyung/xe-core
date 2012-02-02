@@ -215,30 +215,25 @@ class TemplateHandler {
 			preg_match('/ruleset="([^"]*?)"/is', $matches[1], $m);
 			if($m[0])
 			{
-				$matches[1] = preg_replace('/'.addcslashes($m[0], '?$').'/i', '', $matches[1]);
+				$matches[1] = preg_replace('/'.preg_quote($m[0]).'/i', '', $matches[1]);
 
-				if (strpos($m[1],'@') !== false){
-					$path = str_replace('@', '', $m[1]);
-					$path = './files/ruleset/'.$path.'.xml';
-				}else if(strpos($m[1],'#') !== false){
-					$fileName = str_replace('#', '', $m[1]);
-					$fileName = str_replace('<?php echo ', '', $fileName);
-					$fileName = str_replace(' ?>', '', $fileName);
-					$path = '#./files/ruleset/'.$fileName.'.xml';
+				preg_match('@(?:^|\.?/)(modules/[\w-]+)@', $this->path, $mm);
+				$modulePath = $mm[1];
 
-					preg_match('@(?:^|\.?/)(modules/[\w-]+)@', $this->path, $mm);
-					$module_path = $mm[1];
-					list($rulsetFile) = explode('.', $fileName);  
-					$autoPath = $module_path.'/ruleset/'.$rulsetFile.'.xml';
-					$m[1] = $rulsetFile;
-				}else if(preg_match('@(?:^|\.?/)(modules/[\w-]+)@', $this->path, $mm)) {
-					$module_path = $mm[1];
-					$path = $module_path.'/ruleset/'.$m[1].'.xml';
+				if(preg_match('@<\?php echo (.*) \?>@', $m[1], $mm))
+				{
+					$isVariable = TRUE;
+					$tmp = preg_replace('@<\?php echo (.*) \?>@', "' . \\1 . '", $m[1]);
+					$variableStr = '<?php $_ruleset = \'' . $tmp . '\';';
+
+					$matches[1]  = $variableStr . 'Context::loadRulesetFile($_ruleset, "' . $modulePath . '") ?>' . $matches[1];
+					$matches[2] = '<input type="hidden" name="ruleset" value="<?php echo Context::getRulesetKey($_ruleset); ?>" />' . $matches[2];
 				}
-
-				$matches[2] = '<input type="hidden" name="ruleset" value="'.$m[1].'" />'.$matches[2];
-				//assign to addJsFile method for js dynamic recache
-				$matches[1]  = '<?php Context::addJsFile("'.$path.'", false, "", 0, "head", true, "'.$autoPath.'") ?'.'>'.$matches[1];
+				else
+				{
+					$matches[1] = '<?php Context::loadRulesetFile("' . $m[1] . '", "' . $modulePath . '"); ?>' . $matches[1];
+					$matches[2] = '<input type="hidden" name="ruleset" value="<?php echo Context::getRulesetKey("'.$m[1].'"); ?>" />'.$matches[2];
+				}
 			}
 		}
 
@@ -454,7 +449,7 @@ class TemplateHandler {
 					return "<?php \$__tpl=TemplateHandler::getInstance();echo \$__tpl->compile('{$fileDir}','{$pathinfo['basename']}') ?>";
 
 				// <!--%load_js_plugin-->
-				case 'load_js_plugin': 
+				case 'load_js_plugin':
 					$plugin = $this->_replaceVar($m[5]);
 					if(strpos($plugin, '$__Context') === false) $plugin = "'{$plugin}'";
 

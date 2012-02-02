@@ -1,0 +1,8 @@
+<query id="updateMemberJoinFormDriverDefault" action="update">
+    <tables>
+        <table name="member_join_form" />
+    </tables>
+    <columns>
+        <column name="driver" default="default" />
+    </columns>
+</query>

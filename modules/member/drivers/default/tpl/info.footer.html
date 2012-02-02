@@ -1,0 +1,5 @@
+<div class="btnArea" cond="$memberInfo['member_srl'] == $logged_info->member_srl">
+	<span class="btn" cond="$driverConfig->identifier == 'email_address'"><a href="{getUrl('act', 'dispMemberDriverInterface', 'driver', 'default', 'dact', 'dispModifyEmailAddress')}">{$lang->cmd_modify_member_email_address}</a></span>
+	<span class="btn"><a href="{getUrl('act', 'dispMemberModifyInfo', 'member_srl', '', 'driver', 'default')}">{$lang->cmd_modify_member_info}</a></span>
+	<span class="btn"><a href="{getUrl('act','dispMemberModifyPassword','member_srl','', 'driver', 'default')}">{$lang->cmd_modify_member_password}</a></span>
+</div>

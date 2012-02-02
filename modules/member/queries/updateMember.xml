@@ -1,0 +1,14 @@
+<query id="updateMember" action="update">
+    <tables>
+        <table name="member_common" />
+    </tables>
+    <columns>
+        <column name="allow_message" var="allow_message" />
+        <column name="description" var="description" />
+        <column name="is_admin" var="is_admin" />
+        <column name="denied" var="denied" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" filter="number" />
+    </conditions>
+</query>

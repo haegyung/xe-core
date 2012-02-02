@@ -1,0 +1,168 @@
+<load target="js/config.js" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<script type="text/javascript">
+	xe.lang.msg_delete_extend_form = '{$lang->msg_delete_extend_form}';
+	xe.lang.confirm_delete = '{$lang->confirm_delete}';
+	xe.lang.cmd_delete = '{$lang->cmd_delete}';
+	xe.lang.cmd_use = '{$lang->use}';
+	xe.lang.cmd_edit = '{$lang->cmd_edit}';
+	xe.lang.cmd_required = '{$lang->cmd_required}'
+	xe.lang.cmd_optional = '{$lang->cmd_optional}'
+	xe.lang.msg_null_prohibited_id = '{$lang->msg_null_prohibited_id}';
+</script>
+<form class="form" method="post">
+<input type="hidden" name="module" value="member" />
+<input type="hidden" name="driver" value="default" />
+<input type="hidden" name="act" value="procMemberAdminDriverInterface" />
+<input type="hidden" name="dact" value="procSaveConfig" />
+<input type="hidden" name="agreement" value="{$config->agreement}" />
+	<ul>
+		<li>
+			<p class="q">{$lang->enable_confirm}</p>
+			<p class="a">
+				<input type="radio" name="enable_confirm" id="enable_confirm_yes" value="Y" checked="checked"|cond="$config->enable_confirm == 'Y'" /> <label for="enable_confirm_yes">{$lang->cmd_yes}</label>
+				<input type="radio" name="enable_confirm" id="enable_confirm_no" value="N" checked="checked"|cond="$config->enable_confirm != 'Y'"/> <label for="enable_confirm_no">{$lang->cmd_no}</label>
+			</p>
+		</li>
+		<li>
+			<p class="q"><label for="change_password_date">{$lang->change_password_date}</label></p>
+			<p class="a"><input type="text" id="change_password_date" name="change_password_date" value="{$config->change_password_date}" style="width:30px" /><span class="desc">{$lang->unit_day}({$lang->about_change_password_date})</span></p>
+		</li>
+		<li>
+			<p class="q"><label for="agreement">{$lang->agreement}</label></p>
+			<p class="a">{$editor}</p>
+		</li>
+	</ul>
+	<div class="btnArea">
+		<span class="btn"><input type="submit" value="{$lang->cmd_save}" /></span>
+	</div>
+</form>
+
+<h3 class="h3">{$lang->cmd_manage_id}</h3>
+<ul class="form">
+	<li>
+		<p class="q"><label for="prohibited_id">{$lang->about_manage_id} {sprintf($lang->count_manage_id, count($deniedIDs))}</label></p>
+		<div class="a">
+			<ul class="textList" id="deniedList">
+				<li loop="$deniedIDs=>$denied_info" id="denied_{$denied_info->user_id}">{$denied_info->user_id} <a href="#" class="side" onclick="doUpdateDeniedID('{$denied_info->user_id}','delete','{$lang->confirm_delete}');return false;">{$lang->delete}</a></li>
+			</ul>
+		</div>
+		<div class="a">
+			<textarea rows="4" cols="42" id="prohibited_id" title="{$lang->add_prohibited_id}"></textarea>
+			<span class="btn"><button type="button" class="_addDeniedID">{$lang->add}</button></span>
+			<span class="desc">{$lang->multi_line_input}</span>
+		</div>
+	</li>
+</ul>
+
+<form method="post">
+<input type="hidden" name="module" value="member" />
+<input type="hidden" name="driver" value="default" />
+<input type="hidden" name="act" value="procMemberAdminDriverInterface" />
+<input type="hidden" name="dact" value="procSaveSignUpForm" />
+	<fieldset class="section suForm">
+		<h3 class="h3">{$lang->cmd_manage_form}</h3>
+		<div class="table even">
+			<table id="formTable" width="100%" border="1" cellspacing="0" class="sortable">
+				<thead>
+				<tr>
+					<th scope="col">{$lang->target}</th>
+					<th scope="col">{$lang->identifier}
+						[<a href="#helpDefault" class="tgAnchor">?</a>]
+						<div class="tgContent layer" id="helpDefault" style="right:0">
+							<p>{$lang->about_identifier}</p>
+						</div>
+					</th>
+					<th scope="col">{$lang->use}</th>
+					<th scope="col">{$lang->cmd_required}/{$lang->cmd_optional}</th>
+					<th scope="col" class="text">{$lang->description}</th>
+					<th scope="col">{$lang->cmd_edit}</th>
+				</thead>
+				<tbody class="uDrag">
+					<!--@foreach($config->signupForm as $item)-->
+					<!--@if($item->isIdentifier)-->
+					<tr class="sticky">
+						<input type="hidden" name="list_order[]" value="{$item->name}" />
+						<input type="hidden" name="usable_list[]" value="{$item->name}"/>
+						<input type="hidden" name="{$item->name}" value="requierd"/>
+						<th scope="row">
+							<span class="_title" style="padding-left:20px">{$item->title}</span>
+						</th>
+						<td><input type="radio" name="identifier" value="{$item->name}" checked="checked" /></td>
+						<td><input type="checkbox" name="usable_list[]" value="{$item->name}" title="{$lang->use}" checked="checked"  disabled="disabled" /></td>
+						<td>
+							<input type="radio" id="{$item->name}_re" name="{$item->name}" value="requierd" checked="checked" disabled="disabled" /> <label for="{$item->name}_re">{$lang->cmd_required}</label>
+							<input type="radio" id="{$item->name}_op" name="{$item->name}" value="option" disabled="disabled" /> <label for="{$item->name}_op">{$lang->cmd_optional}</label>
+						</td>
+						<td class="text">&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<!--@elseif($item->isDefaultForm)-->
+					<tr class="_imageType"|cond="$item->imageType">
+						<input type="hidden" name="list_order[]" value="{$item->name}" />
+						<input type="hidden" name="usable_list[]" value="{$item->name}" cond="$item->mustRequired"/>
+						<input type="hidden" name="{$item->name}" value="requierd" cond="$item->mustRequired"/>
+						<th scope="row">
+							<div class="wrap">
+								<button type="button" class="dragBtn">Move to</button>
+								<span class="_title">{$item->title}</span>
+							</div>
+						</th>
+						<td><input type="radio" name="identifier" value="{$item->name}" cond="$item->name== 'email_address' || $item->name=='user_id'" /></td>
+						<td><input type="checkbox" name="usable_list[]" value="{$item->name}" title="{$lang->use}" checked="checked"|cond="$item->mustRequired || $item->isUse" disabled="disabled"|cond="$item->mustRequired" /></td>
+						<td>
+							<input type="radio" id="{$item->name}_re" name="{$item->name}" value="required" checked="checked"|cond="$item->mustRequired || $item->required" disabled="disabled"|cond="$item->mustRequired || !$item->isUse" /> <label for="{$item->name}_re">{$lang->cmd_required}</label>
+							<input type="radio" id="{$item->name}_op" name="{$item->name}" value="option" checked="checked"|cond="!$item->mustRequired && ($item->isUse && !$item->required)" disabled="disabled"|cond="$item->mustRequired || !$item->isUse" /> <label for="{$item->name}_op">{$lang->cmd_optional}</label>
+							<div cond="$item->imageType" class="_subItem">
+								<label for="{$item->name}_max_width">{$lang->cmd_image_max_width}</label><input type="text" name="{$item->name}_max_width" id="{$item->name}_max_width" value="{$item->max_width}" style="width:30px" /> px
+								/
+								<label for="{$item->name}_max_height">{$lang->cmd_image_max_height}</label><input type="text" name="{$item->name}_max_height" id="{$item->name}_max_height" value="{$item->max_height}" style="width:30px" /> px
+							</div>
+						</td>
+						<td class="text">&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<!--@else-->
+					<tr>
+						<input type="hidden" name="list_order[]" value="{$item->name}" />
+						<input type="hidden" name="{$item->name}_member_join_form_srl" value="{$item->member_join_form_srl}" />
+						<th scope="row">
+							<div class="wrap">
+								<button type="button" class="dragBtn">Move to</button>
+								<span class="_title">{$item->title}</span>
+							</div>
+						</th>
+						<td></td>
+						<td><input type="checkbox" name="usable_list[]" value="{$item->name}" title="{$lang->use}" checked="checked"|cond="$item->isUse" /></td>
+						<td>
+							<input type="radio" id="{$item->name}_re" name="{$item->name}" value="required" checked="checked"|cond="$item->required" disabled="disabled"|cond="!$item->isUse"/> <label for="{$item->name}_re">{$lang->cmd_required}</label>
+							<input type="radio" id="{$item->name}_op" name="{$item->name}" value="option" checked="checked"|cond="$item->isUse && !$item->required" disabled="disabled"|cond="!$item->isUse" /> <label for="{$item->name}_op">{$lang->cmd_optional}</label>
+						</td>
+						<td class="text">{$item->description}</td>
+						<td id="{$item->member_join_form_srl}"><a href="#userDefine" class="modalAnchor _extendFormEdit">{$lang->cmd_edit}</a> | <a href="#" class="_extendFormDelete">{$lang->cmd_delete}</a></td>
+					</tr>
+					<!--@end-->
+					<!--@end-->
+				</tbody>
+			</table>
+		</div>
+		<p class="btnArea">
+			<span class="btn small"><a href="#userDefine" class="modalAnchor _extendFormEdit">{$lang->add_extend_form}...</a></span>
+		</p>
+		<p class="btnArea">
+			<span class="btn"><input type="submit" class="btn" value="{$lang->cmd_save}" /></span>
+		</p>
+	</fieldset>
+</form>
+<div class="modal" id="userDefine">
+	<form action="./" class="fg form" ruleset="insertJoinForm" method="post">
+		<input type="hidden" name="module" value="member" />
+		<input type="hidden" name="driver" value="{$driver}" />
+		<input type="hidden" name="act" value="procMemberAdminInsertJoinForm" />
+		<input type="hidden" name="success_return_url" value="{getUrl('act', $act)}" />
+		<div id="extendForm">
+		</div>
+	</form>
+</div>

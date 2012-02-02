@@ -1,0 +1,8 @@
+<query id="getCommonCount" action="select">
+    <tables>
+        <table name="member_common" />
+    </tables>
+    <columns>
+        <column name="count(member_srl)" alias="count" />
+    </columns>
+</query>

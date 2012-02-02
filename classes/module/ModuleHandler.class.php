@@ -243,7 +243,7 @@
 				$oMessageObject->dispMessage();
 				return $oMessageObject;
 			}
-			
+
 			// if(type == view, and case for using mobilephone)
 			if($type == "view" && Mobile::isFromMobilePhone() && Context::isInstalled())
 			{
@@ -343,7 +343,7 @@
 						}
 					}
 					if ($kind == 'admin'){
-						$grant = $oModuleModel->getGrant($this->module_info, $logged_info);		
+						$grant = $oModuleModel->getGrant($this->module_info, $logged_info);
 						if(!$grant->is_admin && !$grant->manager) {
                             $this->error = 'msg_is_not_manager';
                             $oMessageObject = &ModuleHandler::getModuleInstance('message','view');
@@ -351,8 +351,8 @@
                             $oMessageObject->setMessage($this->error);
                             $oMessageObject->dispMessage();
                             return $oMessageObject;
-                        }   
-						
+                        }
+
 					}
 				}
 				else if($xml_info->default_index_act && method_exists($oModule, $xml_info->default_index_act))
@@ -448,8 +448,8 @@
 				if ($message != 'success') $_SESSION['XE_VALIDATOR_MESSAGE'] = $message;
 				$_SESSION['XE_VALIDATOR_MESSAGE_TYPE'] = $messageType;
 				$_SESSION['XE_VALIDATOR_RETURN_URL'] = $redirectUrl;
-			}	
-			
+			}
+
 			unset($logged_info);
             return $oModule;
         }
@@ -701,6 +701,11 @@
 		 */
 		function &getDriverInstance($moduleName, $driverName)
 		{
+			if(empty($moduleName) || empty($driverName))
+			{
+				return NULL;
+			}
+
 			// If there is no instance of driver in global variable, create a new one
 			if(!$GLOBALS['__LOADED_DRIVERS__'][$moduleName][$driverName])
 			{
