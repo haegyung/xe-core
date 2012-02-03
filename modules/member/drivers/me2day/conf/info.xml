@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<driver>
+	<title xml:lang="ko">미투데이 회원 드라이버</title>
+	<title xml:lang="en">me2day member driver</title>
+	<display_name xml:lang="ko">미투데이</display_name>
+	<display_name xml:lang="en">me2day</display_name>
+	<description xml:lang="ko">미투데이 회원 드라이버입니다.</description>
+	<description xml:lang="en">This is me2day driver of member module</description>
+	<version>1.0</version>
+	<date>2012-02-03</date>
+
+	<author email_address="developers@xpressengine.com" link="http://www.xpressengine.com">
+		<name xml:lang="ko">NHN</name>
+		<name xml:lang="en">NHN</name>
+	</author>
+
+	<options>
+		<option name="signup" value="N" />
+		<option name="form" value="N" />
+		<option name="button" value="Y" />
+		<option name="buttontext" value="Y" />
+		<option name="banner" value="Y" />
+	</options>
+</driver>

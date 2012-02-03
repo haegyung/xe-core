@@ -12,5 +12,6 @@
         <column name="is_admin" var="is_admin" default="N" />
         <column name="description" var="description" />
         <column name="list_order" var="list_order" />
+        <column name="driver" var="driver" default="default" />
     </columns>
 </query>

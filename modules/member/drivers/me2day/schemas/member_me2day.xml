@@ -1,0 +1,5 @@
+<table name="member_me2day">
+	<column name="member_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="user_id" type="varchar" size="80" notnull="notnull" unique="primary_key" />
+	<column name="extra_vars" type="text" />
+</table>

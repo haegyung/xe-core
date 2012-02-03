@@ -27,7 +27,7 @@ class MemberDriverDefault extends MemberDriver
 	/**
 	 * @brief Install Driver
 	 * @access public
-	 * @return boolean
+	 * @return Object
 	 * @developer NHN (developers@xpressengine.com)
 	 */
 	public function installDriver()
@@ -2772,4 +2772,4 @@ class MemberDriverDefault extends MemberDriver
 	}
 }
 /* End of file MemberDriverDefault.php */
-/* Location: ./modules/member/driver/xe/MeberDriverDefault.php */
+/* Location: ./modules/member/drivers/default/MeberDriverDefault.php */

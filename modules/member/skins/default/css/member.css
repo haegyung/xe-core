@@ -122,3 +122,6 @@
 .xm .selectBar li:last-child{border-right-color: #efefef;}
 .xm .selectBar li p{font-weight: bold; font-size: 25px; }
 .xm .selectBar li a{display: inline-block; padding: 5px; border: 1px solid #ccc; background: white; text-decoration: none; color: black!important; }
+/* Login Form */
+.xm .horizontal {margin-bottom: 10px; }
+.xm .normal {margin-bottom: 10px; }

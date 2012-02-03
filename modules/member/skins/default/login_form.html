@@ -13,7 +13,7 @@
 		</div>
 	</block>
 	<block cond="$value->name != 'horizontal'">
-			{$value->driver->getSigninTpl($value->type)}
+		<div class="normal">{$value->driver->getSigninTpl($value->type)}</div>
 	</block>
 </block>
 <include target="./common_footer.html" />

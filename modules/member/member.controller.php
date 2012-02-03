@@ -168,6 +168,12 @@ class memberController extends member {
 		if(!$this->memberInfo && $_SESSION['member_srl'] && $oMemberModel->isLogged() )
 		{
 			$oDriver = getDriver('member', $driverName);
+			if(!$oDriver)
+			{
+				$this->destroySessionInfo();
+				return new Object();
+			}
+
 			try
 			{
 				$this->memberVo = $oDriver->getMemberVo($_SESSION['member_srl']);
@@ -420,6 +426,7 @@ class memberController extends member {
 
 		unset($args->extra_vars);
 
+		$args->driver = $driver;
 		$output = executeQuery('member.insertMember', $args);
 		if(!$output->toBool())
 		{

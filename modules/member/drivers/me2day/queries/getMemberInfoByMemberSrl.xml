@@ -1,0 +1,13 @@
+<query id="getMemberInfoByMemberSrl" action="select">
+	<tables>
+		<table name="member_me2day" />
+		<table name="member_common" />
+	</tables>
+	<columns>
+		<column name="*" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="member_common.member_srl" default="member_me2day.member_srl" />
+		<condition operation="equal" column="member_me2day.member_srl" var="member_srl" notnull="notnull" pipe="and" />
+	</conditions>
+</query>

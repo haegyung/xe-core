@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lang>
+	<item name="me2day_application_key">
+		<value xml:lang="ko">애플리케이션 키</value>
+		<value xml:lang="en">Application Key</value>
+	</item>
+	<item name="me2day_about_application_key">
+		<value xml:lang="ko"><![CDATA[미투데이에서 발급 받은 애플리케이션 키를 입력하세요.<br />콜백 주소는 아래 주소를 이용하세요.]]></value>
+		<value xml:lang="en"><![CDATA[Please, input issued application key from me2day.<br />You can use below url on callback url.]]></value>
+	</item>
+	<item name="me2day_msg_missing_me2day_id">
+		<value xml:lang="ko"><![CDATA[미투데이 아이디가 없습니다.]]></value>
+	</item>
+</lang>

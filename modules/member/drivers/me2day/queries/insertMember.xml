@@ -1,0 +1,10 @@
+<query id="insertMember" action="insert">
+	<tables>
+		<table name="member_me2day" />
+	</tables>
+	<columns>
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<column name="user_id" var="user_id" notnull="notnull" />
+		<column name="extra_vars" var="extra_vars" />
+	</columns>
+</query>

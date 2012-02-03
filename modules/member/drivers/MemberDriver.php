@@ -342,6 +342,7 @@ abstract class MemberDriver extends Driver
 	 * @developer NHN (developers@xpressengine.com)
 	 */
 	abstract protected function createSigninRuleset();
+
 	/**
 	 * @brief Get admin insert member ruleset name
 	 * @access public
