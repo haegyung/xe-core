@@ -93,7 +93,6 @@ class memberController extends member {
 	 */
 	public function doSignin($driverName, $memberSrl)
 	{
-		$this->setSessionInfo();
 
 		$oDriver = getDriver('member', $driverName);
 		if(!$oDriver)
@@ -114,6 +113,21 @@ class memberController extends member {
 				$this->setRedirectUrl($e->getMessage());
 				return;
 			}
+			else
+			{
+				return new Object(-1, $e->getMessage());
+			}
+		}
+
+		if(!$output)
+		{
+			return new Object(-1, 'msg_invalid_request');
+		}
+
+		if(!$this->memberInfo)
+		{
+			$this->memberVo = $oDriver->getMemberVo($memberSrl);
+			$this->memberInfo = $this->memberVo->getMemberInfo();
 		}
 
 		// Update the latest login time
@@ -126,6 +140,8 @@ class memberController extends member {
 		{
 			return $trigger_output;
 		}
+
+		$this->setSessionInfo();
 
 		return new Object();
 	}
@@ -356,7 +372,6 @@ class memberController extends member {
 		{
 			return $output;
 		}
-
 		// Terms and Conditions portion of the information set up by members reaffirmed
 		$oModuleModel = &getModel('module');
 		$config = $oModuleModel->getModuleConfig('member');

@@ -76,6 +76,7 @@ class Member extends ModuleObject
 		$oMemberController = &getController('member');
 		$oMemberAdminController = &getAdminController('member');
 
+		$oMemberModel = getModel('member');
 		$groups = $oMemberModel->getGroups();
 		if(!count($groups))
 		{
@@ -172,26 +173,21 @@ class Member extends ModuleObject
 			return TRUE;
 		}
 
-		if(!$oDB->isColumnExists('member', 'list_order'))
-		{
-			return TRUE;
-		}
-		if(!$oDB->isIndexExists('member', 'idx_list_order'))
-		{
-			return TRUE;
-		}
-
+		// TODO : this code move to driver
+		// if(!$oDB->isColumnExists('member', 'list_order'))
+		// {
+			// return TRUE;
+		// }
+		// if(!$oDB->isIndexExists('member', 'idx_list_order'))
+		// {
+			// return TRUE;
+		// }
+//
 		if(!$oDB->isColumnExists('member_join_form', 'driver'))
 		{
 			return TRUE;
 		}
 		if(!$oDB->isIndexExists('member_join_form', 'unique_name_driver'))
-		{
-			return TRUE;
-		}
-
-		$output = executeQuery('member.getCommonCount');
-		if(!$output->data->count)
 		{
 			return TRUE;
 		}
@@ -261,18 +257,19 @@ class Member extends ModuleObject
 			$oDB->addColumn('member', 'find_account_answer', 'varchar', 250);
 		}
 
-		if(!$oDB->isColumnExists('member', 'list_order'))
-		{
-			$oDB->addColumn('member', 'list_order', 'number', 11);
-			set_time_limit(0);
-			$args->list_order = 'member_srl';
-			executeQuery('member.updateMemberListOrderAll', $args);
-			executeQuery('member.updateMemberListOrderAll');
-		}
-		if(!$oDB->isIndexExists('member', 'idx_list_order'))
-		{
-			$oDB->addIndex('member', 'idx_list_order', array('list_order'));
-		}
+		// TODO : this code move to driver
+		// if(!$oDB->isColumnExists('member', 'list_order'))
+		// {
+			// $oDB->addColumn('member', 'list_order', 'number', 11);
+			// set_time_limit(0);
+			// $args->list_order = 'member_srl';
+			// executeQuery('member.updateMemberListOrderAll', $args);
+			// executeQuery('member.updateMemberListOrderAll');
+		// }
+		// if(!$oDB->isIndexExists('member', 'idx_list_order'))
+		// {
+			// $oDB->addIndex('member', 'idx_list_order', array('list_order'));
+		// }
 
 		if(!$oDB->isColumnExists('member_join_form', 'driver'))
 		{
@@ -283,17 +280,6 @@ class Member extends ModuleObject
 		if(!$oDB->isIndexExists('member_join_form', 'unique_name_driver'))
 		{
 			$oDB->addIndex('member_join_form', 'unique_name_driver', array('column_name', 'driver'), TRUE);
-		}
-
-		$output = executeQuery('member.getCommonCount');
-		if(!$output->data->count)
-		{
-			$output = executeQuery('member.moveToCommon');
-
-			if(!$output->toBool())
-			{
-				return $output;
-			}
 		}
 
 		return new Object(0, 'success_updated');

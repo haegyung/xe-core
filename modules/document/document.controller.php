@@ -197,8 +197,12 @@ class documentController extends document {
 		}
 		// Remove iframe and script if not a top adminisrator in the session.
 		if($logged_info->is_admin != 'Y') $obj->content = removeHackTag($obj->content);
+
 		// An error appears if both log-in info and user name don't exist.
-		if(!$logged_info->member_srl && !$obj->nick_name) return new Object(-1,'msg_invalid_request');
+		if(!$logged_info->member_srl && !$obj->nick_name)
+		{
+			return new Object(-1,'msg_invalid_request');
+		}
 
 		$obj->lang_code = Context::getLangType();
 		// Insert data into the DB
@@ -641,7 +645,7 @@ class documentController extends document {
                 {
                     $oCacheHandler->invalidateGroupKey('documentList');
                 }
-                
+
 		return $output;
 	}
 

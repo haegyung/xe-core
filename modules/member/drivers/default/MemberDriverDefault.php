@@ -58,6 +58,8 @@ class MemberDriverDefault extends MemberDriver
 		$this->createFindAccountByQuestion();
 
 		// Configure administrator information
+		$oMemberAdminController = getAdminController('member');
+		$oMemberController = getController('member');
 		$admin_args->is_admin = 'Y';
 		$output = executeQuery('member.driver.default.getMemberList', $admin_args);
 		if(!$output->data)
@@ -66,9 +68,18 @@ class MemberDriverDefault extends MemberDriver
 			if($admin_info->user_id)
 			{
 				// Insert admin information
-				$oMemberAdminController->insertAdmin($admin_info);
+				$output = $oMemberAdminController->insertAdmin($admin_info);
+				if(!$output->toBool())
+				{
+					return $output;
+				}
+
 				// Log-in Processing
-				$output = $oMemberController->doLogin($admin_info->email_address);
+				$output = $oMemberController->doSignin('default', $admin_info->member_srl);
+				if(!$output->toBool())
+				{
+					return $output;
+				}
 			}
 		}
 
@@ -108,24 +119,12 @@ class MemberDriverDefault extends MemberDriver
 		$config = $oModuleModel->getDriverConfig('member', 'default');
 		$oDB = &DB::getInstance();
 
-		// check signup form ordering info
-		if(!$config->signupForm || !$config->identifier)
+		$output = executeQuery('member.getCommonCount');
+		if(!$output->data->count)
 		{
 			return TRUE;
 		}
 
-		if(!is_readable('./files/ruleset/insertMember.xml'))
-		{
-			return TRUE;
-		}
-		if(!is_readable('./files/ruleset/login.xml'))
-		{
-			return TRUE;
-		}
-		if(!is_readable('./files/ruleset/find_member_account_by_question.xml'))
-		{
-			return TRUE;
-		}
 		if(!$oDB->isColumnExists('member', 'wait_auth'))
 		{
 			return TRUE;
@@ -148,49 +147,18 @@ class MemberDriverDefault extends MemberDriver
 		FileHandler::makeDir('./files/member_extra_info/signature');
 		FileHandler::makeDir('./files/member_extra_info/profile_image');
 
-		$oModuleModel = getModel('module');
-		$config = $oModuleModel->getDriverConfig('member', 'default');
+		$output = executeQuery('member.getCommonCount');
+		if(!$output->data->count)
+		{
+			$output = executeQuery('member.moveToCommon');
 
-		$oModuleController = getController('module');
+			if(!$output->toBool())
+			{
+				return $output;
+			}
+		}
 
 		$oDB = &DB::getInstance();
-
-		// check signup form ordering info
-		if(!$config->signupForm || !$config->identifier)
-		{
-			$isOriConfigUpdate = FALSE;
-			$orgConfig = $oModuleModel->getModuleConfig('member');
-			if($orgConfig->signupForm)
-			{
-				$config->signupForm = $orgConfig->signupForm;
-				unset($orgConfig->signupForm);
-
-				$isOriConfigUpdate = TRUE;
-			}
-			else
-			{
-				$config->signupForm = $this->createSignupForm();
-			}
-
-			if($orgConfig->identifier)
-			{
-				$config->identifier = $orgConfig->identifier;
-				unset($orgConfig->identifier);
-
-				$isOriConfigUpdate = TRUE;
-			}
-			else
-			{
-				$config->identifier = 'email_address';
-			}
-
-			if($isOriConfigUpdate)
-			{
-				$oModuleController->insertModuleConfig('member', $orgConfig);
-			}
-
-			$oModuleController->insertDriverConfig('member', 'default', $config);
-		}
 
 		if(!$oDB->isColumnExists('member', 'wait_auth'))
 		{
@@ -747,6 +715,10 @@ class MemberDriverDefault extends MemberDriver
 	public function doSignin($memberSrl)
 	{
 		$oMemberVo = $this->getMemberVo($memberSrl);
+		if(!$oMemberVo)
+		{
+			throw new MemberDriverException('msg_invalid_request');
+		}
 
 		$config = $this->getConfig();
 
@@ -2105,7 +2077,6 @@ class MemberDriverDefault extends MemberDriver
 	}
 
 
-	//TODO super::createRuleset 쓰기:w
 	/**
 	 * @brief create signin ruleset
 	 * @access private
@@ -2136,7 +2107,7 @@ class MemberDriverDefault extends MemberDriver
 	 */
 	private function createFindAccountByQuestion()
 	{
-		$config = getConfig();
+		$config = $this->getConfig();
 		$identifier = $config->identifier;
 
 		$fields = array();

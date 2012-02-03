@@ -29,7 +29,6 @@
             $oDB->addIndex("documents","idx_module_document_srl", array("module_srl","document_srl"));
             $oDB->addIndex("documents","idx_module_blamed_count", array("module_srl","blamed_count"));
             $oDB->addIndex("document_aliases", "idx_module_title", array("module_srl","alias_title"), true);
-            $oDB->addIndex("document_extra_vars", "unique_extra_vars", array("module_srl","document_srl","var_idx","lang_code"), true);
             // 2007. 10. 17 Add a trigger to delete all posts together when the module is deleted
             $oModuleController->insertTrigger('module.deleteModule', 'document', 'controller', 'triggerDeleteModuleDocuments', 'after');
 
@@ -99,7 +98,7 @@
 
             // 2011. 03. 30 Cubrid index Check the index in the document_extra_vars table
             if(!$oDB->isIndexExists("document_extra_vars", "idx_document_list_order")) return true;
-			
+
 			//2011. 04. 07 adding description column to document categories
 			if(!$oDB->isColumnExists("document_categories","description")) return true;
 
@@ -151,7 +150,7 @@
             // 2007. 10. 17 Add a trigger to delete all posts together when the module is deleted
             if(!$oModuleModel->getTrigger('module.deleteModule', 'document', 'controller', 'triggerDeleteModuleDocuments', 'after'))
                 $oModuleController->insertTrigger('module.deleteModule', 'document', 'controller', 'triggerDeleteModuleDocuments', 'after');
-            // 2007. 10. 25 add columns(parent_srl, expand) 
+            // 2007. 10. 25 add columns(parent_srl, expand)
             if(!$oDB->isColumnExists("document_categories","parent_srl")) $oDB->addColumn('document_categories',"parent_srl","number",12,0);
             if(!$oDB->isColumnExists("document_categories","expand")) $oDB->addColumn('document_categories',"expand","char",1,"N");
             if(!$oDB->isColumnExists("document_categories","group_srls")) $oDB->addColumn('document_categories',"group_srls","text");
@@ -243,7 +242,7 @@
             if(!$oDB->isIndexExists("document_extra_vars", "idx_document_list_order")) {
                 $oDB->addIndex("document_extra_vars", "idx_document_list_order", array("document_srl","module_srl","var_idx"), false);
             }
-			
+
 			//2011. 04. 07 adding description column to document categories
 			if(!$oDB->isColumnExists("document_categories","description")) $oDB->addColumn('document_categories',"description","varchar",200,0);
 

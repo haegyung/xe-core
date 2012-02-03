@@ -14,14 +14,6 @@
     <column name="birthday" type="char" size="8" />
 	<column name="wait_auth" type="char" size="1" default="N" />
     <column name="allow_mailing" type="char" size="1" default="Y" notnull="notnull" index="idx_allow_mailing" />
-    <column name="allow_message" type="char" size="1" default="Y" notnull="notnull" />
-    <column name="denied" type="char" size="1" default="N" index="idx_is_denied" />
-    <column name="limit_date" type="date" />
-    <column name="regdate" type="date" index="idx_regdate" />
-    <column name="last_login" type="date" index="idx_last_login" />
     <column name="change_password_date" type="date" />
-    <column name="is_admin" type="char" size="1" default="N" index="idx_is_admin" />
-    <column name="description" type="text" />
     <column name="extra_vars" type="text" />
-    <column name="list_order" type="number" size="11" notnull="notnull" index="idx_list_order" />
 </table>
