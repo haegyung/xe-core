@@ -470,6 +470,7 @@
 			$_SESSION['XE_VALIDATOR_MESSAGE'] = '';
 			$_SESSION['XE_VALIDATOR_MESSAGE_TYPE'] = '';
 			$_SESSION['XE_VALIDATOR_RETURN_URL'] = '';
+			$_SESSION['INPUT_ERROR'] = '';
 		}
 
 		function _setInputValueToSession()
