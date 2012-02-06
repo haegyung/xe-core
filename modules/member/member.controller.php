@@ -83,7 +83,6 @@ class memberController extends member {
 		}
 
 		return $output;
-
 	}
 
 	/**
@@ -514,56 +513,32 @@ class memberController extends member {
 		}
 		return $oDriver->isValidateValue($name, $value, $memberSrl);
 	}
-	//////////////////////////////////////////////////// old Function ////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////// regacy Function ////////////////////////////////////////////////////////////
 
 	/**
 	 * @brief Log-in by checking user_id and password
 	 **/
 	function procMemberLogin($user_id = null, $password = null, $keep_signed = null) {
-		// Variables
-		if(!$user_id) $user_id = Context::get('user_id');
-		$user_id = trim($user_id);
-
-		if(!$password) $password = Context::get('password');
-		$password = trim($password);
-
-		if(!$keep_signed) $keep_signed = Context::get('keep_signed');
-		// Return an error when id and password doesn't exist
-		if(!$user_id) return new Object(-1,'null_user_id');
-		if(!$password) return new Object(-1,'null_password');
-
-		$output = $this->doLogin($user_id, $password, $keep_signed=='Y'?true:false);
-		if (!$output->toBool()) return $output;
-
-		$oModuleModel = &getModel('module');
-		$config = $oModuleModel->getModuleConfig('member');
-
-		// Check change_password_date
-		$limit_date = $config->change_password_date;
-
-		// Check if change_password_date is set
-		if ($limit_date > 0) {
-			$oMemberModel = &getModel('member');
-			//$member_info = $oMemberModel->getMemberInfoByUserID($user_id, $columnList);
-			if ($this->memberInfo->change_password_date < date ('YmdHis', strtotime ('-' . $limit_date . ' day'))) {
-				$this->setRedirectUrl(getNotEncodedUrl('','vid',Context::get('vid'),'mid',Context::get('mid'),'act','dispMemberModifyPassword'));
-			}
+		if($user_id)
+		{
+			Context::set('user_id', $user_id);
 		}
 
-		if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
-
-			if(!$config->after_login_url) {
-				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'mid', Context::get('mid'), 'act', '');
-			} else {
-				$returnUrl = $config->after_login_url;
-			}
-
-			$this->setRedirectUrl($returnUrl);
-			return;
+		if($password)
+		{
+			Context::set('password', $password);
 		}
 
-		return $output;
+		if($keep_signed)
+		{
+			Context::set('keep_signed', $keep_signed);
+		}
+
+		Context::set('driver', 'default');
+		return $this->procMemberSignin();
 	}
+	//////////////////////////////////////////////////// old Function ////////////////////////////////////////////////////////////
+
 
 	/**
 	 * @brief Login by openid
@@ -2099,7 +2074,7 @@ class memberController extends member {
 		foreach($_SESSION as $key => $val) {
 			$_SESSION[$key] = '';
 		}
-		session_destroy();
+		@session_destroy();
 		setcookie(session_name(), '', time()-42000, '/');
 		setcookie('sso','',time()-42000, '/');
 

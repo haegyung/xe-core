@@ -1,0 +1,20 @@
+<h1 class="h1">{$lang->msg_leave_member}</h1>
+
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<form action="./" method="post">
+<input type="hidden" name="module" value="member" />
+<input type="hidden" name="act" value="procMemberDriverInterface" />
+<input type="hidden" name="driver" value="me2day" />
+<input type="hidden" name="dact" value="procUnregister" />
+
+<div class="message info">
+	<p>{$lang->me2day_about_unregister_confirm}</p>
+</div>
+
+<div class="btnArea">
+	<span class="btn"><input type="submit" value="{$lang->cmd_leave}" /></span>
+</div>
+</form>

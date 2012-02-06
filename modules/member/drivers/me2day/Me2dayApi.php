@@ -7,6 +7,7 @@
 class Me2dayApi
 {
 	const API_GET_AUTH_URL = 'http://me2day.net/api/get_auth_url.xml';
+	const API_GET_PERSON = 'http://me2day.net/api/get_person/%s.xml';
 	const SESSION_NAME = '__ME2DAY_API__';
 
 	private static $CURL_OPTIONS = array(
@@ -54,7 +55,7 @@ class Me2dayApi
 	/**
 	 * @brief Get auth url
 	 * @access public
-	 * @return string
+	 * @return stdClass $result->token, $result->url
 	 * @developer NHN (developers@xpressengine.com)
 	 */
 	public function getAuthUrl()
@@ -69,6 +70,29 @@ class Me2dayApi
 		catch(Exception $e)
 		{
 			throw new Exception(sprintf('%s in Me2dayApi::getAuthUrl', $e->getMessage()));
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @brief Get Person information
+	 * @access public
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getPerson()
+	{
+		$url = $this->makeRequestUrl(sprintf(self::API_GET_PERSON, $this->userId));
+		$xml = self::request($url);
+
+		try
+		{
+			$result = self::parse($xml);
+		}
+		catch(Exception $e)
+		{
+			throw new Exception(sprintf('%s in Me2dayApi::getPerson', $e->getMessage()));
 		}
 
 		return $result;
@@ -182,7 +206,61 @@ class Me2dayApi
 			case 'auth_token':
 				$result = self::parseAuthToken($oXml);
 				break;
+			case 'person':
+				$result = self::parsePerson($oXml);
+				break;
 		}
+
+		return $result;
+	}
+
+	/**
+	 * @brief parse Person
+	 * @access private
+	 * @param $oXml Instance of SimpleXMLElement
+	 * @return stdClass
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	private static function parsePerson($oXml)
+	{
+		$result = new stdClass();
+		$result->id = (string)$oXml->id;
+		$result->openid = (string)$oXml->openid;
+		$result->nickname = (string)$oXml->nickname;
+		$result->face = (string)$oXml->face;
+		$result->description = (string)$oXml->description;
+		$result->homepage = (string)$oXml->homepage;
+		$result->email = (string)$oXml->email;
+		$result->cellphone = (string)$oXml->cellphone;
+		$result->messenger = (string)$oXml->messenger;
+		$result->realname = (string)$oXml->realname;
+		$result->birthday = (string)$oXml->birthday;
+		$result->location->name = (string)$oXml->location->name;
+		$result->location->timezone = (string)$oXml->location->timezone;
+		$result->celebrity->name = (string)$oXml->celebrity->name;
+		$result->me2dayHome = (string)$oXml->me2dayHome;
+		$result->rssDaily = (string)$oXml->rssDaily;
+		$result->invitedBy = (string)$oXml->invitedBy;
+		$result->friendsCount = (int)$oXml->friendsCount;
+		$result->pinMeCount = (int)$oXml->pinMeCount;
+		$result->updated = (string)$oXml->updated;
+		$result->totalPosts = (int)$oXml->totalPosts;
+		$result->registered = (string)$oXml->registered;
+
+		$result->postIcons = array();
+		foreach($oXml->postIcons->postIcon as $oPostIcon)
+		{
+			$postIcon = new stdClass();
+			$postIcon->iconIndex = (int)$oPostIcon->iconIndex;
+			$postIcon->iconType = (int)$oPostIcon->iconType;
+			$postIcon->url = (string)$oPostIcon->url;
+			$postIcon->description = (string)$oPostIcon->description;
+			$postIcon->default = (string)$oPostIcon->default == 'true' ? TRUE : FALSE;
+			$result->postIcons[] = $postIcon;
+		}
+
+		$result->autoAccept = (string)$oXml->autoAccept == 'true' ? TRUE : FALSE;
+		$result->sex = (string)$oXml->sex;
 
 		return $result;
 	}
@@ -216,11 +294,11 @@ class Me2dayApi
 
 	/**
 	 * @brief destory session
-	 * @access private
+	 * @access public
 	 * @return void
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	private static function destroySession()
+	public static function destroySession()
 	{
 		unset($_SESSION[self::SESSION_NAME]);
 	}
@@ -267,6 +345,33 @@ class Me2dayApi
 	private static function createUserKey($userKey){
 		$randStr = substr(uniqid(), 0, 8);
 		return $randStr . md5($randStr . $userKey);
+	}
+
+	/**
+	 * @brief make request url
+	 * @access private
+	 * @param $url
+	 * @return string contain uid, ukey parameter
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	private function makeRequestUrl($url){
+		if(strpos('?', $url) !== FALSE)
+		{
+			$url .= '&';
+		}
+		else
+		{
+			$url .= '?';
+		}
+
+		$url .= sprintf('akey=%s', $this->apiKey);
+
+		if($this->userId && $this->userKey)
+		{
+			$url .= sprintf('&uid=%s&ukey=%s', $this->userId, self::createUserKey($this->userKey));
+		}
+
+		return $url;
 	}
 }
 

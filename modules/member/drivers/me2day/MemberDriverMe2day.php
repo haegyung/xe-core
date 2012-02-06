@@ -10,7 +10,7 @@ require_once _XE_PATH_ . 'modules/member/drivers/me2day/Me2dayApi.php';
 class MemberDriverMe2day extends MemberDriver
 {
 	const SESSION_NAME = '__ME2DAY_DRIVER__';
-	private static $extractVars = array('me2dayId');
+	private static $extractVars = array('me2dayId', 'me2dayNickName', 'face');
 
 	var $oMe2dayApi;
 
@@ -38,8 +38,8 @@ class MemberDriverMe2day extends MemberDriver
 	{
 		$interface->AdminView = array();
 		$interface->AdminController = array('procSaveConfig');
-		$interface->View = array('dispLogin', 'dispCallback');
-		$interface->Contoller = array();
+		$interface->View = array('dispLogin', 'dispCallback', 'dispUnregister');
+		$interface->Controller = array('procRefreshInfo', 'procUnregister');
 
 		return $interface;
 	}
@@ -54,7 +54,6 @@ class MemberDriverMe2day extends MemberDriver
 	{
 		return new Object();
 	}
-
 
 	/**
 	 * @brief Check update for driver
@@ -131,6 +130,42 @@ class MemberDriverMe2day extends MemberDriver
 	}
 
 	/**
+	 * @brief Get member info with signupForm
+	 * @access public
+	 * @param $memberSrl
+	 * @return stdClass
+	 *	memberInfo
+	 *	signupForm
+	 *	extend_form_list
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getMemberInfoWithSignupForm($memberSrl)
+	{
+		$oMemberVo = $this->getMemberVo($memberSrl);
+
+		// make result
+		$result = new stdClass();
+		$result->signupForm = array();
+
+		$formList = array('me2dayId', 'me2dayNickName', 'face');
+		$langList = array('me2day_id', 'me2day_nick_name', 'me2day_face');
+
+		foreach($formList as $no => $formName)
+		{
+			$formInfo = new stdClass();
+			$formInfo->title = Context::getLang($langList[$no]);
+			$formInfo->name = $formName;
+			$formInfo->isUse = TRUE;
+			$formInfo->isDefaultForm = TRUE;
+			$result->signupForm[] = $formInfo;
+		}
+		$result->memberInfo = get_object_vars($oMemberVo->getMemberInfo());
+		$result->memberInfo['face'] = sprintf('<img src="%s" alt="" />', $result->memberInfo['face']);
+
+		return $result;
+	}
+
+	/**
 	 * @brief Insert member
 	 * @access public
 	 * @param $memberInfo insert member information (type of stdClass)
@@ -140,7 +175,7 @@ class MemberDriverMe2day extends MemberDriver
 	 */
 	public function insertMember($memberInfo, $passwordIsHashed = FALSE)
 	{
-		if(!isset($memberInfo->me2dayId))
+		if(!isset($memberInfo->me2dayId, $memberInfo->me2dayNickName, $memberInfo->face))
 		{
 			return new Object(-1, 'me2day_msg_missing_me2day_id');
 		}
@@ -156,6 +191,8 @@ class MemberDriverMe2day extends MemberDriver
 		$args = new stdClass();
 		$args->member_srl = $memberInfo->member_srl;
 		$args->user_id = $memberInfo->me2dayId;
+		$args->nick_name = $memberInfo->me2dayNickName;
+		$args->face = $memberInfo->face;
 		$args->extra_vars = $memberInfo->extra_vars;
 
 		$oDB = DB::getInstance();
@@ -176,7 +213,6 @@ class MemberDriverMe2day extends MemberDriver
 		return $result;
 	}
 
-
 	/**
 	 * @brief Delete member
 	 * @access public
@@ -186,6 +222,14 @@ class MemberDriverMe2day extends MemberDriver
 	 */
 	public function deleteMember($memberSrl)
 	{
+		if(!$memberSrl)
+		{
+			return new Object(-1, 'msg_invalid_request');
+		}
+
+		$args->member_srl = $memberSrl;
+		$output = executeQuery('member.driver.me2day.deleteMember', $args);
+		return $output;
 	}
 
 	/**
@@ -197,6 +241,26 @@ class MemberDriverMe2day extends MemberDriver
 	 */
 	public function updateMember($memberInfo)
 	{
+		if(!$memberInfo->member_srl)
+		{
+			return new Object(-1, 'msg_invalid_request');
+		}
+
+		if(!$memberInfo->me2dayNickName || !$memberInfo->face)
+		{
+			return new Object(); // there are no change...
+		}
+
+		$args->member_srl = $memberInfo->member_srl;
+		$args->nick_name = $memberInfo->me2dayNickName;
+		$args->face = $memberInfo->face;
+		$output = executeQuery('member.driver.me2day.updateMember', $args);
+		if(!$output->toBool())
+		{
+			return $output;
+		}
+
+		return new Object();
 	}
 
 	/**
@@ -249,6 +313,36 @@ class MemberDriverMe2day extends MemberDriver
 	 */
 	public function getModifyFormInfo($memberSrl)
 	{
+		$oMemberVo = $this->getMemberVo($memberSrl);
+
+		$formList = array('me2dayId', 'me2dayNickName', 'face');
+		$langList = array('me2day_id', 'me2day_nick_name', 'me2day_face');
+
+		$formTags = array();
+		$memberInfo = $oMemberVo->getMemberInfo();
+		foreach($formList as $no => $formName)
+		{
+			$formInfo = new stdClass();
+			$formInfo->title = Context::getLang($langList[$no]);
+
+			if($formName == 'face')
+			{
+				$formInfo->inputTag = sprintf('<img src="%s" alt="" />', $memberInfo->{$formName});
+			}
+			else
+			{
+				$formInfo->inputTag = $memberInfo->{$formName};
+			}
+			$formTags[] = $formInfo;
+		}
+
+		$formInfo = new stdClass();
+		$formInfo->title = '';
+		$formInfo->inputTag = sprintf('<button id="refresh_info" type="button">%s</button>', Context::getLang('me2day_refresh_info'));
+		$formInfo->description = Context::getLang('me2day_about_refresh_info');
+		$formTags[] = $formInfo;
+
+		return $formTags;
 	}
 
 	/**
@@ -285,6 +379,17 @@ class MemberDriverMe2day extends MemberDriver
 	}
 
 	/**
+	 * @breif callback
+	 * @access private
+	 * @return void
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	private function destroySession()
+	{
+		unset($_SESSION[self::SESSION_NAME]);
+	}
+
+	/**
 	 * @brief Get driver config view tpl
 	 * @access public
 	 * @return string
@@ -295,6 +400,188 @@ class MemberDriverMe2day extends MemberDriver
 		$config = $this->getConfig();
 		Context::set('config', $config);
 		return parent::getConfigTpl();
+	}
+
+	/**
+	 * @brief Get member list tpl
+	 * @access public
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getListTpl()
+	{
+		// make filter title
+		$filter = Context::get('filter_type');
+		switch($filter)
+		{
+			case 'super_admin':
+				Context::set('filter_type_title', Context::getLang('cmd_show_super_admin_member'));
+				break;
+			case 'enable':
+				Context::set('filter_type_title', Context::getLang('approval'));
+				break;
+			case 'disable':
+				Context::set('filter_type_title', Context::getLang('denied'));
+				break;
+			default:
+				Context::set('filter_type_title', Context::getLang('cmd_show_all_member'));
+		}
+
+		// make sort order
+		$sortIndex = Context::get('sort_index');
+		$sortOrder = Context::get('sort_order');
+
+		if($sortIndex == 'regdate')
+		{
+			if($sortOrder == 'asc')
+			{
+				Context::set('regdate_sort_order', 'desc');
+			}
+			else
+			{
+				Context::set('regdate_sort_order', 'asc');
+			}
+		}
+		else
+		{
+			Context::set('regdate_sort_order', 'asc');
+		}
+
+		if($sortIndex == 'last_login')
+		{
+			if($sortOrder == 'asc')
+			{
+				Context::set('last_login_sort_order', 'desc');
+			}
+			else
+			{
+				Context::set('last_login_sort_order', 'asc');
+			}
+		}
+		else
+		{
+			Context::set('last_login_sort_order', 'desc');
+		}
+
+		// get list
+		$output = $this->getList();
+
+		// combine group info
+		$oMemberModel = getModel('member');
+		if($output->data)
+		{
+			foreach($output->data as $key => $member)
+			{
+				$output->data[$key]->group_list = $oMemberModel->getMemberGroups($member->member_srl, 0);
+			}
+		}
+
+		Context::set('driverInfo', $this->getDriverInfo());
+		Context::set('total_count', $output->total_count);
+		Context::set('total_page', $output->total_page);
+		Context::set('page', $output->page);
+		Context::set('member_list', $output->data);
+		Context::set('page_navigation', $output->page_navigation);
+
+		$security = new Security();
+		$security->encodeHtml('member_list..nick_name', 'member_list..group_list..');
+
+		return parent::getListTpl();
+	}
+
+	/**
+	 * @breif get list
+	 * @access private
+	 * @return array
+	 * @developer NHN (developers@xpressengine.com)
+	 **/
+	private function getList()
+	{
+		// make filter option
+		$filter = Context::get('filter_type');
+		switch($filter)
+		{
+			case 'super_admin':
+				$args->is_admin = 'Y';
+				break;
+			case 'enable':
+				$args->is_denied = 'N';
+				break;
+			case 'disable':
+				$args->is_denied = 'Y';
+				break;
+		}
+
+		// make search option
+		$searchTarget = trim(Context::get('search_target'));
+		$searchKeyword = trim(Context::get('search_keyword'));
+
+		switch($searchTarget)
+		{
+			case 'me2day_id':
+				$args->user_id = $searchKeyword;
+				break;
+			case 'me2day_nickname':
+				$args->nick_name = $searchKeyword;
+				break;
+			case 'regdate':
+				$args->regdate = preg_replace("/[^0-9]/", "", $searchKeyword);
+				break;
+			case 'regdate_more':
+				$args->regdate_more = substr(preg_replace("/[^0-9]/", "", $searchKeyword) . '00000000000000', 0, 14);
+				break;
+			case 'regdate_less':
+				$args->regdate_less = substr(preg_replace("/[^0-9]/", "", $searchKeyword) . '00000000000000', 0, 14);
+				break;
+			case 'last_login':
+				$args->last_login = preg_replace("/[^0-9]/", "", $searchKeyword);
+				break;
+			case 'last_login_more':
+				$args->last_login_more = substr(preg_replace("/[^0-9]/", "", $searchKeyword) . '00000000000000', 0, 14);
+				break;
+			case 'last_login_less':
+				$args->last_login_less = substr(preg_replace("/[^0-9]/", "", $searchKeyword) . '00000000000000', 0, 14);
+				break;
+			case 'extra_vars':
+				$args->extra_vars = $searchKeyword;
+				break;
+		}
+
+		// make sort option
+		$sortOrder = Context::get('sort_order');
+		$sortIndex = Context::get('sort_index');
+		$selectedGroupSrl = Context::get('selected_group_srl');
+
+		if(!$sortIndex)
+		{
+			$sortIndex = 'list_order';
+		}
+
+		if(!$sortOrder)
+		{
+			$sortOrder = 'desc';
+		}
+
+		$args->sort_index = $sortIndex;
+		$args->sort_order = $sortOrder;
+
+		// select query id
+		if($selectedGroupSrl)
+		{
+			$queryId = 'member.driver.me2day.getMemberListWithGroup';
+		}
+		else
+		{
+			$queryId = 'member.driver.me2day.getMemberList';
+		}
+
+		// set etc. option
+		$args->page = Context::get('page');
+		$args->list_count = 40;
+		$args->page_count = 10;
+		$output = executeQueryArray($queryId, $args);
+
+		return $output;
 	}
 
 	/**
@@ -334,6 +621,9 @@ class MemberDriverMe2day extends MemberDriver
 	 */
 	public function dispCallback($oModule)
 	{
+		$oModule->setLayoutPath('./common/tpl/');
+		$oModule->setLayoutFile('default_layout');
+
 		if($this->oMe2dayApi->isLogged())
 		{
 			$userKey = $this->oMe2dayApi->getUserKey();
@@ -348,11 +638,51 @@ class MemberDriverMe2day extends MemberDriver
 
 			$oMemberController = getController('member');
 
+			// if unregister?
+			if($memberVo && $_SESSION[self::SESSION_NAME]['IS_UNREGISTER'])
+			{
+				// check id
+				if($_SESSION[self::SESSION_NAME]['ME2DAY_ID'] != $userKey->userId)
+				{
+					$oMemberController->procMemberLogout();
+
+					return new Object(-1, 'msg_invalid_request');
+				}
+
+				// unregister
+				$output = $oMemberController->deleteMember($memberVo->getMemberSrl(), 'me2day');
+				if(!$output->toBool())
+				{
+					return $output;
+				}
+				$this->oMe2dayApi->destroySession();
+				$this->destroySession();
+
+				$url = getNotEncodedUrl('', 'vid', $vid, 'mid', $mid, 'document_srl', $documentSrl);
+				$oModule->setRedirectUrl($url);
+
+				return new Object();
+			}
+
+			// get person information
+			try
+			{
+				$person = $this->oMe2dayApi->getPerson();
+			}
+			catch(Exception $e)
+			{
+				return new Object(-1, $e->getMessage());
+			}
+
 			// if not exist, insert
 			if(!$memberVo)
 			{
 				$memberInfo = new stdClass();
 				$memberInfo->me2dayId = $userKey->userId;
+
+
+				$memberInfo->me2dayNickName = $person->nickname;
+				$memberInfo->face = $person->face;
 
 				$output = $oMemberController->insertMember($memberInfo, FALSE, 'me2day');
 				if(!$output->toBool())
@@ -365,6 +695,21 @@ class MemberDriverMe2day extends MemberDriver
 			else
 			{
 				$memberSrl = $memberVo->getMemberSrl();
+
+				// check change of nick name or face url
+				if($person->nickname != $memberVo->getMe2dayNickName() || $person->face != $memberVo->getFace())
+				{
+					// update information
+					$args = new stdClass();
+					$args->member_srl = $memberSrl;
+					$args->me2dayNickName = $person->nickname;
+					$args->face = $person->face;
+					$output = $this->updateMember($args);
+					if(!$output->toBool())
+					{
+						return $output;
+					}
+				}
 			}
 
 			// signin
@@ -382,22 +727,30 @@ class MemberDriverMe2day extends MemberDriver
 		$url = getNotEncodedUrl('', 'vid', $vid, 'mid', $mid, 'document_srl', $documentSrl);
 		$oModule->setRedirectUrl($url);
 
-		$oModule->setLayoutPath('./common/tpl/');
-		$oModule->setLayoutFile('default_layout');
-
 		return new Object();
 	}
 
 	/**
-	 * @breif callback
-	 * @access private
-	 * @return void
+	 * @breif display unregister
+	 * @access public
+	 * @param $oModule MemberView
+	 * @return Object
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	private function destroySession()
+	public function dispUnregister($oModule)
 	{
-		unset($_SESSION[self::SESSION_NAME]);
+		if(!Context::get('is_logged'))
+		{
+			return new Object(-1, 'msg_not_logged');
+		}
+
+		$innerTpl = $this->getTpl('unregister');
+		Context::set('innerTpl', $innerTpl);
+
+		$oModule->setTemplateFile('member_info_inner');
+		return new Object();
 	}
+
 
 	/**
 	 * @breif save config
@@ -418,6 +771,89 @@ class MemberDriverMe2day extends MemberDriver
 		}
 
 		$oModule->setRedirectUrl(getNotEncodedUrl('', 'module', 'admin', 'act', 'dispMemberAdminDriverConfig', 'driver', 'me2day'));
+
+		return new Object();
+	}
+
+	/**
+	 * @breif refresh info
+	 * @access public
+	 * @param $oModule MemberController
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function procRefreshInfo($oModule)
+	{
+		// get person information
+		try
+		{
+			$person = $this->oMe2dayApi->getPerson();
+		}
+		catch(Exception $e)
+		{
+			return new Object(-1, $e->getMessage());
+		}
+
+		$loggedInfo = Context::get('logged_info');
+		$oMemberVo = $this->getMemberVo($loggedInfo->member_srl);
+
+		// check change of nick name or face url
+		if($person->nickname != $oMemberVo->getMe2dayNickName() || $person->face != $oMemberVo->getFace())
+		{
+			// update information
+			$args = new stdClass();
+			$args->member_srl = $loggedInfo->member_srl;
+			$args->me2dayNickName = $person->nickname;
+			$args->face = $person->face;
+			$output = $this->updateMember($args);
+			if(!$output->toBool())
+			{
+				return $output;
+			}
+		}
+
+		return new Object();
+	}
+
+	/**
+	 * @breif unregister step 1
+	 * @access public
+	 * @param $oModule MemberController
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function procUnregister($oModule)
+	{
+		$loggedInfo = Context::get('logged_info');
+		if(!$loggedInfo)
+		{
+			return new Object(-1, 'msg_invalid_request');
+		}
+
+		// api session destory...
+		$this->oMe2dayApi->destroySession();
+
+		// mark unregister...
+		$_SESSION[self::SESSION_NAME]['IS_UNREGISTER'] = TRUE;
+		$_SESSION[self::SESSION_NAME]['ME2DAY_ID'] = $loggedInfo->me2dayId;
+
+		// redirect auth page
+		try
+		{
+			$this->oMe2dayApi->doLogin();
+		}
+		catch(Exception $e)
+		{
+			$this->destroySession();
+			return new Object(-1, $e->getMessage());
+		}
+
+		$_SESSION[self::SESSION_NAME]['mid'] = Context::get('mid');
+		$_SESSION[self::SESSION_NAME]['vid'] = Context::get('vid');
+		$_SESSION[self::SESSION_NAME]['document_srl'] = Context::get('document_srl');
+
+		$oModule->setLayoutPath('./common/tpl/');
+		$oModule->setLayoutFile('default_layout');
 
 		return new Object();
 	}

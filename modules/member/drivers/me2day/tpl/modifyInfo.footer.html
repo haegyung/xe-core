@@ -1,0 +1,18 @@
+<script type="text/javascript">
+jQuery(function($){
+	$('#refresh_info').click(function(){
+
+		function onComplete(data){
+			if(data.error)
+			{
+				alert(data.message);
+				return;
+			}
+
+			document.location = current_url;
+		}
+
+		$.exec_json('member.procMemberDriverInterface', { 'driver': 'me2day', 'dact': 'procRefreshInfo'}, onComplete);
+	});
+});
+</script>

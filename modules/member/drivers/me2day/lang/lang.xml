@@ -11,4 +11,108 @@
 	<item name="me2day_msg_missing_me2day_id">
 		<value xml:lang="ko"><![CDATA[미투데이 아이디가 없습니다.]]></value>
 	</item>
+	<item name="me2day_id">
+		<value xml:lang="ko"><![CDATA[미투데이 아이디]]></value>
+	</item>
+	<item name="me2day_nick_name">
+		<value xml:lang="ko"><![CDATA[미투데이 닉네임]]></value>
+	</item>
+	<item name="me2day_face">
+		<value xml:lang="ko"><![CDATA[미투데이 프로필 사진]]></value>
+	</item>
+	<item name="me2day_refresh_info">
+		<value xml:lang="ko"><![CDATA[미투데이 정보 갱신]]></value>
+	</item>
+	<item name="me2day_about_refresh_info">
+		<value xml:lang="ko"><![CDATA[미투데이의 회원 정보를 지금 바로 반영합니다.]]></value>
+	</item>
+	<item name="me2day_about_unregister_confirm">
+		<value xml:lang="ko"><![CDATA[사이트에서 탈퇴하시면 작성한 모든 글과 댓글에 대한 권한을 상실하게 됩니다. 탈퇴하시겠습니까?<br /> 탈퇴 버튼을 누르시면 정보보호를 위해 다시 한번 미투데이 인증을 거치게 됩니다.]]></value>
+	</item>
+	<item name="me2day_search_target_list" type="array">
+		<item name="me2day_id">
+			<value xml:lang="ko"><![CDATA[미투데이 아이디]]></value>
+		</item>
+		<item name="me2day_nickname">
+			<value xml:lang="ko"><![CDATA[미투데이 닉네임]]></value>
+		</item>
+		<item name="regdate">
+			<value xml:lang="ko"><![CDATA[가입일시]]></value>
+			<value xml:lang="en"><![CDATA[Sign up Date]]></value>
+			<value xml:lang="jp"><![CDATA[登録日]]></value>
+			<value xml:lang="zh-CN"><![CDATA[注册日期]]></value>
+			<value xml:lang="zh-TW"><![CDATA[註冊日期]]></value>
+			<value xml:lang="fr"><![CDATA[Jour d'Inscription]]></value>
+			<value xml:lang="ru"><![CDATA[Дата регистрации]]></value>
+			<value xml:lang="es"><![CDATA[Fecha del registro]]></value>
+			<value xml:lang="tr"><![CDATA[Kayıt Tarihi]]></value>
+			<value xml:lang="vi"><![CDATA[Ngày đăng kí]]></value>
+		</item>
+		<item name="regdate_more">
+			<value xml:lang="ko"><![CDATA[가입일시(이상)]]></value>
+			<value xml:lang="en"><![CDATA[Sign up Date (more)]]></value>
+			<value xml:lang="jp"><![CDATA[登録日(以上)]]></value>
+			<value xml:lang="zh-CN"><![CDATA[注册日期(以上)]]></value>
+			<value xml:lang="zh-TW"><![CDATA[註冊日期(以上)]]></value>
+			<value xml:lang="ru"><![CDATA[Дата регистрации(more)]]></value>
+			<value xml:lang="tr"><![CDATA[Kayıt Tarihi (detaylı)]]></value>
+			<value xml:lang="vi"><![CDATA[Ngày đăng kí nhiều nhất]]></value>
+		</item>
+		<item name="regdate_less">
+			<value xml:lang="ko"><![CDATA[가입일시(이하)]]></value>
+			<value xml:lang="en"><![CDATA[Sign up Date (less)]]></value>
+			<value xml:lang="jp"><![CDATA[登録日(以下)]]></value>
+			<value xml:lang="zh-CN"><![CDATA[注册日期(以下)]]></value>
+			<value xml:lang="zh-TW"><![CDATA[註冊日期(以下)]]></value>
+			<value xml:lang="ru"><![CDATA[Дата регистрации(less)]]></value>
+			<value xml:lang="tr"><![CDATA[Kayıt Tarihi (basit)]]></value>
+			<value xml:lang="vi"><![CDATA[Ngày đăng kí ít nhất]]></value>
+		</item>
+		<item name="last_login">
+			<value xml:lang="ko"><![CDATA[최근 로그인 일시]]></value>
+			<value xml:lang="en"><![CDATA[Last Sign in Date]]></value>
+			<value xml:lang="jp"><![CDATA[最終ログイン]]></value>
+			<value xml:lang="zh-CN"><![CDATA[最后登录]]></value>
+			<value xml:lang="zh-TW"><![CDATA[最近登入]]></value>
+			<value xml:lang="fr"><![CDATA[Jour de la connexion dernière]]></value>
+			<value xml:lang="ru"><![CDATA[Дата последнего входа]]></value>
+			<value xml:lang="es"><![CDATA[Fecha de su última conección]]></value>
+			<value xml:lang="tr"><![CDATA[Son Giriş Tarihi]]></value>
+			<value xml:lang="vi"><![CDATA[Lần cuối đăng nhập]]></value>
+		</item>
+		<item name="last_login_more">
+			<value xml:lang="ko"><![CDATA[최근 로그인 일시(이상)]]></value>
+			<value xml:lang="en"><![CDATA[Last Sign in Date (more)]]></value>
+			<value xml:lang="jp"><![CDATA[最終ログイン日(以上)]]></value>
+			<value xml:lang="zh-CN"><![CDATA[最后登录(以上)]]></value>
+			<value xml:lang="zh-TW"><![CDATA[最近登入(以上)]]></value>
+			<value xml:lang="fr"><![CDATA[최근로그인일시(이상)]]></value>
+			<value xml:lang="es"><![CDATA[최근로그인일시(이상)]]></value>
+			<value xml:lang="tr"><![CDATA[Son Giriş Tarihi (detaylı)]]></value>
+			<value xml:lang="vi"><![CDATA[Đăng nhập nhiều nhất]]></value>
+		</item>
+		<item name="last_login_less">
+			<value xml:lang="ko"><![CDATA[최근 로그인 일시(이하)]]></value>
+			<value xml:lang="en"><![CDATA[Last Sign in Date (less)]]></value>
+			<value xml:lang="jp"><![CDATA[最終ログイン日(以下)]]></value>
+			<value xml:lang="zh-CN"><![CDATA[最后登录시(以下)]]></value>
+			<value xml:lang="zh-TW"><![CDATA[最近登入(以下)]]></value>
+			<value xml:lang="fr"><![CDATA[최근로그인일시(이하)]]></value>
+			<value xml:lang="es"><![CDATA[최근로그인일시(이하)]]></value>
+			<value xml:lang="tr"><![CDATA[Son Giriş Tarihi (basit)]]></value>
+			<value xml:lang="vi"><![CDATA[Đăng nhập ít nhất]]></value>
+		</item>
+		<item name="extra_vars">
+			<value xml:lang="ko"><![CDATA[확장변수]]></value>
+			<value xml:lang="en"><![CDATA[Extra Vars]]></value>
+			<value xml:lang="jp"><![CDATA[拡張変数]]></value>
+			<value xml:lang="zh-CN"><![CDATA[扩展信息]]></value>
+			<value xml:lang="zh-TW"><![CDATA[延伸變數]]></value>
+			<value xml:lang="fr"><![CDATA[Variables additionnels ]]></value>
+			<value xml:lang="ru"><![CDATA[Экстра перем.]]></value>
+			<value xml:lang="es"><![CDATA[Variables Extra]]></value>
+			<value xml:lang="tr"><![CDATA[Fazladan Çeş.]]></value>
+			<value xml:lang="vi"><![CDATA[Thông tin bổ xung]]></value>
+		</item>
+	</item>
 </lang>

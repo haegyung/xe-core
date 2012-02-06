@@ -1,0 +1,38 @@
+<query id="getMemberListWithinGroup" action="select">
+    <tables>
+        <table name="member_me2day" alias="member_me2day" />
+        <table name="member_common" alias="member_common" />
+        <table name="member_group_member" alias="member_group" />
+    </tables>
+    <columns />
+    <conditions>
+        <condition operation="in" column="member_group.group_srl" var="selected_group_srl" notnull="notnull" />
+        <condition operation="equal" column="member_me2day.member_srl" var="member_group.member_srl" pipe="and" notnull="notnull" />
+        <condition operation="equal" column="member_common.member_srl" var="member_me2day.member_srl" pipe="and" notnull="notnull" />
+        <group pipe="and">
+            <condition operation="equal" column="is_admin" var="is_admin" />
+            <condition operation="equal" column="denied" var="is_denied" pipe="and" />
+			<condition operation="in" column="member_me2day.member_srls" var="member_srls" pipe="and" />
+        </group>
+        <group pipe="and">
+            <condition operation="like" column="user_id" var="user_id" />
+            <condition operation="like" column="nick_name" var="nick_name" pipe="or" />
+            <condition operation="like" column="extra_vars" var="extra_vars" pipe="or" />
+            <condition operation="like_prefix" column="regdate" var="regdate" pipe="or" />
+            <condition operation="like_prefix" column="last_login" var="last_login" pipe="or" />
+            <condition operation="more" column="regdate" var="regdate_more" pipe="or" />
+            <condition operation="less" column="regdate" var="regdate_less" pipe="or" />
+            <condition operation="more" column="last_login" var="last_login_more" pipe="or" />
+            <condition operation="less" column="last_login" var="last_login_less" pipe="or" />
+        </group>
+    </conditions>
+	<groups>
+		<group column="member_me2day.member_srl" />
+	</groups>
+    <navigation>
+        <index var="sort_index" default="member_common.list_order" order="sort_order" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

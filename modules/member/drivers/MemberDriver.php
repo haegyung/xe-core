@@ -168,7 +168,7 @@ abstract class MemberDriver extends Driver
 	}
 
 	/**
-	 * @brief Get member info tpl
+	 * @brief Get member info with signupForm
 	 * @access public
 	 * @param $memberSrl
 	 * @return stdClass

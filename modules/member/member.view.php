@@ -179,14 +179,12 @@ class memberView extends member {
 		}
 
 		$oModuleModel = getModel('module');
+
 		// check signup option
-		foreach($config->usedDriver as $driverName)
+		$driverInfo = $oModuleModel->getDriverInfoXml('member', $driver);
+		if($driverInfo->options['signup']->value != 'Y')
 		{
-			$driverInfo = $oModuleModel->getDriverInfoXml('member', $driverName);
-			if($driverInfo->options['signup']->value != 'Y')
-			{
-				return new Object(-1, 'msg_invalid_request');
-			}
+			return new Object(-1, 'msg_invalid_request');
 		}
 
 		// check driver object

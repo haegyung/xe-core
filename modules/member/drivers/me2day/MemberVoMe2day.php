@@ -8,6 +8,7 @@ class MemberVoMe2day extends MemberVO
 {
 	private $me2dayId;
 	private $me2dayNickName;
+	private $face;
 
 	/**
 	 * @brief set member info
@@ -18,10 +19,20 @@ class MemberVoMe2day extends MemberVO
 	 */
 	public function setMemberInfo($memberInfo)
 	{
-		parent::setMemberInfo($memberInfo);
+		// make common variable
+		$myInfo = array('user_id', 'nick_name', 'face');
+		$commonInfo = clone $memberInfo;
+		foreach($myInfo as $name)
+		{
+			unset($commonInfo->{$name});
+		}
 
-		$this->me2dayId = $memberInfo->me2dayId;
-		$this->me2dayNickName = $memberInfo->me2dayNickName;
+		parent::setMemberInfo($commonInfo);
+
+		// set member variable
+		$this->memberInfo->me2dayId = $this->me2dayId = $memberInfo->user_id;
+		$this->memberInfo->me2dayNickName = $this->me2dayNickName = $memberInfo->nick_name;
+		$this->memberInfo->face = $this->face = $memberInfo->face;
 		$this->setExtraVars($memberInfo->extra_vars);
 	}
 
@@ -60,7 +71,7 @@ class MemberVoMe2day extends MemberVO
 	 */
 	public function getMe2dayId()
 	{
-		return $this->userMe2dayId;
+		return $this->me2dayId;
 	}
 
 	/**
@@ -71,6 +82,17 @@ class MemberVoMe2day extends MemberVO
 	 */
 	public function getMe2dayNickName()
 	{
-		return $this->userMe2dayNickName;
+		return $this->me2dayNickName;
+	}
+
+	/**
+	 * @brief get face image url
+	 * @access public
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getFace()
+	{
+		return $this->face;
 	}
 }
