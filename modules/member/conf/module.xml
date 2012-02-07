@@ -47,7 +47,7 @@
 		<action name="procMemberDeleteOpenIDFromMember" type="controller" standalone="true" />
 		<action name="procMemberLogout" type="controller" standalone="true" />
 		<action name="procMemberCheckValue" type="controller" standalone="true" />
-		<action name="procMemberInsert" type="controller" standalone="true" ruleset="@insertMember" />
+		<action name="procMemberInsert" type="controller" standalone="true" />
 		<action name="procMemberModifyEmailAddress" type="controller" ruleset="modifyEmailAddress" />
 		<action name="procMemberModifyInfo" type="controller" standalone="true" ruleset="@insertMember" />
 		<action name="procMemberModifyPassword" type="controller" standalone="true" ruleset="modifyPassword" />
@@ -74,7 +74,7 @@
 		<action name="procMemberUpdateAuthMail" type="controller" standalone="true" />
 		<action name="procMemberResendAuthMail" type="controller" standalone="true" ruleset="resendAuthMail" />
 
-		<action name="procMemberAdminInsert" type="controller" standalone="true" ruleset="insertAdminMember" />
+		<action name="procMemberAdminInsert" type="controller" standalone="true" />
 		<action name="procMemberAdminDelete" type="controller" standalone="true" />
 		<action name="procMemberAdminInsertConfig" type="controller" standalone="true" ruleset="insertConfig" />
 		<action name="procMemberAdminInsertGroup" type="controller" standalone="true" ruleset="insertGroup" />
