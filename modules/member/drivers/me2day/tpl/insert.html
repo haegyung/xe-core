@@ -1,0 +1,4 @@
+<li loop="$formTags=>$formTag">
+	<p class="q">{$formTag->title} <em style="color:red" cond="$formTag->required">*</em></p>
+	<div class="a">{$formTag->inputTag}</div>
+</li>
