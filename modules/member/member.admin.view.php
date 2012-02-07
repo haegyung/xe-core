@@ -193,44 +193,10 @@ class MemberAdminView extends Member
 		$insertTpl = $oDriver->getInsertTpl();
 		Context::set('insertTpl', $insertTpl);
 
-		$this->setTemplateFile('insert_member');
-		return;
-
-		// retrieve extend form
-		$oMemberModel = &getModel('member');
-
-		$memberInfo = Context::get('member_info');
-		$memberInfo->signature = $oMemberModel->getSignature($this->memberInfo->member_srl);
+		$oMemberModel = getModel('member');
+		$memberInfo = $oMemberModel->getMemberInfoByMemberSrl($this->memberSrl);
 		Context::set('member_info', $memberInfo);
 
-		// get an editor for the signature
-		if($memberInfo->member_srl) {
-			$oEditorModel = &getModel('editor');
-			$option->primary_key_name = 'member_srl';
-			$option->content_key_name = 'signature';
-			$option->allow_fileupload = false;
-			$option->enable_autosave = false;
-			$option->enable_default_component = true;
-			$option->enable_component = false;
-			$option->resizable = false;
-			$option->height = 200;
-			$editor = $oEditorModel->getEditor($this->memberInfo->member_srl, $option);
-			Context::set('editor', $editor);
-		}
-
-		$security = new Security();
-		$security->encodeHTML('extend_form_list..');
-		$security->encodeHTML('extend_form_list..default_value.');
-
-		$formTags = $this->_getMemberInputTag($memberInfo);
-		Context::set('formTags', $formTags);
-		$member_config = $oMemberModel->getMemberConfig();
-
-		global $lang;
-		$identifierForm->title = $lang->{$member_config->identifier};
-		$identifierForm->name = $member_config->identifier;
-		$identifierForm->value = $memberInfo->{$member_config->identifier};
-		Context::set('identifierForm', $identifierForm);
 		$this->setTemplateFile('insert_member');
 	}
 

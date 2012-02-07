@@ -490,6 +490,145 @@ class MemberDriverMe2day extends MemberDriver
 	}
 
 	/**
+	 * @brief Get memberInfo tpl
+	 * @access public
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getInfoTpl()
+	{
+		$memberSrl = Context::get('member_srl');
+		$oMemberVo = $this->getMemberVo($memberSrl);
+		$oMemberModel = getModel('member');
+
+		// make result
+		$result = new stdClass();
+		$signupForm = array();
+
+		$formList = array('me2dayId', 'me2dayNickName', 'face');
+		$langList = array('me2day_id', 'me2day_nick_name', 'me2day_face');
+
+		foreach($formList as $no => $formName)
+		{
+			$formInfo = new stdClass();
+			$formInfo->title = Context::getLang($langList[$no]);
+			$formInfo->name = $formName;
+			$formInfo->isUse = TRUE;
+			$formInfo->isDefaultForm = TRUE;
+			$signupForm[] = $formInfo;
+		}
+
+		$memberInfo = $oMemberVo->getMemberInfo();
+		$extendForm = $oMemberModel->getCombineJoinForm($memberInfo);
+		Context::set('extend_form_list', $extendForm);
+
+		$memberInfo = get_object_vars($memberInfo);
+		$memberInfo['face'] = sprintf('<img src="%s" alt="" />', $memberInfo['face']);
+
+		if (!is_array($memberInfo['group_list']))
+		{
+			$memberInfo['group_list'] = array();
+		}
+		Context::set('signupForm', $signupForm);
+		Context::set('memberInfo', $memberInfo);
+
+		return parent::getInfoTpl();
+	}
+
+	/**
+	 * @brief Get member insert tpl
+	 * @access public
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getInsertTpl()
+	{
+		$memberSrl = Context::get('member_srl');
+
+		$oMemberVo = $this->getMemberVo($memberSrl);
+		$memberInfo = $oMemberVo->getMemberInfo();
+
+		$extendFormTags = $this->getFormInfo($memberSrl);
+
+		$formList = array('me2dayId', 'me2dayNickName', 'face');
+		$langList = array('me2day_id', 'me2day_nick_name', 'me2day_face');
+		$defaultForm = array();
+
+		foreach($formList as $no => $formName)
+		{
+			$formTag = new stdClass();
+			$formTag->title = Context::getLang($langList[$no]);
+			$formTag->name = $formName;
+			$formTag->isUse = TRUE;
+			$formTag->isDefaultForm = TRUE;
+
+			if($formName == 'face')
+			{
+				$formTag->inputTag = sprintf('<img src="%s" alt="" />', $memberInfo->face);
+			}
+			else
+			{
+				$formTag->inputTag = $memberInfo->{$formName};
+			}
+			$defaultForm[] = $formTag;
+		}
+
+		$formTags = array_merge($defaultForm, $extendFormTags);
+		Context::set('formTags', $formTags);
+		return parent::getInsertTpl();
+	}
+
+	/**
+	 * @brief get member signup form format
+	 * @access public
+	 * @param $memberInfo (when modify member_info of modified target member)
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function getFormInfo($memberInfo = NULL)
+	{
+		$oMemberModel = &getModel('member');
+		$extend_form_list = $oMemberModel->getCombineJoinForm($memberInfo);
+
+		if($memberInfo)
+		{
+			$memberInfo = get_object_vars($memberInfo);
+		}
+
+		$member_config = $this->getConfig();
+		$formTags = array();
+
+		if(!$member_config->signupForm)
+		{
+			return $formTags;
+		}
+
+		foreach($member_config->signupForm as $no => $formInfo)
+		{
+			if(!$formInfo->isUse)
+			{
+				continue;
+			}
+			unset($formTag);
+			$inputTag = '';
+
+			$formTag->name = $formInfo->name;
+			$formTag->description = $formInfo->description;
+
+			$formTag->title = $formInfo->title;
+			$extendForm = $extend_form_list[$formInfo->member_join_form_srl];
+			$inputTag = $oMemberModel->getExtendsInputForm($extendForm);
+
+			if($formInfo->required)
+			{
+				$formTag->required = TRUE;
+			}
+			$formTag->inputTag = $inputTag;
+			$formTags[] = $formTag;
+		}
+		return $formTags;
+	}
+	/**
 	 * @breif get list
 	 * @access private
 	 * @return array

@@ -984,7 +984,8 @@ class MemberDriverDefault extends MemberDriver
 		$member_config = $this->getConfig('member');
 
 		$member_srl = Context::get('member_srl');
-		$memberInfo = $this->getMemberInfoByMemberSrl($member_srl);
+		$oMemberVo = $this->getMemberVo($member_srl);
+		$memberInfo = $oMemberVo->getMemberInfo();
 
 		Context::set('member_config', $member_config);
 		$extendForm = $oMemberModel->getCombineJoinForm($memberInfo);
@@ -992,10 +993,6 @@ class MemberDriverDefault extends MemberDriver
 		Context::set('extend_form_list', $extendForm);
 		$memberInfo = get_object_vars($memberInfo);
 
-		if (!is_array($memberInfo['group_list']))
-		{
-			$memberInfo['group_list'] = array();
-		}
 		Context::set('memberInfo', $memberInfo);
 
 		$disableColumns = array('password', 'find_account_question');
@@ -1166,6 +1163,7 @@ class MemberDriverDefault extends MemberDriver
 
 		return $formTags;
 	}
+
 	/**
 	 * @brief get member signup form format
 	 * @access public

@@ -60,6 +60,15 @@ abstract class MemberDriver extends Driver
 	abstract public function updateMember($memberInfo);
 
 	/**
+	 * @brief do signin
+	 * @access public
+	 * @param $memberSrl
+	 * @return boolean
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	abstract public function doSignin($memberSrl);
+
+	/**
 	 * @brief Validate Login Info
 	 * @access public
 	 * @param $loginInfo login information

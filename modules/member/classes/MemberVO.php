@@ -17,6 +17,7 @@ class MemberVO
 	private $lastLogin;
 	private $isAdmin;
 	private $description;
+	private $groupList;
 
 
 	/**
@@ -48,12 +49,16 @@ class MemberVO
 		$this->memberSrl = $memberInfo->member_srl;
 		$this->allowMailing = $memberInfo->allow_mailing;
 		$this->allowMessage = $memberInfo->allow_message;
-		$this->denide = $memberInfo->denied;
+		$this->denied = $memberInfo->denied;
 		$this->limitDate = $memberInfo->limit_date;
 		$this->regdate = $memberInfo->regdate;
 		$this->lastLogin = $memberInfo->last_login;
 		$this->isAdmin = $memberInfo->is_admin;
 		$this->description = $memberInfo->description;
+
+		$oMemberModel = getModel('member');
+		$this->groupList = $oMemberModel->getMemberGroups($this->memberSrl);
+		$this->memberInfo->group_list = $this->groupList;
 	}
 
 	/**

@@ -28,7 +28,7 @@ class MemberVoDefault extends MemberVO
 	 * @return void
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	public function __construct($memberInfo = null)
+	public function __construct($memberInfo = NULL)
 	{
 		if($memberInfo)
 		{
