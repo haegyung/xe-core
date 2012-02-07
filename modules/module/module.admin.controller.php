@@ -97,8 +97,8 @@
             }
             if(!count($clones)) return;
 
-            $oModuleModel = &getModel('module');
-            $oModuleController = &getController('module');
+            $oModuleModel = getModel('module');
+            $oModuleController = getController('module');
             // Get module information
 			$columnList = array('module', 'module_category_srl', 'layout_srl', 'use_mobile', 'mlayout_srl', 'menu_srl', 'site_srl', 'skin', 'mskin', 'description', 'mcontent', 'open_rss', 'header_text', 'footer_text', 'regdate');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl, $columnList);
@@ -120,7 +120,7 @@
 			}
 
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // Copy a module
             foreach($clones as $mid => $browser_title) {
@@ -158,8 +158,8 @@
          * @brief Save the module permissions
          **/
         function procModuleAdminInsertGrant() {
-            $oModuleController = &getController('module');
-            $oModuleModel = &getModel('module');
+            $oModuleController = getController('module');
+            $oModuleModel = getModel('module');
             // Get module_srl
             $module_srl = Context::get('module_srl');
             // Get information of the module
@@ -234,7 +234,7 @@
             // Get information of the module_srl
             $module_srl = Context::get('module_srl');
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 			$columnList = array('module_srl', 'module', 'skin');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl, $columnList);
             if($module_info->module_srl) {
@@ -306,7 +306,7 @@
                     }
                 }
                 */
-                $oModuleController = &getController('module');
+                $oModuleController = getController('module');
                 $oModuleController->deleteModuleSkinVars($module_srl);
                 // Register
                 $oModuleController->insertModuleSkinVars($module_srl, $obj);
@@ -335,8 +335,8 @@
             $module_srls = explode(',',$vars->module_srls);
             if(!count($module_srls)) return new Object(-1,'msg_invalid_request');
 
-            $oModuleModel = &getModel('module');
-            $oModuleController= &getController('module');
+            $oModuleModel = getModel('module');
+            $oModuleController= getController('module');
 			$columnList = array('module_srl', 'module', 'use_mobile', 'mlayout_srl', 'menu_srl', 'site_srl', 'mid', 'mskin', 'browser_title', 'is_default', 'content', 'mcontent', 'open_rss', 'regdate');
             foreach($module_srls as $module_srl) {
                 $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl, $columnList);
@@ -375,8 +375,8 @@
             $modules = explode(',',$module_srls);
             if(!count($modules)) return new Object(-1,'msg_invalid_request');
 
-            $oModuleController = &getController('module');
-            $oModuleModel = &getModel('module');
+            $oModuleController = getController('module');
+            $oModuleModel = getModel('module');
 
 			$columnList = array('module_srl', 'module');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($modules[0], $columnList);
@@ -522,8 +522,8 @@
 		{
             if(!Context::get('is_logged')) return new Object(-1, 'msg_not_permitted');
 
-			$oModuleController = &getController('module');
-            $oModuleModel = &getModel('module');
+			$oModuleController = getController('module');
+            $oModuleModel = getModel('module');
             // Variable setting for site keyword
             $site_keyword = Context::get('site_keyword');
             $site_srl = Context::get('site_srl');

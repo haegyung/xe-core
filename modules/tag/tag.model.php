@@ -19,7 +19,7 @@
          **/
         function getTagList($obj) {
             if($obj->mid) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $obj->module_srl = $oModuleModel->getModuleSrlByMid($obj->mid);
                 unset($obj->mid);
             }

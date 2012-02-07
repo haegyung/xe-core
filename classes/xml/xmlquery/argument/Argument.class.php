@@ -85,7 +85,7 @@
 		}
 
                 function _escapeStringValue($value){
-                    $db = &DB::getInstance();
+                    $db = DB::getInstance();
                     $value = $db->addQuotes($value);
                     return '\''.$value.'\'';
 

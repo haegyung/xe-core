@@ -55,8 +55,8 @@
             $send_mail = Context::get('send_mail');
             if($send_mail != 'Y') $send_mail = 'N';
             // Check if there is a member to receive a message
-            $oMemberModel = &getModel('member');
-            $oCommunicationModel = &getModel('communication');
+            $oMemberModel = getModel('member');
+            $oCommunicationModel = getModel('communication');
             $receiver_member_info = $oMemberModel->getMemberInfoByMemberSrl($receiver_srl);
             if($receiver_member_info->member_srl != $receiver_srl) return new Object(-1, 'msg_not_exists_member');
             // check whether to allow to receive the message(pass if a top-administrator)
@@ -120,7 +120,7 @@
             $receiver_args->readed = 'N';
             $receiver_args->regdate = date("YmdHis");
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // messages to save in the sendor's message box
             if($sender_srl && $sender_log) {
@@ -159,7 +159,7 @@
             $message_srl = Context::get('message_srl');
             if(!$message_srl) return new Object(-1,'msg_invalid_request');
             // get the message
-            $oCommunicationModel = &getModel('communication');
+            $oCommunicationModel = getModel('communication');
             $message = $oCommunicationModel->getSelectedMessage($message_srl);
             if(!$message || $message->message_type != 'R') return new Object(-1,'msg_invalid_request');
 
@@ -183,7 +183,7 @@
             $message_srl = Context::get('message_srl');
             if(!$message_srl) return new Object(-1,'msg_invalid_request');
             // Get the message
-            $oCommunicationModel = &getModel('communication');
+            $oCommunicationModel = getModel('communication');
             $message = $oCommunicationModel->getSelectedMessage($message_srl);
             if(!$message) return new Object(-1,'msg_invalid_request');
             // Check a message type if 'S' or 'R'

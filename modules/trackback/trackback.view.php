@@ -23,7 +23,7 @@
             $logged_info = Context::get('logged_info');
             if(!$logged_info->member_srl) return $this->stop('msg_not_permitted');
             // Wanted Original article information
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($document_srl);
             if(!$oDocument->isExists()) return $this->stop('msg_invalid_document');
             if($oDocument->isSecret()) return $this->stop('msg_invalid_request');
@@ -52,7 +52,7 @@
                 if(!$current_module_srl) return new Object();
             }
             // Imported trackback settings of the selected module
-            $oTrackbackModel = &getModel('trackback');
+            $oTrackbackModel = getModel('trackback');
             $trackback_config = $oTrackbackModel->getTrackbackModuleConfig($current_module_srl);
             Context::set('trackback_config', $trackback_config);
             // Set a template file

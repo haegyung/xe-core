@@ -12,9 +12,9 @@
          **/
         function moduleInstall() {
             // Register in the action forward (to use in administrator mode)
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             // Set the default skin
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $config->skin = 'default';
             $config->colorset = 'normal';
             $oModuleController->insertModuleConfig('poll', $config);
@@ -33,7 +33,7 @@
          * @brief A method to check if the installation has been successful
          **/
         function checkUpdate() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             // 2007.10.17 When deleting posts/comments delete the poll as well
             if(!$oModuleModel->getTrigger('document.insertDocument', 'poll', 'controller', 'triggerInsertDocumentPoll', 'after')) return true;
             if(!$oModuleModel->getTrigger('comment.insertComment', 'poll', 'controller', 'triggerInsertCommentPoll', 'after')) return true;
@@ -49,8 +49,8 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oModuleModel = &getModel('module');
-            $oModuleController = &getController('module');
+            $oModuleModel = getModel('module');
+            $oModuleController = getController('module');
             // 2007.10.17 When deleting posts/comments delete the poll as well
             if(!$oModuleModel->getTrigger('document.deleteDocument', 'poll', 'controller', 'triggerDeleteDocumentPoll', 'after'))
                 $oModuleController->insertTrigger('document.deleteDocument', 'poll', 'controller', 'triggerDeleteDocumentPoll', 'after');

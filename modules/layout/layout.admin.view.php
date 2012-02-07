@@ -19,11 +19,11 @@
 		 **/
 		function dispLayoutAdminInstalledList() {
 			// Set a layout list
-			$oLayoutModel = &getModel('layout');
+			$oLayoutModel = getModel('layout');
 			$layout_list = $oLayoutModel->getDownloadedLayoutList('P', true);
 
 			// get Theme layout
-			$oAdminModel = &getAdminModel('admin');
+			$oAdminModel = getAdminModel('admin');
 			$themeList = $oAdminModel->getThemeList();
 			$themeLayoutList = array();
 			foreach($themeList as $themeInfo){
@@ -59,7 +59,7 @@
 		 */
 		function dispLayoutAdminInstalledMobileList() {
 			// Set a layout list
-			$oLayoutModel = &getModel('layout');
+			$oLayoutModel = getModel('layout');
 			$layout_list = $oLayoutModel->getDownloadedLayoutList('M', true);
 			Context::set('type', 'M');
 
@@ -90,7 +90,7 @@
 			if (!in_array($type, array('P', 'M'))) $type = 'P';
 			if (!$layout) return $this->stop('msg_invalid_request');
 
-			$oLayoutModel = &getModel('layout');
+			$oLayoutModel = getModel('layout');
 			$layout_info = $oLayoutModel->getLayoutInfo($layout, null, $type);
 			if (!$layout_info) return $this->stop('msg_invalid_request');
 
@@ -111,7 +111,7 @@
          * Once select a layout with empty value in the DB, then adjust values
          **/
         function dispLayoutAdminInsert() {
-			$oModel = &getModel('layout');
+			$oModel = getModel('layout');
 			$type = Context::get('type');
 			if (!in_array($type, array('P', 'M'))) $type = 'P';
 
@@ -127,7 +127,7 @@
 			if (!$layout_info) return $this->stop('msg_invalid_request');
 
 			// get Menu list
-			$oMenuAdminModel = &getAdminModel('menu');
+			$oMenuAdminModel = getAdminModel('menu');
 			$menu_list = $oMenuAdminModel->getMenus();
 			Context::set('menu_list', $menu_list);
 
@@ -157,7 +157,7 @@
             $layout_srl = Context::get('layout_srl');
 
 			// Get layout information
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_info = $oLayoutModel->getLayout($layout_srl);
 
 			// Error appears if there is no layout information is registered
@@ -167,7 +167,7 @@
             if($layout_info->type == 'faceoff') unset($layout_info->path);
 
             // Get a menu list
-            $oMenuAdminModel = &getAdminModel('menu');
+            $oMenuAdminModel = getAdminModel('menu');
             $menu_list = $oMenuAdminModel->getMenus();
             Context::set('menu_list', $menu_list);
 
@@ -197,7 +197,7 @@
 			$path = Context::get('path');
 			if (!$path) return $this->stop('msg_invalid_request');
 
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
 			$columnList = array('layout_srl', 'layout', 'module_srl', 'title', 'regdate');
             $layout_list = $oLayoutModel->getLayoutList(0, 'P', $columnList);
             Context::set('layout_list', $layout_list);
@@ -207,7 +207,7 @@
 
 		// deprecated
 		function dispLayoutAdminMobileContent() {
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
 			$columnList = array('layout_srl', 'layout', 'module_srl', 'title', 'regdate');
             $layout_list = $oLayoutModel->getLayoutList(0, 'M', $columnList);
             Context::set('layout_list', $layout_list);
@@ -223,13 +223,13 @@
             // Set the layout with its information
             $layout_srl = Context::get('layout_srl');
             // Get layout information
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_info = $oLayoutModel->getLayout($layout_srl);
             // Error appears if there is no layout information is registered
             if(!$layout_info) return $this->dispLayoutAdminContent();
 
             // Get Layout Code
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_file = $oLayoutModel->getUserLayoutHtml($layout_info->layout_srl);
             if(!file_exists($layout_file)){
                 // If faceoff
@@ -256,7 +256,7 @@
             $layout_image_path = $oLayoutModel->getUserLayoutImagePath($layout_info->layout_srl);
             Context::set('layout_image_path', $layout_image_path);
             // Set widget list
-            $oWidgetModel = &getModel('widget');
+            $oWidgetModel = getModel('widget');
             $widget_list = $oWidgetModel->getDownloadedWidgetList();
             Context::set('widget_list', $widget_list);
 
@@ -284,7 +284,7 @@
             $code_css = Context::get('code_css');
             if(!$layout_srl || !$code) return new Object(-1, 'msg_invalid_request');
             // Get the layout information
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_info = $oLayoutModel->getLayout($layout_srl);
             if(!$layout_info) return new Object(-1, 'msg_invalid_request');
             // Separately handle the layout if its type is faceoff
@@ -334,7 +334,7 @@
          **/
         function dispLayoutAdminInfo() {
             // Get the layout information
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_info = $oLayoutModel->getLayoutInfo(Context::get('selected_layout'));
             Context::set('layout_info', $layout_info);
             // Set the layout to be pop-up
@@ -362,7 +362,7 @@
 		// deprecated
         function dispLayoutAdminLayoutImageList(){
             $layout_srl = Context::get('layout_srl');
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             // Image List
             $layout_image_list = $oLayoutModel->getUserLayoutImageList($layout_srl);
             Context::set('layout_image_list',$layout_image_list);

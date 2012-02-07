@@ -23,7 +23,7 @@
          **/
         function getPopupContent() {
             // Wanted Skins survey
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $skin_list = $oModuleModel->getSkins("./modules/poll/");
             Context::set('skin_list', $skin_list);
             // Pre-compiled source code to compile template return to
@@ -50,7 +50,7 @@
             if(!$width) $width = 400;
             $style = sprintf('width:%dpx', $width);
             // poll model object creation to come get it return html
-            $oPollModel = &getModel('poll');
+            $oPollModel = getModel('poll');
             return $oPollModel->getPollHtml($poll_srl, $style, $skin);
         }
     }

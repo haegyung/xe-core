@@ -67,7 +67,7 @@
         function procMenuAdminDelete() {
             $menu_srl = Context::get('menu_srl');
 
-			$oMenuAdminModel = &getAdminModel('menu');
+			$oMenuAdminModel = getAdminModel('menu');
 			$menu_info = $oMenuAdminModel->getMenu($menu_srl);
 
 			if($menu_info->title == '__XE_ADMIN__')
@@ -168,13 +168,13 @@
 				}
 
 				$cmArgs->menu_srl = $source_args->menu_srl;
-                $oModuleController = &getController('module');
+                $oModuleController = getController('module');
 				$output = $oModuleController->insertModule($cmArgs);
 				if(!$output->toBool()) return new Object(-1, $output->message);
 			}
 
             // Check if already exists
-            $oMenuModel = &getAdminModel('menu');
+            $oMenuModel = getAdminModel('menu');
             $item_info = $oMenuModel->getMenuItemInfo($args->menu_item_srl);
 
 			// button is deleted, db delete
@@ -210,12 +210,12 @@
                 // Get layout value of menu_srl
                 $output = executeQuery('menu.getMenuLayout', $args);
                 // Set if layout value is not specified in the module
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
 				$columnList = array('layout_srl');
                 $module_info = $oModuleModel->getModuleInfoByMid($mid, 0, $columnList);
                 if(!$module_info->layout_srl&&$output->data->layout_srl) $mid_args->layout_srl = $output->data->layout_srl;
                 // Change menu value of the mid to the menu
-                $oModuleController = &getController('module');
+                $oModuleController = getController('module');
                 $oModuleController->updateModuleMenu($mid_args);
             }
 
@@ -240,7 +240,7 @@
             // List variables
             $args = Context::gets('menu_srl','menu_item_srl');
 
-            $oMenuAdminModel = &getAdminModel('menu');
+            $oMenuAdminModel = getAdminModel('menu');
 
             // Get information of the menu
             $menu_info = $oMenuAdminModel->getMenu($args->menu_srl);
@@ -388,7 +388,7 @@
 
         function moveMenuItem($menu_srl,$parent_srl,$source_srl,$target_srl,$mode){
             // Get the original menus
-            $oMenuAdminModel = &getAdminModel('menu');
+            $oMenuAdminModel = getAdminModel('menu');
 
             $target_item = $oMenuAdminModel->getMenuItemInfo($target_srl);
             if($target_item->menu_item_srl != $target_srl) return new Object(-1,'msg_invalid_request');
@@ -438,7 +438,7 @@
             // Check input value
             $menu_srl = Context::get('menu_srl');
             // Get information of the menu
-            $oMenuAdminModel = &getAdminModel('menu');
+            $oMenuAdminModel = getAdminModel('menu');
             $menu_info = $oMenuAdminModel->getMenu($menu_srl);
             $menu_title = $menu_info->title;
             // Re-generate the xml file
@@ -495,7 +495,7 @@
          * @brief get all act list for admin menu
          **/
         function procMenuAdminAllActList() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $installed_module_list = $oModuleModel->getModulesXmlInfo();
 			if(is_array($installed_module_list))
 			{
@@ -523,14 +523,14 @@
 
 			// variable setting
 			$logged_info = Context::get('logged_info');
-			//$oMenuAdminModel = &getAdminModel('menu');
-			$oMemberModel = &getModel('member');
+			//$oMenuAdminModel = getAdminModel('menu');
+			$oMemberModel = getModel('member');
 
 			//$parentMenuInfo = $oMenuAdminModel->getMenuItemInfo($requestArgs->parent_srl);
 			$groupSrlList = $oMemberModel->getMemberGroups($logged_info->member_srl);
 
 			//preg_match('/\{\$lang->menu_gnb\[(.*?)\]\}/i', $parentMenuInfo->name, $m);
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			//$info = $oModuleModel->getModuleInfoXml($moduleName);
 			$info = $oModuleModel->getModuleActionXml($moduleName);
 
@@ -552,7 +552,7 @@
 			$args->listorder = -1*$args->menu_item_srl;
 
             // Check if already exists
-            $oMenuModel = &getAdminModel('menu');
+            $oMenuModel = getAdminModel('menu');
             $item_info = $oMenuModel->getMenuItemInfo($args->menu_item_srl);
             // Update if exists
             if($item_info->menu_item_srl == $args->menu_item_srl) {
@@ -591,7 +591,7 @@
             $site_srl = (int)$output->data->site_srl;
 
             if($site_srl) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
 				$columnList = array('sites.domain');
                 $site_info = $oModuleModel->getSiteInfo($site_srl, $columnList);
                 $domain = $site_info->domain;
@@ -631,7 +631,7 @@
                 '$site_srl = '.$site_srl.';'.
                 '$site_admin = false;'.
                 'if($site_srl) { '.
-                '$oModuleModel = &getModel(\'module\');'.
+                '$oModuleModel = getModel(\'module\');'.
                 '$site_module_info = $oModuleModel->getSiteInfo($site_srl); '.
 				'if($site_module_info) Context::set(\'site_module_info\',$site_module_info);'.
 				'else $site_module_info = Context::get(\'site_module_info\');'.
@@ -694,7 +694,7 @@
         function getXmlTree($source_node, $tree, $site_srl, $domain) {
             if(!$source_node) return;
 
-            $oMenuAdminModel = &getAdminModel('menu');
+            $oMenuAdminModel = getAdminModel('menu');
 
             foreach($source_node as $menu_item_srl => $node) {
                 $child_buff = "";
@@ -775,7 +775,7 @@
             $output = array("buff"=>"", "url_list"=>array());
             if(!$source_node) return $output;
 
-            $oMenuAdminModel = &getAdminModel('menu');
+            $oMenuAdminModel = getAdminModel('menu');
 
             foreach($source_node as $menu_item_srl => $node) {
                 // Get data from child nodes if exist.
@@ -899,7 +899,7 @@
 
 			if($args->isNormalDelete == 'Y' || $args->isHoverDelete == 'Y' || $args->isActiveDelete == 'Y')
 			{
-				$oMenuModel = &getAdminModel('menu');
+				$oMenuModel = getAdminModel('menu');
             	$itemInfo = $oMenuModel->getMenuItemInfo($args->menu_item_srl);
 
 				if($args->isNormalDelete == 'Y' && $itemInfo->normal_btn) FileHandler::removeFile($itemInfo->normal_btn);

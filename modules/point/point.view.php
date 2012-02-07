@@ -30,7 +30,7 @@
                 if(!$current_module_srl) return new Object();
             }
             // Get the configuration information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 
             if($current_module_srl) {
                 $module_config = $oModuleModel->getModulePartConfig('point', $current_module_srl);

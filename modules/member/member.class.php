@@ -12,7 +12,7 @@
         function member() {
             if(!Context::isInstalled()) return;
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
             // Set to use SSL upon actions related member join/information/password and so on
             if(Context::get('_use_ssl') == 'optional') {
@@ -32,12 +32,12 @@
          **/
         function moduleInstall() {
             // Register action forward (to use in administrator mode)
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->addIndex("member_group","idx_site_title", array("site_srl","title"),true);
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $args = $oModuleModel->getModuleConfig('member');
             // Set the basic information
             $args->enable_join = 'Y';
@@ -55,7 +55,7 @@
             if($args->group_image_mark!='Y') $args->group_image_mark = 'N';
 
 			global $lang;
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
 			$identifier = 'email_address';
 			$items = array('user_id', 'password', 'user_name', 'nick_name', 'email_address', 'find_account_question', 'homepage', 'blog', 'birthday', 'signature', 'profile_image', 'image_name', 'image_mark');
 			$mustRequireds = array('email_address', 'nick_name','password', 'find_account_question');
@@ -85,8 +85,8 @@
             $oModuleController->insertModuleConfig('member',$args);
 
             // Create a member controller object
-            $oMemberController = &getController('member');
-            $oMemberAdminController = &getAdminController('member');
+            $oMemberController = getController('member');
+            $oMemberAdminController = getAdminController('member');
 
 			// Create Ruleset File
 			FileHandler::makeDir('./files/ruleset');
@@ -127,7 +127,7 @@
                 }
             }
             // Register denied ID(default + module name)
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $module_list = $oModuleModel->getModuleList();
             foreach($module_list as $key => $val) {
                 $oMemberAdminController->insertDeniedID($val->module,'');
@@ -151,8 +151,8 @@
          * @brief a method to check if successfully installed
          **/
         function checkUpdate() {
-            $oDB = &DB::getInstance();
-            $oModuleModel = &getModel('module');
+            $oDB = DB::getInstance();
+            $oModuleModel = getModel('module');
             // check member directory (11/08/2007 added)
             if(!is_dir("./files/member_extra_info")) return true;
             // check member directory (22/10/2007 added)
@@ -180,7 +180,7 @@
             if(!$oDB->isColumnExists("member", "list_order")) return true;
             if(!$oDB->isIndexExists("member","idx_list_order")) return true;
 
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $config = $oMemberModel->getMemberConfig();
 			// check signup form ordering info
 			if (!$config->signupForm) return true;
@@ -196,8 +196,8 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oDB = &DB::getInstance();
-            $oModuleController = &getController('module');
+            $oDB = DB::getInstance();
+            $oModuleController = getController('module');
             // Check member directory
             FileHandler::makeDir('./files/member_extra_info/image_name');
             FileHandler::makeDir('./files/member_extra_info/image_mark');
@@ -255,13 +255,13 @@
                 $oDB->addIndex("member","idx_list_order", array("list_order"));
             }
 
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $config = $oMemberModel->getMemberConfig();
 
 			// check signup form ordering info
 			if (!$config->signupForm || !is_array($config->signupForm)){
 				global $lang;
-				$oModuleController = &getController('module');
+				$oModuleController = getController('module');
 				// Get join form list which is additionally set
 				$extendItems = $oMemberModel->getJoinFormList();
 				
@@ -315,7 +315,7 @@
 
 			
 			FileHandler::makeDir('./files/ruleset');
-			$oMemberAdminController = &getAdminController('member');
+			$oMemberAdminController = getAdminController('member');
 			if (!is_readable('./files/ruleset/insertMember.xml'))
 				$oMemberAdminController->_createSignupRuleset($config->signupForm);
 			if (!is_readable('./files/ruleset/login.xml'))

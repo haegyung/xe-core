@@ -19,7 +19,7 @@
          **/
         function procIntegration_searchAdminInsertConfig() {
             // Get configurations (using module model object)
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('integration_search');
 
             $args->skin = Context::get('skin');
@@ -28,7 +28,7 @@
             if(!$args->target_module_srl) $args->target_module_srl = '';
             $args->skin_vars = $config->skin_vars;
 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $output = $oModuleController->insertModuleConfig('integration_search',$args);
 
 			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
@@ -44,7 +44,7 @@
          **/
         function procIntegration_searchAdminInsertSkin() {
             // Get configurations (using module model object)
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('integration_search');
 
             $args->skin = $config->skin;
@@ -103,7 +103,7 @@
             // Serialize and save 
             $args->skin_vars = serialize($obj);
 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
 			$output = $oModuleController->insertModuleConfig('integration_search',$args);
 
             $this->setMessage('success_updated', 'info');

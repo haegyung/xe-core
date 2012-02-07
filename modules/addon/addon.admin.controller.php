@@ -38,7 +38,7 @@
 			if (!is_array($fixed)) $pcOnList = array($fixed);
 
 			// get current addon info
-			$oModel = &getAdminModel('addon');
+			$oModel = getAdminModel('addon');
 			$currentAddonList = $oModel->getAddonList($site_srl, 'site');
 
 			// get need update addon list
@@ -112,7 +112,7 @@
          * @brief Add active/inactive change
          **/
         function procAddonAdminToggleActivate() {
-			$oAddonModel = &getAdminModel('addon');
+			$oAddonModel = getAdminModel('addon');
 
 			$site_module_info = Context::get('site_module_info');
 			// batahom addon values

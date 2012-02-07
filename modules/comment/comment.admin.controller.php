@@ -27,9 +27,9 @@
             $comment_count = count($comment_srl_list);
             if(!$comment_count) return $this->stop('msg_cart_is_null');
 
-			$oCommentController = &getController('comment');
+			$oCommentController = getController('comment');
 			// begin transaction
-			$oDB = &DB::getInstance();
+			$oDB = DB::getInstance();
 			$oDB->begin();
 
 			// for message send - start
@@ -37,8 +37,8 @@
 			if($message_content) $message_content = nl2br($message_content);
 
 			if($message_content) {
-				$oCommunicationController = &getController('communication');
-				$oCommentModel = &getModel('comment');
+				$oCommunicationController = getController('communication');
+				$oCommentModel = getModel('comment');
 
 				$logged_info = Context::get('logged_info');
 
@@ -99,9 +99,9 @@
 			if(is_array($commentSrlList))
 			{
 				$logged_info = Context::get('logged_info');
-				$oCommentModel = &getModel('comment');
+				$oCommentModel = getModel('comment');
 				$commentItemList = $oCommentModel->getComments($commentSrlList);
-				$oTrashAdminController = &getAdminController('trash');
+				$oTrashAdminController = getAdminController('trash');
 
 				foreach($commentItemList AS  $key=>$oComment)
 				{
@@ -137,7 +137,7 @@
 		{
 			$comment_srl = (int)Context::get('comment_srl');
 
-			$oCommentModel = &getModel('comment');
+			$oCommentModel = getModel('comment');
 			$columnList = array('comment_srl');
 			$commentSrlList = array($comment_srl);
 
@@ -194,7 +194,7 @@
 			$obj->notify_message = $originObject->notify_message;
 			$obj->module_srl = $originObject->module_srl;
 
-			$oCommentController = &getController('comment');
+			$oCommentController = getController('comment');
 			$output = $oCommentController->insertComment($obj);
 
 			return $output;
@@ -213,7 +213,7 @@
 			$oComment->setAttribute($originObject);
 
 			//already comment deleted, therefore only comment log delete
-			$oCommentController = &getController('comment');
+			$oCommentController = getController('comment');
 			$output = $oCommentController->deleteCommentLog($oComment->get('comment_srl'));
 			return $output;
 		}

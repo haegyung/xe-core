@@ -20,7 +20,7 @@
             // Error occurs if already installed
             if(Context::isInstalled()) return $this->stop('msg_already_installed');
             // Install a controller
-            $oInstallController = &getController('install');
+            $oInstallController = getController('install');
             $this->install_enable = $oInstallController->checkInstallEnv();
             // If the environment is installable, execute installController::makeDefaultDirectory()
             if($this->install_enable) $oInstallController->makeDefaultDirectory();
@@ -37,7 +37,7 @@
 					foreach($install_config as $k => $v) Context::set($k,$v,true);
 					unset($GLOBALS['__DB__']);
 					Context::set('install_config', true, true);
-					$oInstallController = &getController('install');
+					$oInstallController = getController('install');
 					$output = $oInstallController->procInstall();
 					if (!$output->toBool()) return $output;
 					header("location: ./");

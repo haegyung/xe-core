@@ -21,7 +21,7 @@ if($called_position == 'before_module_init' && $this->module != 'member') {
 	// Load a language file from the communication module
 	Context::loadLang('./modules/communication/lang');
 	// Add menus on the member login information
-	$oMemberController = &getController('member');
+	$oMemberController = getController('member');
 	$oMemberController->addMemberMenu('dispCommunicationFriend', 'cmd_view_friend');
 	$oMemberController->addMemberMenu('dispCommunicationMessages', 'cmd_view_message_box');
 	// Pop-up to display messages if a flag on new message is set
@@ -41,11 +41,11 @@ if($called_position == 'before_module_init' && $this->module != 'member') {
 		Context::addHtmlFooter($script);
 	}
 } elseif($called_position == 'before_module_proc' && $this->act == 'getMemberMenu') {
-	$oMemberController = &getController('member');
+	$oMemberController = getController('member');
 	$member_srl = Context::get('target_srl');
 	$mid = Context::get('cur_mid');
 	// Creates communication model object
-	$oCommunicationModel = &getModel('communication');
+	$oCommunicationModel = getModel('communication');
 	// Add a feature to display own message box.
 	if($logged_info->member_srl == $member_srl) {
 		// Add your own viewing Note Template
@@ -55,7 +55,7 @@ if($called_position == 'before_module_init' && $this->module != 'member') {
 	// If not, Add menus to send message and to add friends
 	} else {
 		// Get member information
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		$target_member_info = $oMemberModel->getMemberInfoByMemberSrl($member_srl);
 		if(!$target_member_info->member_srl) return;
 		// Get logged-in user information

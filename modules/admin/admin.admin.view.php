@@ -16,7 +16,7 @@
          **/
         function init() {
             // forbit access if the user is not an administrator
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $logged_info = $oMemberModel->getLoggedInfo();
             if($logged_info->is_admin!='Y') return $this->stop("msg_is_not_administrator");
 
@@ -54,7 +54,7 @@
 			$lastTime = (int)FileHandler::readFile($this->easyinstallCheckFile);
 			if ($lastTime > time() - 60*60*24*30) return;
 
-			$oAutoinstallModel = &getModel('autoinstall');
+			$oAutoinstallModel = getModel('autoinstall');
 			$params = array();
 			$params["act"] = "getResourceapiLastupdate";
 			$body = XmlGenerater::generate($params);
@@ -72,7 +72,7 @@
 			$item = $oAutoinstallModel->getLatestPackage();
 			if(!$item || $item->updatedate < $updateDate)
 			{
-				$oController = &getAdminController('autoinstall');
+				$oController = getAdminController('autoinstall');
 				$oController->_updateinfo();
 			}
 			$this->_markingCheckEasyinstall();
@@ -88,10 +88,10 @@
 		{
 			global $lang;
 
-			$oAdminAdminModel   = &getAdminModel('admin');
+			$oAdminAdminModel   = getAdminModel('admin');
 			$lang->menu_gnb_sub = $oAdminAdminModel->getAdminMenuLang();
 
-			$oMenuAdminModel = &getAdminModel('menu');
+			$oMenuAdminModel = getAdminModel('menu');
 			$menu_info = $oMenuAdminModel->getMenuByTitle('__XE_ADMIN__');
 			Context::set('admin_menu_srl', $menu_info->menu_srl);
 
@@ -99,7 +99,7 @@
 
 			include $menu_info->php_file;
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 			$moduleActionInfo = $oModuleModel->getModuleActionXml($module);
 
 			$currentAct   = Context::get('act');
@@ -140,7 +140,7 @@
 			$browserTitle = ($subMenuTitle ? $subMenuTitle : 'Dashboard').' - '.$gnbTitleInfo->adminTitle;
 
 			// Get list of favorite
-			$oAdminAdminModel = &getAdminModel('admin');
+			$oAdminAdminModel = getAdminModel('admin');
 			$output = $oAdminAdminModel->getFavoriteList(0, true);
             Context::set('favorite_list', $output->get('favoriteList'));
 
@@ -153,7 +153,7 @@
 
 		function loadSideBar()
 		{
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $installed_module_list = $oModuleModel->getModulesXmlInfo();
 
             $installed_modules = $package_modules = array();
@@ -217,35 +217,35 @@
             $today = date("Ymd");
 
             // Member Status
-			$oMemberAdminModel = &getAdminModel('member');
+			$oMemberAdminModel = getAdminModel('member');
 			$status->member->todayCount = $oMemberAdminModel->getMemberCountByDate($today);
 			$status->member->totalCount = $oMemberAdminModel->getMemberCountByDate();
 
             // Document Status
-			$oDocumentAdminModel = &getAdminModel('document');
+			$oDocumentAdminModel = getAdminModel('document');
 			$statusList = array('PUBLIC', 'SECRET');
 			$status->document->todayCount = $oDocumentAdminModel->getDocumentCountByDate($today, array(), $statusList);
 			$status->document->totalCount = $oDocumentAdminModel->getDocumentCountByDate('', array(), $statusList);
 
             // Comment Status
-			$oCommentModel = &getModel('comment');
+			$oCommentModel = getModel('comment');
 			$status->comment->todayCount = $oCommentModel->getCommentCountByDate($today);
 			$status->comment->totalCount = $oCommentModel->getCommentCountByDate();
 
             // Trackback Status
-			$oTrackbackAdminModel = &getAdminModel('trackback');
+			$oTrackbackAdminModel = getAdminModel('trackback');
 			$status->trackback->todayCount = $oTrackbackAdminModel->getTrackbackCountByDate($today);
 			$status->trackback->totalCount = $oTrackbackAdminModel->getTrackbackCountByDate();
 
             // Attached files Status
-			$oFileAdminModel = &getAdminModel('file');
+			$oFileAdminModel = getAdminModel('file');
 			$status->file->todayCount = $oFileAdminModel->getFilesCountByDate($today);
 			$status->file->totalCount = $oFileAdminModel->getFilesCountByDate();
 
             Context::set('status', $status);
 
             // Latest Document
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			$columnList = array('document_srl', 'module_srl', 'category_srl', 'title', 'nick_name', 'member_srl');
 			$args->list_count = 5;;
 			$output = $oDocumentModel->getDocumentList($args, false, false, $columnList);
@@ -255,7 +255,7 @@
 			unset($args, $output, $columnList);
 
 			// Latest Comment
-			$oCommentModel = &getModel('comment');
+			$oCommentModel = getModel('comment');
 			$columnList = array('comment_srl', 'module_srl', 'document_srl', 'content', 'nick_name', 'member_srl');
 			$args->list_count = 5;
 			$output = $oCommentModel->getNewestCommentList($args, $columnList);
@@ -270,7 +270,7 @@
 			unset($args, $output, $columnList);
 
 			//Latest Trackback
-			$oTrackbackModel = &getModel('trackback');
+			$oTrackbackModel = getModel('trackback');
 			$columnList = array();
 			$args->list_count = 5;
 			$output =$oTrackbackModel->getNewestTrackbackList($args);
@@ -309,7 +309,7 @@
             }
 
             // Get list of modules
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $module_list = $oModuleModel->getModuleList();
 			if(is_array($module_list))
 			{
@@ -353,19 +353,19 @@
 			$admin_ip_list = preg_replace("/[,]+/","\r\n",$db_info->admin_ip_list);
             Context::set('admin_ip_list', $admin_ip_list);
 
-			$oAdminModel = &getAdminModel('admin');
+			$oAdminModel = getAdminModel('admin');
 			$favicon_url = $oAdminModel->getFaviconUrl();
 			$mobicon_url = $oAdminModel->getMobileIconUrl();
             Context::set('favicon_url', $favicon_url);
 			Context::set('mobicon_url', $mobicon_url);
 
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			$config = $oDocumentModel->getDocumentConfig();
        		Context::set('thumbnail_type',$config->thumbnail_type);
 			
 			Context::set('IP',$_SERVER['REMOTE_ADDR']);
 			
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$config = $oModuleModel->getModuleConfig('module');
        		Context::set('htmlFooter',$config->htmlFooter);
 
@@ -405,10 +405,10 @@
          **/
 		function dispAdminSetup()
 		{
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$configObject = $oModuleModel->getModuleConfig('admin');
 
-			$oMenuAdminModel = &getAdminModel('menu');
+			$oMenuAdminModel = getAdminModel('menu');
 			$output = $oMenuAdminModel->getMenuByTitle('__XE_ADMIN__');
 
 			Context::set('menu_srl', $output->menu_srl);
@@ -427,7 +427,7 @@
 			$mainVersion = join('.', array_slice(explode('.', __ZBXE_VERSION__), 0, 2));
 
 			if(file_exists(FileHandler::getRealPath($install_env))) {
-				$oAdminAdminModel = &getAdminModel('admin');
+				$oAdminAdminModel = getAdminModel('admin');
 				$params = $oAdminAdminModel->getEnv('INSTALL');
 				$img = sprintf('<img src="%s" alt="" style="height:0px;width:0px" />', $server.$params);
 				Context::addHtmlFooter($img);
@@ -440,7 +440,7 @@
 			{
 				if($_SESSION['enviroment_gather']=='Y')
 				{
-					$oAdminAdminModel = &getAdminModel('admin');
+					$oAdminAdminModel = getAdminModel('admin');
 					$params = $oAdminAdminModel->getEnv();
 					$img = sprintf('<img src="%s" alt="" style="height:0px;width:0px" />', $server.$params);
 					Context::addHtmlFooter($img);
@@ -461,16 +461,16 @@
 				Context::set('theme_info', $theme_info);
 			}
 			else{
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				$default_mid = $oModuleModel->getDefaultMid();
 				Context::set('current_layout', $default_mid->layout_srl);
 			}
 
 			// layout list
-			$oLayoutModel = &getModel('layout');
+			$oLayoutModel = getModel('layout');
 			// theme 정보 읽기
 
-			$oAdminModel = &getAdminModel('admin');
+			$oAdminModel = getAdminModel('admin');
 			$theme_list = $oAdminModel->getThemeList();
 			$layouts = $oLayoutModel->getLayoutList(0);
 			$layout_list = array();

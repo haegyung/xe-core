@@ -23,7 +23,7 @@
             if($argsConfig->check_trackback!='Y') $argsConfig->check_trackback = 'N';
        	    if($argsConfig->limits!='Y') $argsConfig->limits = 'N';
             // Create and insert the module Controller object
-   	        $oModuleController = &getController('module');
+   	        $oModuleController = getController('module');
        	    $moduleConfigOutput = $oModuleController->insertModuleConfig('spamfilter',$argsConfig);
 			if(!$moduleConfigOutput->toBool()) return $moduleConfigOutput;
 
@@ -38,7 +38,7 @@
 		function procSpamfilterAdminInsertDeniedIP(){
 			//스팸IP  추가
 			$ipaddressList = Context::get('ipaddressList');
-            $oSpamfilterController = &getController('spamfilter');
+            $oSpamfilterController = getController('spamfilter');
 			if($ipaddressList){
             	$insertIPOutput = $oSpamfilterController->insertIP($ipaddressList);
 				if(!$insertIPOutput->toBool()) return $insertIPOutput;

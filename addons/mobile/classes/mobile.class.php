@@ -255,7 +255,7 @@
          * @brief Specify title
          **/
         function setTitle($title) {
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $this->title = $title;
             $oModuleController->replaceDefinedLangCode($this->title);
         }
@@ -272,7 +272,7 @@
          * In HTML content, the ability to extract text and links
          **/
         function setContent($content) {
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $allow_tag_array = array('<a>','<br>','<p>','<b>','<i>','<u>','<em>','<small>','<strong>','<big>','<table>','<tr>','<td>');
             // Links/wrap, remove all tags except gangjoman
             $content = strip_tags($content, implode($allow_tag_array));

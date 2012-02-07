@@ -92,7 +92,7 @@
 			if(count($member_srls)==0) return;
 			array_unique($member_srls);
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$config = $oModuleModel->getModuleConfig('point');
 
 			$info = array();
@@ -160,7 +160,7 @@
             $output = executeQuery($query_id, $args, $columnList);
 
             if($output->total_count) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $config = $oModuleModel->getModuleConfig('point');
 
                 foreach($output->data as $key => $val) {

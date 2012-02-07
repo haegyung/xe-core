@@ -125,7 +125,7 @@
 			$info['phpext'] = substr($info['phpext'],1);
 
 			$info['module'] = '';
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$module_list = $oModuleModel->getModuleList();
 			foreach($module_list as $module){
 				if(in_array($module->module, $skip['module'])) continue;
@@ -134,7 +134,7 @@
 			$info['module'] = substr($info['module'],1);
 
 			$info['addon'] = '';
-			$oAddonAdminModel = &getAdminModel('addon');
+			$oAddonAdminModel = getAdminModel('addon');
 			$addon_list = $oAddonAdminModel->getAddonList();
 			foreach($addon_list as $addon){
 				if(in_array($addon->addon, $skip['addon'])) continue;
@@ -218,7 +218,7 @@
 			$site_info = Context::get('site_module_info');
 			// check layout instance
 			$is_new_layout = true;
-			$oLayoutModel = &getModel('layout');
+			$oLayoutModel = getModel('layout');
 			$layout_info_list = array();
 			$layout_list = $oLayoutModel->getLayoutList($site_info->site_srl);
 			if ($layout_list){
@@ -239,7 +239,7 @@
 				$args->title = $layout_info->name;
 				$args->layout_type = "P";
 				// Insert into the DB
-				$oLayoutAdminController = &getAdminController('layout');
+				$oLayoutAdminController = getAdminController('layout');
 				$output = $oLayoutAdminController->insertLayout($args);
 				$layout_info->layout_srl = $args->layout_srl;
 			}
@@ -250,7 +250,7 @@
 			if(is_array($skin_infos->skininfo))$skin_list = $skin_infos->skininfo;
 			else $skin_list = array($skin_infos->skininfo);
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$skins = array();
 			foreach($skin_list as $val){
 				unset($skin_info);
@@ -299,7 +299,7 @@
 
 			$exceptionModule = array('editor', 'poll', 'homepage', 'textyle');
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
             foreach($searched_list as $val) {
 				$skin_list = $oModuleModel->getSkins('./modules/'.$val);
 
@@ -326,7 +326,7 @@
             // Update if no cache file exists or it is older than xml file
             if(!is_readable($cacheFile))
 			{
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				$installed_module_list = $oModuleModel->getModulesXmlInfo();
 
 				$this->gnbLangBuffer = '<?php ';
@@ -362,7 +362,7 @@
 
 			if($isGetModuleInfo && is_array($output->data))
 			{
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				foreach($output->data AS $key=>$value)
 				{
 					$moduleInfo = $oModuleModel->getModuleInfoXml($value->module);

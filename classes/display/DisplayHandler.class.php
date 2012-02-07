@@ -53,7 +53,7 @@
 			ModuleHandler::triggerCall('display', 'before', $output);
 			// execute add-on
 			$called_position = 'before_display_content';
-			$oAddonController = &getController('addon');
+			$oAddonController = getController('addon');
 			$addon_file = $oAddonController->getCacheFilePath(Mobile::isFromMobilePhone()?"mobile":"pc");
 			@include($addon_file);
 

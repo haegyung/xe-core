@@ -45,7 +45,7 @@ class HTMLDisplayHandler {
 				$edited_layout_file = $oModule->getEditedLayoutFile();
 
 				// get the layout information currently requested
-				$oLayoutModel = &getModel('layout');
+				$oLayoutModel = getModel('layout');
 				$layout_info = Context::get('layout_info');
 				$layout_srl = $layout_info->layout_srl;
 
@@ -123,7 +123,7 @@ class HTMLDisplayHandler {
 		$output = preg_replace('/member\_\-([0-9]+)/s','member_0',$output);
 
 		// set icon
-		$oAdminModel = &getAdminModel('admin');
+		$oAdminModel = getAdminModel('admin');
 		$favicon_url = $oAdminModel->getFaviconUrl();
 		$mobicon_url = $oAdminModel->getMobileIconUrl();
 		Context::set('favicon_url', $favicon_url);
@@ -143,7 +143,7 @@ class HTMLDisplayHandler {
 		}
 
 		// replace the user-defined-language
-		$oModuleController = &getController('module');
+		$oModuleController = getController('module');
 		$oModuleController->replaceDefinedLangCode($output);
 	}
 

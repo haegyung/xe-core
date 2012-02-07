@@ -27,11 +27,11 @@
                 if(!$current_module_srl) return new Object();
             }
             // get the comment configuration
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
             $comment_config = $oCommentModel->getCommentConfig($current_module_srl);
             Context::set('comment_config', $comment_config);
             // get a group list
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $group_list = $oMemberModel->getGroups();
             Context::set('group_list', $group_list);
             // Set a template file

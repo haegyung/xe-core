@@ -35,7 +35,7 @@
                 if($grant->manager) return new Object();
             }
 
-            $oFilterModel = &getModel('spamfilter');
+            $oFilterModel = getModel('spamfilter');
             // Check if the IP is prohibited
             $output = $oFilterModel->isDeniedIP();
             if(!$output->toBool()) return $output;
@@ -69,7 +69,7 @@
                 if($grant->manager) return new Object();
             }
 
-            $oFilterModel = &getModel('spamfilter');
+            $oFilterModel = getModel('spamfilter');
             // Check if the IP is prohibited
             $output = $oFilterModel->isDeniedIP();
             if(!$output->toBool()) return $output;
@@ -95,7 +95,7 @@
         function triggerInsertTrackback(&$obj) {
             if($_SESSION['avoid_log']) return new Object();
 
-            $oFilterModel = &getModel('spamfilter');
+            $oFilterModel = getModel('spamfilter');
             // Confirm if the trackbacks have been added more than once to your document
             $output = $oFilterModel->isInsertedTrackback($obj->document_srl);
             if(!$output->toBool()) return $output;
@@ -108,8 +108,8 @@
             $output = $oFilterModel->isDeniedWord($text);
             if(!$output->toBool()) return $output;
             // Start Filtering
-            $oTrackbackModel = &getModel('trackback');
-            $oTrackbackController = &getController('trackback');
+            $oTrackbackModel = getModel('trackback');
+            $oTrackbackController = getController('trackback');
 
             list($ipA,$ipB,$ipC,$ipD) = explode('.',$_SERVER['REMOTE_ADDR']);
             $ipaddress = $ipA.'.'.$ipB.'.'.$ipC;

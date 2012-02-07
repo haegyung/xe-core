@@ -35,7 +35,7 @@
 
 		function autoinstall()
 		{
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$config = $oModuleModel->getModuleConfig('autoinstall');
 			if ($config->downloadServer != _XE_DOWNLOAD_SERVER_)
 			{
@@ -47,7 +47,7 @@
          * @brief for additional tasks required when installing
          **/
         function moduleInstall() {
-			$oModuleController = &getController('module');
+			$oModuleController = getController('module');
 
 			$config->downloadServer = _XE_DOWNLOAD_SERVER_;
 			$oModuleController->insertModuleConfig('autoinstall', $config);
@@ -57,8 +57,8 @@
          * @brief method to check if installation is succeeded
          **/
         function checkUpdate() {
-            $oDB =& DB::getInstance();
-			$oModuleModel = &getModel('module');
+            $oDB = DB::getInstance();
+			$oModuleModel = getModel('module');
 
             if(!file_exists(FileHandler::getRealPath("./modules/autoinstall/schemas/autoinstall_installed_packages.xml"))
                 && $oDB->isTableExists("autoinstall_installed_packages"))
@@ -85,9 +85,9 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oDB =& DB::getInstance();
-			$oModuleModel = &getModel('module');
-			$oModuleController = &getController('module');
+            $oDB = DB::getInstance();
+			$oModuleModel = getModel('module');
+			$oModuleController = getController('module');
 
             if(!file_exists(FileHandler::getRealPath("./modules/autoinstall/schemas/autoinstall_installed_packages.xml"))
                 && $oDB->isTableExists("autoinstall_installed_packages"))

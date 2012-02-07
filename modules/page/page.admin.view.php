@@ -18,7 +18,7 @@
             // Pre-check if module_srl exists. Set module_info if exists
             $module_srl = Context::get('module_srl');
             // Create module model object
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             // module_srl two come over to save the module, putting the information in advance
             if($module_srl) {
                 $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl);
@@ -60,7 +60,7 @@
 			if($s_browser_title) $args->s_browser_title = $s_browser_title;
 
             $output = executeQuery('page.getPageList', $args);
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$page_list = $oModuleModel->addModuleExtraVars($output->data);
             moduleModel::syncModuleToSite($page_list);
 
@@ -91,13 +91,13 @@
             if(!$module_srl) return $this->dispPageAdminContent();
             // If the layout is destined to add layout information haejum (layout_title, layout)
             if($module_info->layout_srl) {
-                $oLayoutModel = &getModel('layout');
+                $oLayoutModel = getModel('layout');
                 $layout_info = $oLayoutModel->getLayout($module_info->layout_srl);
                 $module_info->layout = $layout_info->layout;
                 $module_info->layout_title = $layout_info->layout_title;
             }
             // Get a layout list
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_list = $oLayoutModel->getLayoutList();
             Context::set('layout_list', $layout_list);
 
@@ -106,7 +106,7 @@
             // Set a template file
 
 			if ($this->module_info->page_type == 'ARTICLE'){
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				$skin_list = $oModuleModel->getSkins($this->module_path);
 				Context::set('skin_list',$skin_list);
 
@@ -133,7 +133,7 @@
             // call by reference content from other modules to come take a year in advance for putting the variable declaration
             $content = '';
 
-            $oEditorView = &getView('editor');
+            $oEditorView = getView('editor');
             $oEditorView->triggerDispEditorAdditionSetup($content);
             Context::set('setup_content', $content);
             // Set a template file
@@ -151,7 +151,7 @@
             $module_srl = Context::get('module_srl');
             // Get and set module information if module_srl exists
             if($module_srl) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
 				$columnList = array('module_srl', 'mid', 'module_category_srl', 'browser_title', 'layout_srl', 'use_mobile', 'mlayout_srl');
                 $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl, $columnList);
                 if($module_info->module_srl == $module_srl) Context::set('module_info',$module_info);
@@ -161,14 +161,14 @@
                 }
             }
             // Get a layout list
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_list = $oLayoutModel->getLayoutList();
             Context::set('layout_list', $layout_list);
 
 			$mobile_layout_list = $oLayoutModel->getLayoutList(0,"M");
 			Context::set('mlayout_list', $mobile_layout_list);
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $skin_list = $oModuleModel->getSkins($this->module_path);
             Context::set('skin_list',$skin_list);
 
@@ -198,7 +198,7 @@
                 if($mtime + $interval*60 > time()) {
                     $page_content = FileHandler::readFile($cache_file);
                 } else {
-                    $oWidgetController = &getController('widget');
+                    $oWidgetController = getController('widget');
                     $page_content = $oWidgetController->transWidgetCode($this->module_info->mcontent);
                     FileHandler::writeFile($cache_file, $page_content);
                 }
@@ -220,11 +220,11 @@
             if(!$content) $content = $this->module_info->mcontent;
             Context::set('content', $content);
             // Convert them to teach the widget
-            $oWidgetController = &getController('widget');
+            $oWidgetController = getController('widget');
             $content = $oWidgetController->transWidgetCode($content, true);
             Context::set('page_content', $content);
             // Set widget list
-            $oWidgetModel = &getModel('widget');
+            $oWidgetModel = getModel('widget');
             $widget_list = $oWidgetModel->getDownloadedWidgetList();
             Context::set('widget_list', $widget_list);
 
@@ -253,11 +253,11 @@
             if(!$content) $content = $this->module_info->content;
             Context::set('content', $content);
             // Convert them to teach the widget
-            $oWidgetController = &getController('widget');
+            $oWidgetController = getController('widget');
             $content = $oWidgetController->transWidgetCode($content, true);
             Context::set('page_content', $content);
             // Set widget list
-            $oWidgetModel = &getModel('widget');
+            $oWidgetModel = getModel('widget');
             $widget_list = $oWidgetModel->getDownloadedWidgetList();
             Context::set('widget_list', $widget_list);
 
@@ -270,7 +270,7 @@
         }
 
 		function _setArticleTypeContentModify() {
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			$oDocument = $oDocumentModel->getDocument(0, true);
 			
 			if ($this->module_info->document_srl){
@@ -291,7 +291,7 @@
             $module_srl = Context::get('module_srl');
             if(!$module_srl) return $this->dispContent();
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 			$columnList = array('module_srl', 'module', 'mid');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl, $columnList);
             Context::set('module_info',$module_info);
@@ -307,7 +307,7 @@
          **/
         function dispPageAdminGrantInfo() {
             // Common module settings page, call rights
-            $oModuleAdminModel = &getAdminModel('module');
+            $oModuleAdminModel = getAdminModel('module');
             $grant_content = $oModuleAdminModel->getModuleGrantHTML($this->module_info->module_srl, $this->xml_info->grant);
             Context::set('grant_content', $grant_content);
 

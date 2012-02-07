@@ -13,7 +13,7 @@
          * @brief initialization         
 		 **/
         function init() {
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 
             // if member_srl exists, set memberInfo            
 			$member_srl = Context::get('member_srl');
@@ -34,8 +34,8 @@
          * @brief display member list         
 		 **/
         function dispMemberAdminList() {
-            $oMemberAdminModel = &getAdminModel('member');
-            $oMemberModel = &getModel('member');
+            $oMemberAdminModel = getAdminModel('member');
+            $oMemberModel = getModel('member');
             $output = $oMemberAdminModel->getMemberList();
 
 			$filter = Context::get('filter_type');
@@ -85,8 +85,8 @@
          **/
         function dispMemberAdminConfig() {
 			global $lang;            // retrieve configuration via module model instance
-            $oModuleModel = &getModel('module');
-            $oMemberModel = &getModel('member');
+            $oModuleModel = getModel('module');
+            $oMemberModel = getModel('member');
             $config = $oMemberModel->getMemberConfig();
             // Get join form list which is additionally set            
 			$extendItems = $oMemberModel->getJoinFormList();            
@@ -98,7 +98,7 @@
             Context::set('skin_list', $skin_list);
 
             // retrieve skins of editor
-            $oEditorModel = &getModel('editor');
+            $oEditorModel = getModel('editor');
             Context::set('editor_skin_list', $oEditorModel->getEditorSkinList());
 
             // get an editor
@@ -127,8 +127,8 @@
          * @brief display member information
          **/
         function dispMemberAdminInfo() {
-            $oMemberModel = &getModel('member');
-            $oModuleModel = &getModel('module');
+            $oMemberModel = getModel('member');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
             Context::set('member_config', $member_config);
 			$extendForm = $oMemberModel->getCombineJoinForm($this->memberInfo);            
@@ -153,7 +153,7 @@
          **/
         function dispMemberAdminInsert() {
             // retrieve extend form
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 
             $memberInfo = Context::get('member_info');            
 			$memberInfo->signature = $oMemberModel->getSignature($this->memberInfo->member_srl);            
@@ -161,7 +161,7 @@
             
 			// get an editor for the signature
             if($memberInfo->member_srl) {                
-				$oEditorModel = &getModel('editor');
+				$oEditorModel = getModel('editor');
                 $option->primary_key_name = 'member_srl';
                 $option->content_key_name = 'signature';
                 $option->allow_fileupload = false;
@@ -191,7 +191,7 @@
         }
 
 		function _getMemberInputTag($memberInfo){
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $extend_form_list = $oMemberModel->getCombineJoinForm($memberInfo);
 			
 			if ($memberInfo)
@@ -377,7 +377,7 @@ EOD;
          * @brief display group list
          **/
         function dispMemberAdminGroupList() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 
             $config = $oModuleModel->getModuleConfig('member');
             Context::set('config', $config);
@@ -399,7 +399,7 @@ EOD;
 		 **/
         function dispMemberAdminJoinFormList() {
             // Create a member model object            
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
             // Get join form list which is additionally set            
 			$form_list = $oMemberModel->getJoinFormList();
             Context::set('form_list', $form_list);
@@ -416,7 +416,7 @@ EOD;
             // Get the value of join_form            
 			$member_join_form_srl = Context::get('member_join_form_srl');
             if($member_join_form_srl) {
-                $oMemberModel = &getModel('member');
+                $oMemberModel = getModel('member');
                 $join_form = $oMemberModel->getJoinForm($member_join_form_srl);
 
                 if(!$join_form) Context::set('member_join_form_srl','',true);
@@ -435,7 +435,7 @@ EOD;
 		 **/
         function dispMemberAdminDeniedIDList() {
             // Create a member model object            
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
             // Get a denied ID list            
 			$output = $oMemberModel->getDeniedIDList();
 
@@ -459,7 +459,7 @@ EOD;
             $output = executeQueryArray('member.getMembers', $args);
             Context::set('member_list', $output->data);
             // Get a list of the selected member            
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
             Context::set('member_groups', $oMemberModel->getGroups());
 			
 			$security = new Security();

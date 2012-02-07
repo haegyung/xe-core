@@ -19,8 +19,8 @@
             // Pre-create the objects needed
             $this->oXmlParser = new XmlParser();
             // Get category information of the target module
-            $oDocumentController = &getController('document');
-            $oDocumentModel = &getModel('document');
+            $oDocumentController = getController('document');
+            $oDocumentModel = getModel('document');
             $category_list = $category_titles = array();
             $category_list = $oDocumentModel->getCategoryList($module_srl);
             if(count($category_list)) foreach($category_list as $key => $val) $category_titles[$val->title] = $val->category_srl;
@@ -56,7 +56,7 @@
             $category_list = $oDocumentModel->getCategoryList($module_srl);
             if(count($category_list)) foreach($category_list as $key => $val) $category_titles[$val->title] = $val->category_srl;
             // Get administrator information
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $member_info = $oMemberModel->getMemberInfoByUserID($user_id);
 			$author_xml_id = 0;
           

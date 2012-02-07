@@ -96,7 +96,7 @@
      * @param module_name
      * @return module controller instance
      **/
-    function &getController($module_name) {
+    function getController($module_name) {
         return getModule($module_name, 'controller');
     }
 
@@ -105,7 +105,7 @@
      * @param module_name
      * @return module admin controller instance
      **/
-    function &getAdminController($module_name) {
+    function getAdminController($module_name) {
         return getModule($module_name, 'controller','admin');
     }
 
@@ -114,7 +114,7 @@
      * @param module_name
      * @return module view instance
      **/
-    function &getView($module_name) {
+    function getView($module_name) {
         return getModule($module_name, 'view');
     }
 
@@ -132,7 +132,7 @@
      * @param module_name 모듈이름
      * @return module admin view instance
      **/
-    function &getAdminView($module_name) {
+    function getAdminView($module_name) {
         return getModule($module_name, 'view','admin');
     }
 
@@ -141,7 +141,7 @@
      * @param module_name
      * @return module model instance
      **/
-    function &getModel($module_name) {
+    function getModel($module_name) {
         return getModule($module_name, 'model');
     }
 
@@ -150,7 +150,7 @@
      * @param module_name
      * @return module admin model instance
      **/
-    function &getAdminModel($module_name) {
+    function getAdminModel($module_name) {
         return getModule($module_name, 'model','admin');
     }
 
@@ -188,7 +188,7 @@
      * @return results
      **/
     function executeQuery($query_id, $args = null, $arg_columns = null) {
-        $oDB = &DB::getInstance();
+        $oDB = DB::getInstance();
         return $oDB->executeQuery($query_id, $args, $arg_columns);
     }
 
@@ -199,7 +199,7 @@
      * @return results
      **/
     function executeQueryArray($query_id, $args = null, $arg_columns = null) {
-        $oDB = &DB::getInstance();
+        $oDB = DB::getInstance();
         $output = $oDB->executeQuery($query_id, $args, $arg_columns);
         if(!is_array($output->data) && count($output->data) > 0){
             $output->data = array($output->data);
@@ -212,7 +212,7 @@
      * @return big int
      **/
     function getNextSequence() {
-        $oDB = &DB::getInstance();
+        $oDB = DB::getInstance();
         return $oDB->getNextSequence();
     }
 
@@ -922,14 +922,14 @@
 	function stripEmbedTagForAdmin(&$content, $writer_member_srl)
 	{
 		if(!Context::get('is_logged')) return;
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		$logged_info = Context::get('logged_info');
 
 		if($writer_member_srl != $logged_info->member_srl && ($logged_info->is_admin == "Y" || $oModuleModel->isSiteAdmin($logged_info)) )
 		{   
 			if($writer_member_srl)
 			{
-				$oMemberModel =& getModel('member');
+				$oMemberModel = getModel('member');
 				$member_info = $oMemberModel->getMemberInfoByMemberSrl($writer_member_srl);
 				if($member_info->is_admin == "Y")
 				{

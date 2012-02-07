@@ -20,7 +20,7 @@
             $config->skin = Context::get('skin');
             $config->colorset = Context::get('colorset');
 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $oModuleController->insertModuleConfig('poll', $config);
 
             $this->setMessage('success_updated');
@@ -64,7 +64,7 @@
 		{
 			$poll_index_srl = (int)Context::get('poll_index_srl');
 
-			$oPollAdminModel = &getAdminModel('poll');
+			$oPollAdminModel = getAdminModel('poll');
 			//$columnList = array('comment_srl');
 			$args->pollIndexSrlList = array($poll_index_srl);
 			$args->list_count = 100;
@@ -87,7 +87,7 @@
         function deletePollTitle($poll_index_srl) {
             $args->poll_index_srl = $poll_index_srl;
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
 
             $output = $oDB->executeQuery('poll.deletePollTitle', $args);
@@ -113,7 +113,7 @@
         function deletePoll($poll_srl) {
             $args->poll_srl = $poll_srl;
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
 
             $output = $oDB->executeQuery('poll.deletePoll', $args);

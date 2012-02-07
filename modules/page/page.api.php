@@ -12,7 +12,7 @@
          **/
         function dispPageIndex(&$oModule) {
 			$page_content = Context::get('page_content');
-			$oWidgetController = &getController('widget');
+			$oWidgetController = getController('widget');
 
 			$requestMethod = Context::getRequestMethod();
 			Context::setResponseMethod('HTML');

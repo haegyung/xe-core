@@ -51,7 +51,7 @@ class pageMobile extends pageView {
                     $page_content = FileHandler::readFile($cache_file); 
 					$page_content = preg_replace('@<\!--#Meta:@', '<!--Meta:', $page_content);
                 } else {
-                    $oWidgetController = &getController('widget');
+                    $oWidgetController = getController('widget');
                     $page_content = $oWidgetController->transWidgetCode($this->module_info->mcontent);
                     FileHandler::writeFile($cache_file, $page_content);
                 }
@@ -72,7 +72,7 @@ class pageMobile extends pageView {
 	}
 
 	function _getArticleContent(){
-		$oDocumentModel = &getModel('document');
+		$oDocumentModel = getModel('document');
 		$oDocument = $oDocumentModel->getDocument(0, true);
 		
 		if ($this->module_info->document_srl){

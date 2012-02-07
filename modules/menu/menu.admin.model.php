@@ -125,7 +125,7 @@
 			}
 			else if(!preg_match('/^http/i',$menuItem->url))
 			{
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				$moduleInfo = $oModuleModel->getModuleInfoByMid($menuItem->url, 0);
 				if(!$moduleInfo) $menuItem->moduleType = 'url';
 				else
@@ -139,8 +139,8 @@
 			else $menuItem->moduleType = 'url';
 
 			// get groups
-			$oMemberModel = &getModel('member');
-			$oModuleAdminModel = &getAdminModel('module');
+			$oMemberModel = getModel('member');
+			$oModuleAdminModel = getAdminModel('module');
 			$output = $oMemberModel->getGroups();
 			if(is_array($output))
 			{
@@ -161,7 +161,7 @@
 			}
 			$menuItem->groupList = $groupList;
 
-			$oModuleController = &getController('module');
+			$oModuleController = getController('module');
 			$menuItem->name_key = $menuItem->name;
 			$oModuleController->replaceDefinedLangCode($menuItem->name);
 
@@ -186,7 +186,7 @@
                 $site_srl = (int)$site_module_info->site_srl;
             }
             // Get language code
-            $oModuleAdminModel = &getAdminModel('module');
+            $oModuleAdminModel = getAdminModel('module');
             return $oModuleAdminModel->getLangCode($site_srl, $source_name);
         }
 
@@ -199,7 +199,7 @@
             $menu_item_srl = Context::get('menu_item_srl');
             $parent_srl = Context::get('parent_srl');
             // Get a list of member groups
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $group_list = $oMemberModel->getGroups();
             Context::set('group_list', $group_list);
             // Add a sub-menu if there is parent_srl but not menu_item_srl
@@ -239,7 +239,7 @@
          **/
 		function getModuleListInSitemap()
 		{
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$columnList = array('module');
 			$moduleList = array('page');
 

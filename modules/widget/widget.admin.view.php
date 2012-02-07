@@ -19,7 +19,7 @@
          **/
         function dispWidgetAdminDownloadedList() {
             // Set widget list
-            $oWidgetModel = &getModel('widget');
+            $oWidgetModel = getModel('widget');
             $widget_list = $oWidgetModel->getDownloadedWidgetList();
 
 			$security = new Security($widget_list);
@@ -41,7 +41,7 @@
 
 		function dispWidgetAdminGenerateCode()
 		{
-			$oView = &getView('widget');
+			$oView = getView('widget');
 			Context::set('in_admin', true);
 			$this->setTemplateFile('widget_generate_code');
 			return $oView->dispWidgetGenerateCode();
@@ -55,16 +55,16 @@
             if(!$module_srl) return $this->stop("msg_invalid_request");
 
             $document_srl = Context::get('document_srl');
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($document_srl);
             Context::set('oDocument', $oDocument);
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 			$columnList = array('module_srl', 'mid');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl, $columnList);
             Context::set('module_info', $module_info);
             // Editors settings of the module by calling getEditor
-            $oEditorModel = &getModel('editor');
+            $oEditorModel = getModel('editor');
             $editor = $oEditorModel->getModuleEditor('document',$module_srl, $module_srl,'module_srl','content');
             Context::set('editor', $editor);
 

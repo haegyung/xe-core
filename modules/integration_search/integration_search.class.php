@@ -12,7 +12,7 @@
          **/
         function moduleInstall() {
             // Registered in action forward
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $oModuleController->insertActionForward('integration_search', 'view', 'IS');
 
             return new Object();

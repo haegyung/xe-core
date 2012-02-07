@@ -19,10 +19,10 @@
 		 * @brief In case an administrator page has been initialized
 		 **/
 		function dispRssAdminIndex() {
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$rss_config = $oModuleModel->getModulePartConfigs('rss');
 			$total_config = $oModuleModel->getModuleConfig('rss');
-			$oRssModel = &getModel('rss');
+			$oRssModel = getModel('rss');
 
 			if($rss_config) {
 				foreach($rss_config as $module_srl => $config) {

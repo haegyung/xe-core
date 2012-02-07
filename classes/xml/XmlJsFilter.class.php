@@ -113,7 +113,7 @@
 				// contibue if both module_name and methos exist.
 				if($module_name&&$method) {
 					// get model object of the module
-					$oExtendFilter = &getModel($module_name);
+					$oExtendFilter = getModel($module_name);
 
 					// execute if method exists
 					if(method_exists($oExtendFilter, $method)) {

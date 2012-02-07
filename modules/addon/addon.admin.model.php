@@ -29,7 +29,7 @@
 		{
 			$addonList = $this->getAddonList(0, 'site');
 
-			$oAutoinstallModel = &getModel('autoinstall');
+			$oAutoinstallModel = getModel('autoinstall');
 			foreach($addonList as $key => $addon)
 			{
 				// get easyinstall remove url
@@ -62,7 +62,7 @@
             if(!$searched_count) return;
             sort($searched_list);
 
-			$oAddonAdminController = &getAdminController('addon');
+			$oAddonAdminController = getAdminController('addon');
 
             for($i=0;$i<$searched_count;$i++) {
                 // Add the name of

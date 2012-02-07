@@ -19,8 +19,8 @@ class trash extends ModuleObject {
 	 * @brief a method to check if successfully installed
 	 **/
 	function checkUpdate() {
-		//$oDB = &DB::getInstance();
-		//$oModuleModel = &getModel('module');
+		//$oDB = DB::getInstance();
+		//$oModuleModel = getModel('module');
 
 		return false;
 	}
@@ -29,8 +29,8 @@ class trash extends ModuleObject {
 	 * @brief Execute update
 	 **/
 	function moduleUpdate() {
-		//$oDB = &DB::getInstance();
-		//$oModuleModel = &getModel('module');
+		//$oDB = DB::getInstance();
+		//$oModuleModel = getModel('module');
 
 		return new Object(0,'success_updated');
 

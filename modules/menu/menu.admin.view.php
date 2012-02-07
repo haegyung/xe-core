@@ -25,7 +25,7 @@
             $obj->list_count = 20;
             $obj->page_count = 20;
 
-            $oMenuModel = &getAdminModel('menu');
+            $oMenuModel = getAdminModel('menu');
             $output = $oMenuModel->getMenuList($obj);
 
             Context::set('total_count', $output->total_count);
@@ -50,7 +50,7 @@
 
             if($menu_srl) {
                 // Get information of the menu
-                $oMenuModel = &getAdminModel('menu');
+                $oMenuModel = getAdminModel('menu');
                 $menu_info = $oMenuModel->getMenu($menu_srl);
                 if($menu_info->menu_srl == $menu_srl) Context::set('menu_info', $menu_info);
             }
@@ -67,7 +67,7 @@
 
             if(!$menu_srl) return $this->dispMenuAdminContent();
             // Get information of the menu
-            $oMenuModel = &getAdminModel('menu');
+            $oMenuModel = getAdminModel('menu');
             $menu_info = $oMenuModel->getMenu($menu_srl);
             if($menu_info->menu_srl != $menu_srl) return $this->dispMenuAdminContent();
 
@@ -87,7 +87,7 @@
 		 * @perphaps this method not use
          **/
         function dispMenuAdminMidList() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             // Get a list of module categories
             $module_category = $oModuleModel->getModuleCategories();
             Context::set('module_category', $module_category);
@@ -118,7 +118,7 @@
          **/
 		function dispMenuAdminSiteMap()
 		{
-			$oMenuAdminModel = &getAdminModel('menu');
+			$oMenuAdminModel = getAdminModel('menu');
 			$menuListFromDB = $oMenuAdminModel->getMenus();
 			if(is_array($menuListFromDB)) $output = array_reverse($menuListFromDB);
 
@@ -156,12 +156,12 @@
             Context::set('menu_list', $menuList);
 
 			// get installed module list
-			$oPageController = &getController('page');	//for lang
+			$oPageController = getController('page');	//for lang
 			$resultModuleList = $oMenuAdminModel->getModuleListInSitemap();
             Context::set('module_list', $resultModuleList);
 
 			// get default group list
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
 			$output = $oMemberModel->getGroups();
 			if(is_array($output))
 			{
@@ -179,7 +179,7 @@
 
 		function _menuInfoSetting(&$menu)
 		{
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			if(!preg_match('/^http/i', $menu['url']))
 			{
 				unset($midInfo);

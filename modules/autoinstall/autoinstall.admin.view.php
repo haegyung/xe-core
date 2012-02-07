@@ -23,7 +23,7 @@
 
 
             $this->dispCategory();
-            $oModel = &getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             Context::set('tCount', $oModel->getPackageCount(null));
             Context::set('iCount', $oModel->getInstalledPackageCount());
 	    }
@@ -48,7 +48,7 @@
             {
                 $targetpackages[$item->package_srl->body] = 0;
             }
-            $oModel = &getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             if($package == null)
                 $packages = $oModel->getInstalledPackages(array_keys($targetpackages));
 			$depto = array();
@@ -118,7 +118,7 @@
             $page = Context::get('page');
             if(!$page) $page = 1;
             Context::set('page', $page);
-            $oModel = &getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             $output = $oModel->getInstalledPackageList($page);
             $package_list = $output->data;
 
@@ -153,7 +153,7 @@
             $params["act"] = "getResourceapiInstallInfo";
             $params["package_srl"] = $package_srl;
             $xmlDoc = XmlGenerater::getXmlDoc($params);
-            $oModel = &getModel('autoinstall');
+            $oModel = getModel('autoinstall');
 
             $targetpackages = array();
             if($xmlDoc)
@@ -220,7 +220,7 @@
         }
 
         function dispAutoinstallAdminIndex() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 			$config = $oModuleModel->getModuleConfig('autoinstall');
             $ftp_info =  Context::getFTPInfo();
             if(!$ftp_info->ftp_root_path) Context::set('show_ftp_note', true);
@@ -240,11 +240,11 @@
 				return $this->stop('msg_connection_fail');
 			}
 
-            $oModel = &getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             $item = $oModel->getLatestPackage();
             if(!$item || $item->updatedate < $updateDate || count($this->categories) < 1)
             {
-				$oController = &getAdminController('autoinstall');
+				$oController = getAdminController('autoinstall');
 				$oController->_updateinfo();
 
 				if (!$_SESSION['__XE_EASYINSTALL_REDIRECT__'])
@@ -301,7 +301,7 @@
 
         function dispCategory()
         {
-            $oModel = &getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             $this->categories = &$oModel->getCategoryList();
             Context::set('categories', $this->categories);
         }
@@ -310,7 +310,7 @@
 		{
             $package_srl = Context::get('package_srl');
             if(!$package_srl) return $this->dispAutoinstallAdminIndex();
-			$oModel =& getModel('autoinstall');
+			$oModel = getModel('autoinstall');
 			$installedPackage = $oModel->getInstalledPackage($package_srl);
 			if(!$installedPackage) return $this->dispAutoinstallAdminInstalledPackages();
 

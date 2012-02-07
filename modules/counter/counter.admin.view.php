@@ -24,7 +24,7 @@
             if(!$selected_date) $selected_date = date("Ymd");
             Context::set('selected_date', $selected_date);
             // create the counter model object
-            $oCounterModel = &getModel('counter');
+            $oCounterModel = getModel('counter');
             // get a total count and daily count
             $site_module_info = Context::get('site_module_info');
             $status = $oCounterModel->getStatus(array(0,$selected_date),$site_module_info->site_srl);

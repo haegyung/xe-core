@@ -19,8 +19,8 @@
          * Used in the ModuleSelector
          **/
         function getModuleAdminModuleList() {
-			$oModuleController = &getController('module');
-			$oModuleModel = &getModel('module');
+			$oModuleController = getController('module');
+			$oModuleModel = getModel('module');
             $args->module_srls = Context::get('module_srls');
             $output = executeQueryArray('module.getModulesInfo', $args);
             if(!$output->toBool() || !$output->data) return new Object();
@@ -56,11 +56,11 @@
          **/
         function getModuleGrantHTML($module_srl, $source_grant_list) {
 			// get member module's config
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
 			$member_config = $oMemberModel->getMemberConfig();
 			Context::set('member_config', $member_config);
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 			$columnList = array('module_srl', 'site_srl');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl, $columnList);
             // Grant virtual permission for access and manager
@@ -98,7 +98,7 @@
             $admin_member = $oModuleModel->getAdminId($module_srl);
             Context::set('admin_member', $admin_member);
             // Get a list of groups
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $group_list = $oMemberModel->getGroups($module_info->site_srl);
             Context::set('group_list', $group_list);
 
@@ -116,7 +116,7 @@
          * @brief Common:: skin setting page for the module
          **/
         function getModuleSkinHTML($module_srl) {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl);
             if(!$module_info) return;
 

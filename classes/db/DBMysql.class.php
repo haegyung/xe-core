@@ -439,9 +439,9 @@
         {
             return mysql_fetch_object($result);
         }
-		
+
 		function db_free_result(&$result){
-			return mysql_free_result($result);		
+			return mysql_free_result($result);
 		}
 
         function getParser(){

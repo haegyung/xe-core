@@ -9,13 +9,13 @@ function pointLevelIconTrans($matches) {
 	$orig_text = preg_replace('/'.preg_quote($matches[5],'/').'<\/'.$matches[6].'>$/', '', $matches[0]);
 
 	// Check Group Image Mark
-	$oMemberModel = &getModel('member');
+	$oMemberModel = getModel('member');
 	if($oMemberModel->getGroupImageMark($member_srl)) return $orig_text.$matches[5].'</'.$matches[6].'>';
 
 	if(!isset($GLOBALS['_pointLevelIcon'][$member_srl])) {
 		// Get point configuration
 		if(!$GLOBALS['_pointConfig']) {
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$GLOBALS['_pointConfig'] = $oModuleModel->getModuleConfig('point');
 		}
 		$config = $GLOBALS['_pointConfig'];

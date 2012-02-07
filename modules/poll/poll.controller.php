@@ -55,7 +55,7 @@
             $logged_info = Context::get('logged_info');
             $member_srl = $logged_info->member_srl?$logged_info->member_srl:0;
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // Register the poll
             unset($poll_args);
@@ -123,10 +123,10 @@
             // If there is no response item, display an error
             if(!count($item_srls)) return new Object(-1, 'msg_check_poll_item');
             // Make sure is the poll has already been taken
-            $oPollModel = &getModel('poll');
+            $oPollModel = getModel('poll');
             if($oPollModel->isPolled($poll_srl)) return new Object(-1, 'msg_already_poll');
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
 
             $args->poll_srl = $poll_srl;
@@ -184,7 +184,7 @@
             $skin = Context::get('skin'); 
             if(!$skin || !is_dir('./modules/poll/skins/'.$skin)) $skin = 'default';
 
-            $oPollModel = &getModel('poll');
+            $oPollModel = getModel('poll');
             $tpl = $oPollModel->getPollResultHtml($poll_srl, $skin);
 
             $this->add('poll_srl', $poll_srl);
@@ -202,7 +202,7 @@
 
 			global $lang;
 			if(count($pollSrlList) > 0) {
-				$oPollAdminModel = &getAdminModel('poll');
+				$oPollAdminModel = getAdminModel('poll');
 				$args->pollIndexSrlList = $pollSrlList;
 				$output = $oPollAdminModel->getPollListWithMember($args);
 				$pollList = $output->data;

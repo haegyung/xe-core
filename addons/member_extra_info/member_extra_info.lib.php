@@ -9,7 +9,7 @@
 		// If member_srl=o(not a member), return the entire body
 		if(!$member_srl) return $matches[0];
 
-        $oMemberModel = &getModel('member');
+        $oMemberModel = getModel('member');
         $nick_name = $matches[5];
 
         // If pre-defined data in the global variablesm return it

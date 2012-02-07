@@ -33,7 +33,7 @@
 			$output = $this->doLogin($user_id, $password, $keep_signed=='Y'?true:false);
 			if (!$output->toBool()) return $output;
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$config = $oModuleModel->getModuleConfig('member');
 
 			// Check change_password_date
@@ -41,7 +41,7 @@
 
 			// Check if change_password_date is set
 			if ($limit_date > 0) {
-				$oMemberModel = &getModel('member');
+				$oMemberModel = getModel('member');
 				//$member_info = $oMemberModel->getMemberInfoByUserID($user_id, $columnList);
 				if ($this->memberInfo->change_password_date < date ('YmdHis', strtotime ('-' . $limit_date . ' day'))) {
 					$this->setRedirectUrl(getNotEncodedUrl('','vid',Context::get('vid'),'mid',Context::get('mid'),'act','dispMemberModifyPassword'));
@@ -67,7 +67,7 @@
          * @brief Login by openid
          **/
         function procMemberOpenIDLogin($validator = "procMemberOpenIDValidate") {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             if($config->enable_openid != 'Y') $this->stop('msg_invalid_request');
 
@@ -174,7 +174,7 @@
 					return $this->stop('invalid_authorization');
 			}
             // Authentication success
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Get zeroboard ID which is corresponded to the openID ID.
             $login_success = false;
             $assoc_member_info = null;
@@ -355,7 +355,7 @@
 
             $output = new Object();
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             if($config->after_logout_url) 
 				$output->redirect_url = $config->after_logout_url;
@@ -375,7 +375,7 @@
             if(!$document_srl) $document_srl = (int)Context::get('target_srl');
             if(!$document_srl) return new Object(-1,'msg_invalid_request');
             // Get document
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($document_srl);
             // Variables
             $args->document_srl = $document_srl;
@@ -431,7 +431,7 @@
             $document_srl = (int)Context::get('document_srl');
             if(!$document_srl) return new Object(-1,'msg_invalid_request');
             // Variables
-            $oDocumentController = &getController('document');
+            $oDocumentController = getController('document');
             $oDocumentController->deleteDocument($document_srl, true);
         }
 
@@ -443,7 +443,7 @@
             $value = Context::get('value');
             if(!$value) return;
 
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Check if logged-in
             $logged_info = Context::get('logged_info');
 
@@ -475,7 +475,7 @@
          **/
         function procMemberInsert() {
             if (Context::getRequestMethod () == "GET") return new Object (-1, "msg_invalid_request");
-            $oMemberModel = &getModel ('member');
+            $oMemberModel = getModel ('member');
             $config = $oMemberModel->getMemberConfig ();
 
             // call a trigger (before)
@@ -587,7 +587,7 @@
         function procMemberModifyInfo() {
             if(!Context::get('is_logged')) return $this->stop('msg_not_logged');
             // Extract the necessary information in advance
-            $oMemberModel = &getModel ('member');
+            $oMemberModel = getModel ('member');
             $config = $oMemberModel->getMemberConfig ();
 			$getVars = array('find_account_answer','allow_mailing','allow_message');
 			if ($config->signupForm){
@@ -623,7 +623,7 @@
             $extra_vars = delObjectVars($all_args, $args);
             $args->extra_vars = serialize($extra_vars);
             // Create a member model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 
 			// remove whitespace
 			$checkInfos = array('user_id', 'nick_name', 'email_address');
@@ -684,7 +684,7 @@
             $logged_info = Context::get('logged_info');
             $member_srl = $logged_info->member_srl;
             // Create a member model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Get information of member_srl
 			$columnList = array('member_srl', 'password');
             $member_info = $oMemberModel->getMemberInfoByMemberSrl($member_srl, 0, $columnList);
@@ -720,7 +720,7 @@
             $logged_info = Context::get('logged_info');
             $member_srl = $logged_info->member_srl;
             // Create a member model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Get information of member_srl
 			if(!$this->memberInfo->password)
 			{
@@ -778,7 +778,7 @@
             $logged_info = Context::get('logged_info');
             if($logged_info->is_admin != 'Y' && $logged_info->member_srl != $member_srl) return $this->stop('msg_not_uploaded_profile_image');
             // Return if member module is set not to use an image name or the user is not an administrator ;
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             if($logged_info->is_admin != 'Y' && $config->profile_image != 'Y') return $this->stop('msg_not_uploaded_profile_image');
 
@@ -793,7 +793,7 @@
         }
 
         function insertProfileImage($member_srl, $target_file) {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             // Get an image size
             $max_width = $config->profile_image_max_width;
@@ -829,7 +829,7 @@
             $logged_info = Context::get('logged_info');
             if($logged_info->is_admin != 'Y' && $logged_info->member_srl != $member_srl) return $this->stop('msg_not_uploaded_image_name');
             // Return if member module is set not to use an image name or the user is not an administrator ;
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             if($logged_info->is_admin != 'Y' && $config->image_name != 'Y') return $this->stop('msg_not_uploaded_image_name');
 
@@ -844,7 +844,7 @@
         }
 
         function insertImageName($member_srl, $target_file) {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             // Get an image size
             $max_width = $config->image_name_max_width;
@@ -873,13 +873,13 @@
             $logged_info = Context::get('logged_info');
 
             if($logged_info->is_admin != 'Y') {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $config = $oModuleModel->getModuleConfig('member');
                 if($config->profile_image == 'N') return new Object(0,'success');
             }
 
             if($logged_info->is_admin == 'Y' || $logged_info->member_srl == $member_srl) {
-                $oMemberModel = &getModel('member');
+                $oMemberModel = getModel('member');
                 $profile_image = $oMemberModel->getProfileImage($member_srl);
                 FileHandler::removeFile($profile_image->file);
             }
@@ -896,13 +896,13 @@
             $logged_info = Context::get('logged_info');
 
             if($logged_info->is_admin != 'Y') {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $config = $oModuleModel->getModuleConfig('member');
                 if($config->image_name == 'N') return new Object(0,'success');
             }
 
             if($logged_info->is_admin == 'Y' || $logged_info->member_srl == $member_srl) {
-                $oMemberModel = &getModel('member');
+                $oMemberModel = getModel('member');
                 $image_name = $oMemberModel->getImageName($member_srl);
                 FileHandler::removeFile($image_name->file);
             }
@@ -923,7 +923,7 @@
             $logged_info = Context::get('logged_info');
             if($logged_info->is_admin != 'Y' && $logged_info->member_srl != $member_srl) return $this->stop('msg_not_uploaded_image_mark');
             // Membership in the images mark the module using the ban was set by an administrator or return;
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             if($logged_info->is_admin != 'Y' && $config->image_mark != 'Y') return $this->stop('msg_not_uploaded_image_mark');
 
@@ -938,7 +938,7 @@
         }
 
         function insertImageMark($member_srl, $target_file) {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
             // Get an image size
             $max_width = $config->image_mark_max_width;
@@ -967,7 +967,7 @@
 
             $logged_info = Context::get('logged_info');
             if($logged_info->is_admin == 'Y' || $logged_info->member_srl == $member_srl) {
-                $oMemberModel = &getModel('member');
+                $oMemberModel = getModel('member');
                 $image_mark = $oMemberModel->getImageMark($member_srl);
                 FileHandler::removeFile($image_mark->file);
             }
@@ -981,8 +981,8 @@
             $email_address = Context::get('email_address');
             if(!$email_address) return new Object(-1, 'msg_invalid_request');
 
-            $oMemberModel = &getModel('member');
-            $oModuleModel = &getModel('module');
+            $oMemberModel = getModel('member');
+            $oModuleModel = getModel('module');
             // Check if a member having the same email address exists
             $member_srl = $oMemberModel->getMemberSrlByEmailAddress($email_address);
             if(!$member_srl) return new Object(-1, 'msg_email_not_exists');
@@ -1038,7 +1038,7 @@
             $oTemplate = &TemplateHandler::getInstance();
             $content = $oTemplate->compile($tpl_path, 'find_member_account_mail');
             // Get information of the Webmaster
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
             // Send a mail
             $oMail = new Mail();
@@ -1057,7 +1057,7 @@
          * @brief Generate a temp password by answering to the pre-determined question
          **/
         function procMemberFindAccountByQuestion() {
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 			$config = $oMemberModel->getMemberConfig();
 
             $email_address = Context::get('email_address');
@@ -1067,7 +1067,7 @@
 
             if(($config->identifier == 'user_id' && !$user_id) || !$email_address || !$find_account_question || !$find_account_answer) return new Object(-1, 'msg_invalid_request');
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             // Check if a member having the same email address exists
             $member_srl = $oMemberModel->getMemberSrlByEmailAddress($email_address);
             if(!$member_srl) return new Object(-1, 'msg_email_not_exists');
@@ -1148,7 +1148,7 @@
             $member_srl = Context::get('member_srl');
             if(!$member_srl) return new Object(-1, 'msg_invalid_request');
 
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Get information of the member
             $member_info = $oMemberModel->getMemberInfoByMemberSrl($member_srl);
             // Check if the member is set to allow a request to re-send an authentication mail
@@ -1171,7 +1171,7 @@
             Context::set('auth_args', $auth_args);
             Context::set('member_info', $member_info);
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
             if(!$member_config->skin) $member_config->skin = "default";
             if(!$member_config->colorset) $member_config->colorset = "white";
@@ -1187,7 +1187,7 @@
             $oTemplate = &TemplateHandler::getInstance();
             $content = $oTemplate->compile($tpl_path, 'confirm_member_account_mail');
             // Get information of the Webmaster
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
             // Send a mail
             $oMail = new Mail();
@@ -1209,7 +1209,7 @@
             $email_address = Context::get('email_address');
             if(!$email_address) return $this->stop('msg_invalid_request');
             // Log test by using email_address
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 
             $args->email_address = $email_address;
             $memberSrl = $oMemberModel->getMemberSrlByEmailAddress($email_address);
@@ -1229,7 +1229,7 @@
             $auth_info = $output->data[0];
             // Get content of the email to send a member
             Context::set('member_info', $memberInfo);
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
             if(!$member_config->skin) $member_config->skin = "default";
             if(!$member_config->colorset) $member_config->colorset = "white";
@@ -1245,7 +1245,7 @@
             $oTemplate = &TemplateHandler::getInstance();
             $content = $oTemplate->compile($tpl_path, 'confirm_member_account_mail');
             // Get information of the Webmaster
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
             // Send a mail
             $oMail = new Mail();
@@ -1272,7 +1272,7 @@
             $logged_info = Context::get('logged_info');
             if(!$site_module_info->site_srl || !Context::get('is_logged') || count($logged_info->group_srl_list) ) return new Object(-1,'msg_invalid_request');
 
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 			$columnList = array('site_srl', 'group_srl', 'title');
             $default_group = $oMemberModel->getDefaultGroup($site_module_info->site_srl, $columnList);
             $this->addMemberToGroup($logged_info->member_srl, $default_group->group_srl, $site_module_info->site_srl);
@@ -1315,7 +1315,7 @@
             $agreement = trim($args->agreement);
             unset($args->agreement);
 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $output = $oModuleController->insertModuleConfig('member',$args);
             if(!$output->toBool()) return $output;
 
@@ -1359,7 +1359,7 @@
             $args->group_srl = $group_srl;
             if($site_srl) $args->site_srl = $site_srl;
 
-            $oModel =& getModel('member');
+            $oModel = getModel('member');
             $groups = $oModel->getMemberGroups($member_srl, $site_srl, true);
             if($groups[$group_srl]) return new Object();
 
@@ -1430,13 +1430,13 @@
             if($key == $args->autologin_key) {
 
                 // Check change_password_date
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $member_config = $oModuleModel->getModuleConfig('member');
                 $limit_date = $member_config->change_password_date;
 
                 // Check if change_password_date is set
                 if($limit_date > 0) {
-                    $oMemberModel = &getModel('member');
+                    $oMemberModel = getModel('member');
 					$columnList = array('member_srl', 'change_password_date');
                     $member_info = $oMemberModel->getMemberInfoByUserID($user_id, $columnList);
 
@@ -1469,7 +1469,7 @@
             $trigger_output = ModuleHandler::triggerCall('member.doLogin', 'before', $trigger_obj);
             if(!$trigger_output->toBool()) return $trigger_output;
             // Create a member model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 
 	    // check identifier
 	    $config = $oMemberModel->getMemberConfig();
@@ -1512,7 +1512,7 @@
                 if($autologin_output->toBool()) setCookie('xeak',$autologin_args->autologin_key, time()+60*60*24*365, '/');
             }
 			if($this->memberInfo->is_admin == 'Y') {
-				 $oMemberAdminModel = &getAdminModel('member');
+				 $oMemberAdminModel = getAdminModel('member');
 				if(!$oMemberAdminModel->getMemberAdminIPCheck()) {
 		            $_SESSION['denied_admin'] = 'Y';
 				}
@@ -1527,7 +1527,7 @@
          * @brief Update or create session information
          **/
         function setSessionInfo() {
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // If your information came through the current session information to extract information from the users
             if(!$this->memberInfo && $_SESSION['member_srl'] && $oMemberModel->isLogged() ) {
                 $this->memberInfo = $oMemberModel->getMemberInfoByMemberSrl($_SESSION['member_srl']);
@@ -1558,7 +1558,7 @@
                 $group_srl_list = array_keys($this->memberInfo->group_list);
                 $_SESSION['group_srls'] = $group_srl_list;
                 // If the group is designated as an administrator administrator
-                $oMemberModel = &getModel('member');
+                $oMemberModel = getModel('member');
                 $admin_group = $oMemberModel->getAdminGroup();
                 if($admin_group->group_srl && in_array($admin_group->group_srl, $group_srl_list)) $_SESSION['is_admin'] = 'Y';
             }
@@ -1615,7 +1615,7 @@
             $output = ModuleHandler::triggerCall('member.insertMember', 'before', $args);
             if(!$output->toBool()) return $output;
             // Terms and Conditions portion of the information set up by members reaffirmed
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
 
             $logged_info = Context::get('logged_info');
@@ -1642,7 +1642,7 @@
             if($args->homepage && !preg_match("/^[a-z]+:\/\//i",$args->homepage)) $args->homepage = 'http://'.$args->homepage;
             if($args->blog && !preg_match("/^[a-z]+:\/\//i",$args->blog)) $args->blog = 'http://'.$args->blog;
             // Create a model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // ID check is prohibited
             if($oMemberModel->isDeniedID($args->user_id)) return new Object(-1,'denied_user_id');
             // ID, nickname, email address of the redundancy check
@@ -1655,7 +1655,7 @@
             $member_srl = $oMemberModel->getMemberSrlByEmailAddress($args->email_address);
             if($member_srl) return new Object(-1,'msg_exists_email_address');
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // Insert data into the DB
             $args->list_order = -1 * $args->member_srl;
@@ -1747,7 +1747,7 @@
                 $oTemplate = &TemplateHandler::getInstance();
                 $content = $oTemplate->compile($tpl_path, 'confirm_member_account_mail');
                 // Get information of the Webmaster
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $member_config = $oModuleModel->getModuleConfig('member');
                 // Send a mail
                 $oMail = new Mail();
@@ -1780,7 +1780,7 @@
             $output = ModuleHandler::triggerCall('member.updateMember', 'before', $args);
             if(!$output->toBool()) return $output;
             // Create a model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
 
             $logged_info = Context::get('logged_info');
             // Get what you want to modify the original information
@@ -1821,7 +1821,7 @@
             if($args->blog && !preg_match("/^[a-z]+:\/\//is",$args->blog)) $args->blog = 'http://'.$args->blog;
 
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // DB in the update
 
@@ -1912,7 +1912,7 @@
             $output = ModuleHandler::triggerCall('member.deleteMember', 'before', $trigger_obj);
             if(!$output->toBool()) return $output;
             // Create a model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Bringing the user's information
             if(!$this->memberInfo) {
 				$columnList = array('member_srl', 'is_admin');
@@ -1922,7 +1922,7 @@
             // If managers can not be deleted
             if($this->memberInfo->is_admin == 'Y') return new Object(-1, 'msg_cannot_delete_admin');
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
 
             $args->member_srl = $member_srl;
@@ -1991,7 +1991,7 @@
 
 		function _updatePointByGroup($memberSrl, $groupSrlList)
 		{
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$pointModuleConfig = $oModuleModel->getModuleConfig('point');
 			$pointGroup = $pointModuleConfig->point_group;
 
@@ -2008,12 +2008,12 @@
 
 			if($maxLevel > 0)
 			{
-				$oPointModel = &getModel('point');
+				$oPointModel = getModel('point');
 				$originPoint = $oPointModel->getPoint($memberSrl);
 
 				if($pointModuleConfig->level_step[$maxLevel] > $originPoint)
 				{
-					$oPointController = &getController('point');
+					$oPointController = getController('point');
 					$oPointController->setPoint($memberSrl, $pointModuleConfig->level_step[$maxLevel], 'update');
 				}
 			}
@@ -2026,7 +2026,7 @@
 
             if(!$newEmail) return $this->stop('msg_invalid_request');
 
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
             $member_srl = $oMemberModel->getMemberSrlByEmailAddress($newEmail);
             if($member_srl) return new Object(-1,'msg_exists_email_address');
 
@@ -2041,7 +2041,7 @@
 				return $output;
 			}
 			
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $member_config = $oModuleModel->getModuleConfig('member');
 
             $tpl_path = sprintf('%sskins/%s', $this->module_path, $member_config->skin);

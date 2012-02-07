@@ -21,7 +21,7 @@
          * @brief a method to check if successfully installed
          **/
         function checkUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // 2009. 02. 11 menu added to the table site_srl
             if(!$oDB->isColumnExists('menu', 'site_srl')) return true;
 
@@ -34,7 +34,7 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // 2009. 02. 11 menu added to the table site_srl
             if(!$oDB->isColumnExists('menu', 'site_srl')) {
                 $oDB->addColumn('menu','site_srl','number',11,0,true);
@@ -52,7 +52,7 @@
          * @brief Re-generate the cache file
          **/
         function recompileCache() {
-            $oMenuAdminController = &getAdminController('menu');
+            $oMenuAdminController = getAdminController('menu');
             // Wanted list of all the blog module
             $output = executeQueryArray("menu.getMenus");
             $list = $output->data;

@@ -126,7 +126,7 @@
             $is_logged = Context::get('is_logged');
             $logged_info = Context::get('logged_info');
             // module model create an object
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             // permission settings. access, manager(== is_admin) are fixed and privilege name in XE
             $module_srl = Context::get('module_srl');
             if(!$module_info->mid && preg_match('/^([0-9]+)$/',$module_srl)) {
@@ -290,7 +290,7 @@
 
             // execute an addon(call called_position as before_module_proc)
             $called_position = 'before_module_proc';
-            $oAddonController = &getController('addon');
+            $oAddonController = getController('addon');
             $addon_file = $oAddonController->getCacheFilePath(Mobile::isFromMobilePhone()?"mobile":"pc");
             @include($addon_file);
 
@@ -300,7 +300,7 @@
 					return $this->stop("msg_not_permitted_act");
 				}
                 // integrate skin information of the module(change to sync skin info with the target module only by seperating its table)
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $oModuleModel->syncSkinInfoToModuleInfo($this->module_info);
                 Context::set('module_info', $this->module_info);
                 // Run
@@ -320,7 +320,7 @@
 
             // execute an addon(call called_position as after_module_proc)
             $called_position = 'after_module_proc';
-            $oAddonController = &getController('addon');
+            $oAddonController = getController('addon');
             $addon_file = $oAddonController->getCacheFilePath(Mobile::isFromMobilePhone()?"mobile":"pc");
             @include($addon_file);
 
