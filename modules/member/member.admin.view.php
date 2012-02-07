@@ -170,6 +170,21 @@ class MemberAdminView extends Member
 			$driverName = 'default';
 		}
 
+		// get member's default driver
+		$args->member_srl = Context::get('member_srl');
+		$output = executeQuery('member.getDefaultDriver', $args);
+		if(!$output->toBool())
+		{
+			return $output;
+		}
+
+		$driver = $output->data->driver;
+
+		if($driver != $driverName)
+		{
+			return new Object(-1, 'msg_invalid_request');
+		}
+
 		// get driver instance
 		$oDriver = getDriver('member', $driverName);
 		Context::set('oDriver', $oDriver);

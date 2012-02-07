@@ -1,6 +1,6 @@
 <query id="updatememberDeniedInfo" action="update">
     <tables>
-        <table name="member" />
+        <table name="member_common" />
     </tables>
     <columns>
         <column name="denied" var="denied" notnull="notnull" />

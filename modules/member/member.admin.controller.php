@@ -362,8 +362,8 @@
 			$members = $var->member_srls;
 			$driver = Context::get('driver');
 
-            $oDB = &DB::getInstance();
-            $oDB->begin();
+			$oDB = &DB::getInstance();
+			$oDB->begin();
 
 			$oMemberController = &getController('member');
 			foreach($members as $key=>$member_srl){
@@ -372,21 +372,21 @@
 				switch($var->type){
 					case 'modify':{
 									  if (count($groups) > 0){
-											$args->site_srl = 0;
-											// One of its members to delete all the group
-											$output = executeQuery('member.deleteMemberGroupMember', $args);
-											if(!$output->toBool()) {
-												$oDB->rollback();
-												return $output;
-											}
-											// Enter one of the loop a
-											foreach($groups as $group_srl) {
-												$output = $oMemberController->addMemberToGroup($args->member_srl,$group_srl);
-												if(!$output->toBool()) {
-													$oDB->rollback();
-													return $output;
-												}
-											}
+										  $args->site_srl = 0;
+										  // One of its members to delete all the group
+										  $output = executeQuery('member.deleteMemberGroupMember', $args);
+										  if(!$output->toBool()) {
+											  $oDB->rollback();
+											  return $output;
+										  }
+										  // Enter one of the loop a
+										  foreach($groups as $group_srl) {
+											  $output = $oMemberController->addMemberToGroup($args->member_srl,$group_srl);
+											  if(!$output->toBool()) {
+												  $oDB->rollback();
+												  return $output;
+											  }
+										  }
 									  }
 									  if ($var->denied){
 										  $args->denied = $var->denied;
