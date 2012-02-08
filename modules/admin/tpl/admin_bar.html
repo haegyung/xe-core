@@ -1,18 +1,13 @@
 <div class="adminBar">
 	<h1><img src="{$favicon_url}" alt="{$lang->cmd_management}" /></h1>
 	<ul class="general">
-		<li><a href="#">제어판</a> </li>
-		<li><a href="#">사이트맵</a></li>
-		<li><a href="#">회원</a></li>
-		<li><a href="#">문서</a></li>
-		<li><a href="#">댓글</a></li>
-		<li><a href="#">설정</a></li>
+		<li loop="$xeAdminMenu->list=>$value"><a href="{$value['href']}">{$value['text']}</a> </li>
 	</ul>
 	<ul class="context">
-		<li><strong>{$현재페이지모듈이름}</strong>:</li>
-		<li><a href="#">{$lang->cmd_write}</a></li><!-- 현재 모듈의 새글쓰기 기능으로 게시판, 페이지, 위키 등 각 모듈의 새글쓰기 페이지로 이동 -->
-		<li><a href="#">{$lang->cmd_modify}</a></li><!-- 현재 모듈의 내용변경 기능으로 게시판, 페이지, 위키 등 각 모듈의 내용변경 페이지로 이동 -->
-		<li><a href="#">{$lang->cmd_setup}</a></li><!-- 현재 모듈의 설정변경 기능으로 게시판, 페이지, 위키 등 각 모듈의 설정변경 페이지로 이동 -->
-		<li><a href="#">{$lang->layout}</a></li><!-- 현재 모듈의 레이아웃 기능으로 게시판, 페이지, 위키 등 각 모듈의 레이아웃 페이지로 이동 -->
+		<li><strong>{$current_module_info->module}</strong>:</li>
+		<li cond="$xeAdminWriteUrl"><a href="{$xeAdminWriteUrl}">{$lang->cmd_write}</a></li><!-- 현재 모듈의 새글쓰기 기능으로 게시판, 페이지, 위키 등 각 모듈의 새글쓰기 페이지로 이동 -->
+		<li cond="$xeAdminModifyUrl"><a href="{$xeAdminModifyUrl}">{$lang->cmd_modify}</a></li><!-- 현재 모듈의 내용변경 기능으로 게시판, 페이지, 위키 등 각 모듈의 내용변경 페이지로 이동 -->
+		<li cond="$xeAdminSetupUrl"><a href="{$xeAdminSetupUrl}">{$lang->cmd_setup}</a></li><!-- 현재 모듈의 설정변경 기능으로 게시판, 페이지, 위키 등 각 모듈의 설정변경 페이지로 이동 -->
+		<li cond="$xeAdminLayoutUrl"><a href="{$xeAdminLayoutUrl}">{$lang->layout}</a></li><!-- 현재 모듈의 레이아웃 기능으로 게시판, 페이지, 위키 등 각 모듈의 레이아웃 페이지로 이동 -->
 	</ul>
 </div>

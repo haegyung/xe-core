@@ -362,9 +362,9 @@
 			$oDocumentModel = getModel('document');
 			$config = $oDocumentModel->getDocumentConfig();
        		Context::set('thumbnail_type',$config->thumbnail_type);
-			
+
 			Context::set('IP',$_SERVER['REMOTE_ADDR']);
-			
+
 			$oModuleModel = getModel('module');
 			$config = $oModuleModel->getModuleConfig('module');
        		Context::set('htmlFooter',$config->htmlFooter);

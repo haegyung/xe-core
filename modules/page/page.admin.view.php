@@ -272,7 +272,7 @@
 		function _setArticleTypeContentModify() {
 			$oDocumentModel = getModel('document');
 			$oDocument = $oDocumentModel->getDocument(0, true);
-			
+
 			if ($this->module_info->document_srl){
 				$document_srl = $this->module_info->document_srl;
 				$oDocument->setDocument($document_srl);
