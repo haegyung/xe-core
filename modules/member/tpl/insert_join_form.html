@@ -13,7 +13,7 @@
 			<p class="q">{$lang->column_type} *</p>
 			<p class="a">
 				<select class="typeSelect" style="width:290px" name="column_type">
-					<option loop="$lang->column_type_list=>$key,$type_info" value="{$key}" selected="selected"|cond="$formInfo->column_type == $key" >{$lang->column_type_list[$key]}</option>
+					<option loop="$lang->column_type_list=>$key,$type_info" cond="$key != 'kr_zip' || ($key == 'kr_zip' && $exists_krzip)" value="{$key}" selected="selected"|cond="$formInfo->column_type == $key" >{$lang->column_type_list[$key]}</option>
 				</select>
 			</p>
 			<p class="q multiExample">{$lang->about_multi_type}</p>
@@ -43,7 +43,7 @@
 		<li>
 			<p class="a">
 				<input type="radio" id="radio_required" name="required" value="Y" /> <label for="radio_required">{$lang->cmd_required}</label>
-				<input type="radio" id="radio_option" name="required" value="N" /> <label for="radio_option">{$lang->cmd_optional}</label>
+				<input type="radio" id="radio_option" name="required" value="N" checked="checked" /> <label for="radio_option">{$lang->cmd_optional}</label>
 			</p>
 		</li>
 	</ul>

@@ -1,57 +1,32 @@
 <div class="table even">
 	<table width="100%" border="1" cellspacing="0">
-		<!--@foreach($signupForm as $no=>$formInfo)-->
-		<!--@if($formInfo->isDefaultForm)-->
-{@$title = Context::getLang($formInfo->title)}
-{@$value = $memberInfo[$formInfo->name]}
-		<!--@else-->
-{@$title = $extend_form_list[$formInfo->member_join_form_srl]->column_title}
-{@$orgValue = $extend_form_list[$formInfo->member_join_form_srl]->value}
-			<!--@if($formInfo->type=='tel')-->
-				{@$value = $orgValue[0]}
-					<!--@if($orgValue[1])-->-<!--@end-->
-				{@$value .= $orgValue[1]}
-					<!--@if($orgValue[2])-->-<!--@end-->
-				{@$value .= $orgValue[2]}
-			<!--@elseif($formInfo->type=='kr_zip')-->
-				{@$value = $orgValue[0]}<!--@if($orgValue[1]&&$orgValue[0])--><br /><!--@end-->{@$value .= $orgValue[1]}
-			<!--@elseif($formInfo->type=='checkbox' && is_array($orgValue))-->
-				{@$value = implode(", ",$orgValue)}
-			<!--@elseif($formInfo->type=='date')-->
-				{@$value = zdate($orgValue, "Y-m-d")}
-			<!--@else-->
-				{@$value = nl2br($orgValue)}
-			<!--@end-->
-		<!--@end-->
-
-		<tr cond="$formInfo->isUse && $formInfo->name != 'password'">
-			<th scope="row" >{$title} <em cond="$formInfo->required || $formInfo->mustRequired">*</em></th>
-			<td class="text">{$value}</td>
+		<tr loop="$signUpForm => $formInfo">
+			<th scope="row" >{$formInfo->title} <em cond="$formInfo->required">*</em></th>
+			<td class="text">{$formInfo->value}</td>
 		</tr>
-		<!--@end-->
 		<tr>
 			<th scope="row">{$lang->allow_message}</th>
-			<td class="text">{$lang->allow_message_type[$memberInfo['allow_message']]}</td>
+			<td class="text">{$lang->allow_message_type[$memberInfo->allow_message]}</td>
 		</tr>
 		<tr>
 			<th scope="row">{$lang->denied}</th>
-			<td class="text"><!--@if($memberInfo['denied'] == 'N')-->{$lang->cmd_no}<!--@else-->{$lang->cmd_yes}<!--@end--></td>
+			<td class="text"><!--@if($memberInfo->denied == 'N')-->{$lang->cmd_no}<!--@else-->{$lang->cmd_yes}<!--@end--></td>
 		</tr>
-		<tr cond="$memberInfo['limit_date']">
+		<tr cond="$memberInfo->limit_date">
 			<th scope="row">{$lang->limit_date}</th>
-			<td class="text">{zdate($memberInfo['limit_date'],"Y-m-d H:i")}</td>
+			<td class="text">{zdate($memberInfo->limit_date, "Y-m-d H:i")}</td>
 		</tr>
-		<tr cond="$memberInfo['is_admin'] == 'Y'">
+		<tr cond="$memberInfo->is_admin == 'Y'">
 			<th scope="row">{$lang->is_admin}</th>
 			<td class="text">{$lang->cmd_yes}</td>
 		</tr>
 		<tr>
 			<th scope="row">{$lang->member_group}</th>
-			<td class="text">{implode(', ', $memberInfo['group_list'])}</td>
+			<td class="text">{implode(', ', $memberInfo->group_list)}</td>
 		</tr>
-		<tr cond="$memberInfo['description']">
+		<tr cond="$memberInfo->description">
 			<th scope="row"><div>{$lang->description}</div></th>
-			<td>{$memberInfo['description']}&nbsp;</td>
+			<td>{$memberInfo->description}</td>
 		</tr>
 	</table>
 </div>

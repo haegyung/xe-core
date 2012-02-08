@@ -18,6 +18,48 @@
         function init() {
         }
 
+		/**
+		 * @breif get html of value of extend form
+		 * @access public
+		 * @param $extendForm
+		 * @return string
+		 * @developer NHN (developers@xpressengine.com)
+		 */
+		public function getExtendsFormHtml($extendForm)
+		{
+			$html = '';
+			$value = $extendForm->value;
+
+			switch($extendForm->column_type)
+			{
+				case 'tel':
+					$html = sprintf('%s-%s-%s', $value[0], $value[1], $value[2]);
+					break;
+				case 'kr_zip':
+					$html = $value[0];
+					if($value[1])
+					{
+						$html .= '<br />' . $value[1];
+					}
+					break;
+				case 'checkbox':
+					if(!is_array($value))
+					{
+						$value = array($value);
+					}
+
+					$html = implode(', ', $value);
+					break;
+				case 'date':
+					$html = zdate($value, 'Y-m-d');
+					break;
+				default:
+					$html = nl2br($value);
+			}
+
+			return $html;
+		}
+
 		public function getExtendsInputForm($extendForm)
 		{
 			global $lang;
@@ -59,7 +101,7 @@
 					$template = sprintf($template, implode('', $optionTag));
 				}
 			}elseif($extendForm->column_type == 'select'){
-				$template = '<select name="'.$formInfo->name.'">%s</select>';
+				$template = '<select name="'.$extendForm->column_name.'">%s</select>';
 				$optionTag = array();
 				if($extendForm->default_value){
 					foreach($extendForm->default_value as $v){
@@ -110,11 +152,6 @@ EOD;
 
 			$replace = array_merge($extentionReplace, $replace);
 			$inputTag = preg_replace('@%(\w+)%@e', '$replace[$1]', $template);
-
-			if($extendForm->description)
-			{
-				$inputTag .= '<p style="color:#999;">'.htmlspecialchars($extendForm->description).'</p>';
-			}
 
 			return $inputTag;
 		}

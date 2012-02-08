@@ -162,7 +162,7 @@ abstract class MemberDriver extends Driver
 	 */
 	public function getSignUpHeaderTpl()
 	{
-		return $this->getTpl('signup.header.html');
+		return $this->getTpl('signup.header.html', FALSE);
 	}
 
 	/**
@@ -173,7 +173,7 @@ abstract class MemberDriver extends Driver
 	 */
 	public function getSignUpFooterTpl()
 	{
-		return $this->getTpl('signup.footer.html');
+		return $this->getTpl('signup.footer.html', FALSE);
 	}
 
 	/**
@@ -308,13 +308,7 @@ abstract class MemberDriver extends Driver
 	final public function getSignupRuleset($noCheckFile = FALSE)
 	{
 		$ruleset = sprintf('member_driver_%s_signup', $this->getDriverName());
-		$filePath = sprintf('./files/ruleset/%s.xml', $ruleset);
-		if(!$noCheckFile && !is_readable($filePath))
-		{
-			$this->createSignupRuleset();
-		}
-
-		return $ruleset;
+		return $this->getDynamicRulesetPath($ruleset, $noCheckFile);
 	}
 
 	/**
@@ -326,22 +320,37 @@ abstract class MemberDriver extends Driver
 	abstract protected function createSignupRuleset();
 
 	/**
+	 * @brief Get modify ruleset name
+	 * @access public
+	 * @param $noCheckFile if TRUE, no check file readable
+	 * @return string
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	final public function getModifyRuleset($noCheckFile = FALSE)
+	{
+		$ruleset = sprintf('member_driver_%s_modify', $this->getDriverName());
+		return $this->getDynamicRulesetPath($ruleset, $noCheckFile);
+	}
+
+	/**
+	 * @brief Create modify ruleset
+	 * @access protected
+	 * @return void
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	abstract protected function createModifyRuleset();
+
+	/**
 	 * @brief Get signin ruleset name
 	 * @access public
 	 * @param $noCheckFile if TRUE, no check file readable
 	 * @return string
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	final public function getSigninRulset($noCheckFile = FALSE)
+	final public function getSigninRuleset($noCheckFile = FALSE)
 	{
 		$ruleset = sprintf('member_driver_%s_signin', $this->getDriverName());
-		$filePath = sprintf('./files/ruleset/%s.xml', $ruleset);
-		if(!$noCheckFile && !is_readable($filePath))
-		{
-			$this->createSigninRuleset();
-		}
-
-		return $ruleset;
+		return $this->getDynamicRulesetPath($ruleset, $noCheckFile);
 	}
 
 	/**
@@ -361,13 +370,7 @@ abstract class MemberDriver extends Driver
 	final public function getAdminInsertRuleset($noCheckFile = FALSE)
 	{
 		$ruleset = sprintf('member_driver_%s_admininsert', $this->getDriverName());
-		$filePath = sprintf('./files/ruleset/%s.xml', $ruleset);
-		if(!$noCheckFile && !is_readable($filePath))
-		{
-			$this->createAdminInsertRuleset();
-		}
-
-		return $ruleset;
+		return $this->getDynamicRulesetPath($ruleset, $noCheckFile);
 	}
 
 	/**
@@ -379,21 +382,79 @@ abstract class MemberDriver extends Driver
 	abstract protected function createAdminInsertRuleset();
 
 	/**
+	 * @brief get dynamic rule path
+	 * @access private
+	 * @param $ruleset
+	 * @return void
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	private function getDynamicRulesetPath($ruleset, $noCheckFile)
+	{
+		$filePath = sprintf('./files/ruleset/%s.xml', $ruleset);
+		if(!$noCheckFile && !is_readable($filePath))
+		{
+			$tmp = explode('_', $ruleset);
+			switch($tmp[3])
+			{
+				case 'admininsert':
+					$this->createAdminInsertRuleset();
+					break;
+				case 'signin':
+					$this->createSigninRuleset();
+					break;
+				case 'signup':
+					$this->createSignupRuleset();
+					break;
+				case 'modify':
+					$this->createModifyRuleset();
+					break;
+			}
+		}
+
+		return $ruleset;
+	}
+
+	/**
 	 * @brief Check ruleset
 	 * @access protected
 	 * @param $ruleset
 	 * @return Object
 	 * @developer NHN (developers@xpressengine.com)
 	 */
-	protected function checkRuleset($ruleset)
+	final protected function checkRuleset($ruleset)
 	{
 		$rulesetFile = sprintf('%sruleset/%s.xml', $this->getDriverPath(), $ruleset);
-		if(!is_readable($rulesetFile))
+		return $this->checkRulesetByXmlPath($rulesetFile);
+	}
+
+	/**
+	 * @brief Check ruleset
+	 * @access protected
+	 * @param $ruleset
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	final protected function checkDynamicRuleset($ruleset)
+	{
+		$rulesetFile = sprintf('./files/ruleset/%s.xml', $ruleset);
+		return $this->checkRulesetByXmlPath($rulesetFile);
+	}
+
+	/**
+	 * @brief Check ruleset by xml path
+	 * @access private
+	 * @param $ruleset
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	private function checkRulesetByXmlPath($xmlPath)
+	{
+		if(!is_readable($xmlPath))
 		{
 			return new Object();
 		}
 
-		$oValidator = new Validator($rulesetFile);
+		$oValidator = new Validator($xmlPath);
 		$result = $oValidator->validate();
 
 		if($result)
@@ -550,6 +611,28 @@ abstract class MemberDriver extends Driver
 	}
 
 	/**
+	 * @brief Check values when member singup
+	 * @access public
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function isValidateSignUp($args)
+	{
+		return new Object();
+	}
+
+	/**
+	 * @brief Check values when member modify
+	 * @access public
+	 * @return Object
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	public function isValidateModify($args)
+	{
+		return new Object();
+	}
+
+	/**
 	 * @brief Check values when member insert
 	 * @access public
 	 * @param $args
@@ -560,6 +643,7 @@ abstract class MemberDriver extends Driver
 	{
 		return new Object();
 	}
+
 	/**
 	 * @brief disp remove member info
 	 * @access public

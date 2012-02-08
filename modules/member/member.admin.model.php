@@ -202,6 +202,12 @@
 				Context::set('formInfo', $output->data);
 			}
 
+			$oKrZipClass = getClass('krzip');
+			if($oKrZipClass)
+			{
+				Context::set('exists_krzip', TRUE);
+			}
+
             $oTemplate = &TemplateHandler::getInstance();
             $tpl = $oTemplate->compile($this->module_path.'tpl', 'insert_join_form');
 

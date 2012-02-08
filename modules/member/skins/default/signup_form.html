@@ -7,6 +7,7 @@
     <form ruleset="@{$oDriver->getSignupRuleset()}" id="fo_insert_member" class="form" action="./" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="module" value="member" />
 		<input type="hidden" name="act" value="procMemberInsert" />
+		<input type="hidden" name="driver" value="{$driver}" />
 		<ul>
 			<li loop="$formTags=>$formTag" cond="$formTag->name != 'signature'">
 				<p class="q">{$formTag->title}<em style="color:red" cond="$formTag->required">*</em></p>

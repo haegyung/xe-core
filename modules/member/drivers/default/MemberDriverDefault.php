@@ -2070,8 +2070,9 @@ class MemberDriverDefault extends MemberDriver
 		{
 			$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispMemberAdminDriverConfig', 'driver', 'default');
 			$oModule->setRedirectUrl($returnUrl);
-			return;
 		}
+
+		return new Object();
 	}
 
 
@@ -2378,6 +2379,17 @@ class MemberDriverDefault extends MemberDriver
 		return $output->data->member_srl;
 	}
 
+
+	/**
+	 * @brief Create modify ruleset
+	 * @access protected
+	 * @return void
+	 * @developer NHN (developers@xpressengine.com)
+	 */
+	protected function createModifyRuleset()
+	{
+		//TODO 구현하기
+	}
 
 	/**
 	 * @brief Create Signup ruleset

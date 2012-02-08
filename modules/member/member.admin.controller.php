@@ -211,7 +211,7 @@
             $args->column_title = Context::get('column_title');
             $args->default_value = explode("\n", str_replace("\r", '', Context::get('default_value')));
             $args->required = Context::get('required');
-			$args->is_active = (isset($args->required));
+			$args->is_active = Context::get('is_active') == 'Y' ? 'Y' : 'N';
 
 
             if(!in_array(strtoupper($args->required), array('Y','N')))

@@ -138,7 +138,6 @@
 				$origin_config->{$key} = $val;
 			}
 
-			return $this->insertModuleConfig($module, $origin_config, $site_srl);
 			//remove from cache
 			$oCacheHandler = &CacheHandler::getInstance('object');
 			if($oCacheHandler->isSupport())
@@ -146,6 +145,8 @@
 				$cache_key = 'object:module_config:module_'.$module.'_site_srl_'.$site_srl;
 				$oCacheHandler->delete($cache_key);
 			}
+
+			return $this->insertModuleConfig($module, $origin_config, $site_srl);
 		}
 
         /**
@@ -225,6 +226,34 @@
 
             return $output;
         }
+
+        /**
+         * @brief Save driver configurations
+         * @access public
+		 * @param $module name of module
+		 * @param $driver name of dirver
+		 * @param $config Configuration of driver
+		 * @param $moduleSrl
+		 * @developer NHN (developers@xpressengine.com)
+         **/
+		function updateDriverConfig($module, $driver, $config, $moduleSrl = NULL){
+			$oModuleModel = &getModel('module');
+			$originConfig = $oModuleModel->getDriverConfig($module, $driver, $moduleSrl);
+
+			foreach($config as $key => $val){
+				$originConfig->{$key} = $val;
+			}
+
+			//remove from cache
+			$oCacheHandler = &CacheHandler::getInstance('object');
+			if($oCacheHandler->isSupport())
+			{
+				$cacheKey = 'object_driver_config:' . $module . '_' . $driver . '_' . $moduleSrl;
+				$oCacheHandler->delete($cacheKey);
+			}
+
+			return $this->insertDriverConfig($module, $driver, $originConfig, $moduleSrl);
+		}
 
         /**
          * @brief Delete driver configurations
@@ -558,7 +587,7 @@
             $args->site_srl = $site_srl;
 
 	        $output = executeQuery('module.deleteSiteAdmin', $args);
-            
+
 			if(!$output->toBool()) return $output;
             // Get user id of an administrator
             if(!is_array($arr_admins) || !count($arr_admins)) return new Object();
@@ -570,14 +599,14 @@
 
 			$oMemberModel = &getModel('member');
 			$member_config = $oMemberModel->getMemberConfig();
-			if($member_config->identifier == 'email_address') {	
+			if($member_config->identifier == 'email_address') {
 				$args->email_address = '\''.implode('\',\'',$admins).'\'';
 			} else {
 				$args->user_ids = '\''.implode('\',\'',$admins).'\'';
-			}	
+			}
            	$output = executeQueryArray('module.getAdminSrls', $args);
             if(!$output->toBool()||!$output->data) return $output;
-			
+
 			foreach($output->data as $key => $val) {
                 unset($args);
                 $args->site_srl = $site_srl;

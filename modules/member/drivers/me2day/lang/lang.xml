@@ -4,9 +4,18 @@
 		<value xml:lang="ko">애플리케이션 키</value>
 		<value xml:lang="en">Application Key</value>
 	</item>
+	<item name="me2day_basic_config">
+		<value xml:lang="ko"><![CDATA[기본 설정]]></value>
+	</item>
+	<item name="me2day_msg_no_application_key">
+		<value xml:lang="ko"><![CDATA[미투데이 애플리케이션 키가 설정되어 있지않습니다. 관리자에게 문의하세요.]]></value>
+	</item>
 	<item name="me2day_about_application_key">
 		<value xml:lang="ko"><![CDATA[미투데이에서 발급 받은 애플리케이션 키를 입력하세요.<br />콜백 주소는 아래 주소를 이용하세요.]]></value>
 		<value xml:lang="en"><![CDATA[Please, input issued application key from me2day.<br />You can use below url on callback url.]]></value>
+	</item>
+	<item name="me2day_msg_signup_extend_form">
+		<value xml:lang="ko"><![CDATA[아래 필수 항목을 입력하셔야 사이트 이용이 가능합니다.]]></value>
 	</item>
 	<item name="me2day_msg_missing_me2day_id">
 		<value xml:lang="ko"><![CDATA[미투데이 아이디가 없습니다.]]></value>

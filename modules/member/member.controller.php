@@ -62,11 +62,11 @@ class memberController extends member {
 		$this->memberInfo = $this->memberVo->getMemberInfo();
 
 		$output = $this->doSignin($driverName, $this->memberVo->getMemberSrl());
-
 		if(!$output)
 		{
 			return new Object(-1, 'msg_invaild_request');
 		}
+
 		if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON')))
 		{
 			if(!$config->after_login_url)
@@ -247,6 +247,19 @@ class memberController extends member {
 			return $this->stop ('msg_signup_disabled');
 		}
 
+		$oDriver = getDriver('member', $driver);
+		if(!$oDriver)
+		{
+			return new Object(-1, 'msg_invalid_request');
+		}
+
+		$memberInfo = Context::getRequestVars();
+		$output = $oDriver->isValidateSignUp($memberInfo);
+		if(!$output->toBool())
+		{
+			return $output;
+		}
+
 		// call a trigger (before)
 		$trigger_output = ModuleHandler::triggerCall ('member.procMemberInsert', 'before', $config);
 		if (!$trigger_output->toBool ())
@@ -254,9 +267,11 @@ class memberController extends member {
 			return $trigger_output;
 		}
 
-		$memberInfo = Context::getRequestVars();
 		$output = $this->insertMember($memberInfo, FALSE, $driver);
-		if(!$output->toBool()) return $output;
+		if(!$output->toBool())
+		{
+			return $output;
+		}
 
 		// insert ProfileImage, ImageName, ImageMark
 		// If a virtual site, join the site
@@ -273,7 +288,7 @@ class memberController extends member {
 		// Log-in
 		if ($config->enable_confirm != 'Y')
 		{
-			$this->doLogin($memberInfo->user_id);
+			$this->doSignin($driver, $memberInfo->member_srl);
 		}
 
 		//get redirect url from cookie and invalidate cookie
@@ -303,8 +318,9 @@ class memberController extends member {
 		{
 			$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'mid', Context::get('mid'), 'act', '');
 			$this->setRedirectUrl($returnUrl);
-			return;
 		}
+
+		return new Object();
 	}
 
 	/**
@@ -335,6 +351,18 @@ class memberController extends member {
 		}
 
 		$driverName = $output->data->driver;
+
+		$oDriver = getDriver('member', $driverName);
+		if(!$oDriver)
+		{
+			return new Object(-1, 'msg_invalid_request');
+		}
+
+		$output = $oDriver->isValidateModify($memberInfo);
+		if(!$output->toBool())
+		{
+			return $output;
+		}
 
 		$output = $this->updateMember($memberInfo, $driverName);
 		if(!$output->toBool())
@@ -413,7 +441,6 @@ class memberController extends member {
 		}
 
 		$args->extra_vars = serialize($oDriver->extractExtraVars($args));
-
 		$output = $oDriver->insertMember($args, $password_is_hashed);
 		if(!$output->toBool())
 		{
@@ -1846,6 +1873,13 @@ class memberController extends member {
 		}
 
 		$updateArgs = clone $args;
+
+		$delTarget = array('error_return_url', 'ruleset', 'module', 'act', 'driver', 'success_return_url', 'allow_message', 'denied', 'is_admin', 'group_srl_list');
+		foreach($delTarget as $name)
+		{
+			unset($updateArgs->{$name});
+		}
+
 		$output = $oDriver->updateMember($updateArgs);
 		if(!$output->toBool())
 		{
