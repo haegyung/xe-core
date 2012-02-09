@@ -21,6 +21,7 @@ class TemplateHandler {
 	var $skipTags = null;
 
 	var $handler_mtime = 0;
+	private $error = null;
 
 	function TemplateHandler()
 	{
@@ -128,6 +129,39 @@ class TemplateHandler {
 		}
 
 		$output = $this->_fetch($buff);
+		if($this->error)
+		{
+			$template = FileHandler::readFile($this->file);
+			$template = explode("\n", $template);
+
+			$output = '';
+
+			$output = "<strong>template compile error</strong><br />";
+			$output .= "<strong>file</strong> : ".$tpl_path.$tpl_filename."<br />";
+			$output .= "<strong>message</strong> : ".$this->error['message']."<br />";
+			$output .= "<strong>line</strong> : ".$this->error['line']."<br />";
+			$output .= "<br /><strong>error line</strong><br />";
+			$output .= "<ul>";
+
+			for($i = $this->error['line'] - 3; $i < $this->error['line'] + 3; $i++)
+			{
+				if($i >= 0)
+				{
+					if($i + 1 == $this->error['line'])
+					{
+						$output .= "<li style='color:red;'>";
+					}
+					else
+					{
+						$output .= "<li>";
+					}
+
+					$output .= ($i + 1).' : '.htmlspecialchars($template[$i]).'<br /></li>';
+				}
+			}
+			$output .= "</ul>";
+			$this->error = null;
+		}
 
 		if($__templatehandler_root_tpl == $this->file) {
 			$__templatehandler_root_tpl = null;
@@ -290,10 +324,19 @@ class TemplateHandler {
 
 		ob_start();
 		if(substr($buff, 0, 7) == 'file://') {
-			include(substr($buff, 7));
+				include(substr($buff, 7));
 		} else {
 			$eval_str = "?>".$buff;
-			eval($eval_str);
+			try {
+				if(!eval($eval_str)) {
+					throw new exception();
+				}
+			} catch (Exception $e) {
+				$error = error_get_last();
+				if($error['type'] !== E_NOTICE && $error['type'] !== E_STRICT && $error['type'] !== E_DEPRECATED) {
+					$this->error = $error;
+				}
+			}
 		}
 
 		return ob_get_clean();
