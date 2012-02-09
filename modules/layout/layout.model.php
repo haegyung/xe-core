@@ -69,7 +69,7 @@
 
 				// If deleted layout files, delete layout instance
 				if (!$layout_info) {
-					$oLayoutController = &getAdminController('layout');
+					$oLayoutController = getAdminController('layout');
 					$oLayoutController->deleteLayout($layout_srl);
 					return;
 				}
@@ -104,7 +104,7 @@
          * A type of downloaded layout
          **/
         function getDownloadedLayoutList($layout_type = "P", $withAutoinstallInfo = false) {
-			if ($withAutoinstallInfo) $oAutoinstallModel = &getModel('autoinstall');
+			if ($withAutoinstallInfo) $oAutoinstallModel = getModel('autoinstall');
 
             // Get a list of downloaded layout and installed layout
             $searched_list = $this->_getInstalledLayoutDirectories($layout_type);
@@ -443,7 +443,7 @@
 
 
             // header_script
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $layout_config = $oModuleModel->getModulePartConfig('layout', $layout_srl);
             $header_script = trim($layout_config->header_script);
 

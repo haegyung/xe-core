@@ -10,32 +10,7 @@
 </div>
 <div cond="$layout == 'faceoff'" id="faceoff_migration_info" class="modal">
 	<div class="fg">
-		<ol>
-			<li>
-				<p>{$lang->faceoff_migration[2]}</p>
-				<img cond="$lang_type == 'ko'" src="./faceoff_migration/01.png" alt="" />
-				<img cond="$lang_type != 'ko'" src="./faceoff_migration/01_en.png" alt="" />
-			</li>
-			<li>
-				<p>{$lang->faceoff_migration[3]}</p>
-				<img cond="$lang_type == 'ko'" src="./faceoff_migration/02.png" alt="" />
-				<img cond="$lang_type != 'ko'" src="./faceoff_migration/02_en.png" alt="" />
-			</li>
-			<li>
-				<p>{$lang->faceoff_migration[4]}</p>
-				<img src="./faceoff_migration/03.png" alt="" />
-			</li>
-			<li>
-				<p>{$lang->faceoff_migration[5]}</p>
-				<img cond="$lang_type == 'ko'" src="./faceoff_migration/04.png" alt="" />
-				<img cond="$lang_type != 'ko'" src="./faceoff_migration/04_en.png" alt="" />
-			</li>
-			<li>
-				<p>{$lang->faceoff_migration[6]}</p>
-				<img cond="$lang_type == 'ko'" src="./faceoff_migration/05.png" alt="" />
-				<img cond="$lang_type != 'ko'" src="./faceoff_migration/05_en.png" alt="" />
-			</li>
-		</ol>
+	<include target="faceoff_deprecated.html"/>
 	</div>
 </div>
 

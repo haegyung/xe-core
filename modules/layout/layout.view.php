@@ -19,7 +19,7 @@
          **/
         function dispLayoutInfo() {
             // Get the layout information
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_info = $oLayoutModel->getLayoutInfo(Context::get('selected_layout'));
             if(!$layout_info) exit();
             Context::set('layout_info', $layout_info);
@@ -43,7 +43,7 @@
             $code_css = Context::get('code_css');
             if(!$layout_srl || !$code) return new Object(-1, 'msg_invalid_request');
             // Get the layout information
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_info = $oLayoutModel->getLayout($layout_srl);
             if(!$layout_info) return new Object(-1, 'msg_invalid_request');
             // Separately handle the layout if its type is faceoff

@@ -12,7 +12,7 @@
          **/
         function moduleInstall() {
             // Register action forward (to use in administrator mode)
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             // Save the default settings for attachments
             $config->allowed_filesize = '2';
             $config->allowed_attach_size = '2';
@@ -46,8 +46,8 @@
          * @brief a method to check if successfully installed
          **/
         function checkUpdate() {
-            $oDB = &DB::getInstance();
-            $oModuleModel = &getModel('module');
+            $oDB = DB::getInstance();
+            $oModuleModel = getModel('module');
             // 2007. 10. 17 Create a trigger to insert, update, delete documents and comments
             if(!$oModuleModel->getTrigger('document.insertDocument', 'file', 'controller', 'triggerCheckAttached', 'before')) return true;
             if(!$oModuleModel->getTrigger('document.insertDocument', 'file', 'controller', 'triggerAttachFiles', 'after')) return true;
@@ -75,9 +75,9 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oDB = &DB::getInstance();
-            $oModuleModel = &getModel('module');
-            $oModuleController = &getController('module');
+            $oDB = DB::getInstance();
+            $oModuleModel = getModel('module');
+            $oModuleController = getController('module');
             // 2007. 10. 17 Create a trigger to insert, update, delete documents and comments
             if(!$oModuleModel->getTrigger('document.insertDocument', 'file', 'controller', 'triggerCheckAttached', 'before'))
                 $oModuleController->insertTrigger('document.insertDocument', 'file', 'controller', 'triggerCheckAttached', 'before');
@@ -128,6 +128,4 @@
          **/
         function recompileCache() {
         }
-
     }
-?>

@@ -23,7 +23,7 @@
             if (!in_array($obj->order_type, array('desc','asc'))) $obj->order_type = 'asc';
             // get a module_srl if mid is returned instead of modul_srl
             if ($obj->mid) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $obj->module_srl = $oModuleModel->getModuleSrlByMid($obj->mid);
                 unset($obj->mid);
             }

@@ -26,12 +26,12 @@
             $logged_info = Context::get('logged_info');
             if(!$logged_info->member_srl) return new Object(-1, 'msg_not_permitted');
             // Posts of the information obtained permission to come and check whether
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($document_srl);
             if(!$oDocument->isExists()) return new Object(-1, 'msg_invalid_request');
             if($oDocument->getMemberSrl() != $logged_info->member_srl) return new Object(-1, 'msg_not_permitted');
             // Specify the title of the module, the current article
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $module_info = $oModuleModel->getModuleInfoByModuleSrl($oDocument->get('module_srl'));
             Context::setBrowserTitle($module_info->browser_title);
             // Shipping yeokingeul
@@ -60,7 +60,7 @@
 
 			global $lang;
 			if(count($trackbackSrlList) > 0) {
-				$oTrackbackAdminModel = &getAdminModel('trackback');
+				$oTrackbackAdminModel = getAdminModel('trackback');
 				$args->trackbackSrlList = $trackbackSrlList;
 				$args->list_count = 100;
 				$output = $oTrackbackAdminModel->getTotalTrackbackList($args);
@@ -90,12 +90,12 @@
             if(!$logged_info->member_srl) return new Object();
             // Post number and the current login information requested Wanted
             $document_srl = Context::get('target_srl');
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($document_srl);
             if(!$oDocument->isExists()) return new Object();
             if($oDocument->getMemberSrl() != $logged_info->member_srl) return new Object();
             // Add a link sent yeokingeul
-            $oDocumentController = &getController('document');
+            $oDocumentController = getController('document');
             $url = getUrl('','module','trackback','act','dispTrackbackSend','document_srl', $document_srl);
             $oDocumentController->addDocumentPopupMenu($url,'cmd_send_trackback','','popup');
 
@@ -119,7 +119,7 @@
             $module_srl = $obj->module_srl;
             if(!$module_srl) return new Object();
 
-            $oTrackbackController = &getAdminController('trackback');
+            $oTrackbackController = getAdminController('trackback');
             return $oTrackbackController->deleteModuleTrackbacks($module_srl);
         }
 
@@ -134,12 +134,12 @@
             if(!$obj->document_srl || !$obj->url || !$obj->title || !$obj->excerpt) return $this->stop('fail');
             // Checks for correct trackback url
             $given_key = Context::get('key');
-            $oTrackbackModel = &getModel('trackback');
+            $oTrackbackModel = getModel('trackback');
             $key = $oTrackbackModel->getTrackbackKey($obj->document_srl);
             if($key != $given_key) return $this->stop('fail');
             // Yeokingeul module out of the default settings
             $module_srl = Context::get('module_srl');
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModulePartConfig('trackback', $module_srl);
             $enable_trackback = $config->enable_trackback;
             if(!$enable_trackback) {
@@ -166,7 +166,7 @@
 
             if(!$manual_inserted) {
                 // Imported document model object, it permits you to wonbongeul
-                $oDocumentModel = &getModel('document');
+                $oDocumentModel = getModel('document');
                 $oDocument = $oDocumentModel->getDocument($document_srl);
                 // If you do not allow two or trackback wonbongeul error display
                 if(!$oDocument->isExists()) return $this->stop('fail');
@@ -182,11 +182,11 @@
             // If there is more to enter the article number yeokingeul Rounds
             if(!$manual_inserted) {
                 // trackback model object creation
-                $oTrackbackModel = &getModel('trackback');
+                $oTrackbackModel = getModel('trackback');
                 // All the article number yeokingeul guhaeom
                 $trackback_count = $oTrackbackModel->getTrackbackCount($document_srl);
                 // document controller object creation
-                $oDocumentController = &getController('document');
+                $oDocumentController = getController('document');
                 // Update the number of posts that yeokingeul
                 $output = $oDocumentController->updateTrackbackCount($document_srl, $trackback_count);
                 // Return result
@@ -206,7 +206,7 @@
          **/
         function deleteTrackback($trackback_srl, $is_admin = false) {
             // trackback model object creation
-            $oTrackbackModel = &getModel('trackback');
+            $oTrackbackModel = getModel('trackback');
             // Make sure that you want to delete Trackbacks
             $trackback = $oTrackbackModel->getTrackback($trackback_srl);
             if($trackback->data->trackback_srl != $trackback_srl) return new Object(-1, 'msg_invalid_request');
@@ -215,7 +215,7 @@
             $output = ModuleHandler::triggerCall('trackback.deleteTrackback', 'before', $trackback);
             if(!$output->toBool()) return $output;
             // Create a document model object
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             // Check if a permossion is granted
             if(!$is_admin && !$oDocumentModel->isGranted($document_srl)) return new Object(-1, 'msg_not_permitted');
 
@@ -225,7 +225,7 @@
             // Obtain the number of yeokingeul Update
             $trackback_count = $oTrackbackModel->getTrackbackCount($document_srl);
             // document controller object creation
-            $oDocumentController = &getController('document','controller');
+            $oDocumentController = getController('document','controller');
             // Update the number of posts that yeokingeul
             $output = $oDocumentController->updateTrackbackCount($document_srl, $trackback_count);
             $output->add('document_srl', $document_srl);
@@ -253,7 +253,7 @@
          * After sending the results are not sticky and handling
          **/
         function sendTrackback($oDocument, $trackback_url, $charset) {
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             // Information sent by
             $http = parse_url($trackback_url);
             $obj->blog_name = str_replace(array('&lt;','&gt;','&amp;','&quot;'), array('<','>','&','"'), Context::getBrowserTitle());

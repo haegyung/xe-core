@@ -18,7 +18,7 @@
          **/
         function dispTrackbackAdminList() {
             // Wanted set
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('trackback');
             Context::set('config',$config);
 
@@ -30,7 +30,7 @@
             $args->sort_index = 'list_order'; // / "Sorting values
             $args->module_srl = Context::get('module_srl');
             // Get a list
-            $oTrackbackAdminModel = &getAdminModel('trackback');
+            $oTrackbackAdminModel = getAdminModel('trackback');
             $output = $oTrackbackAdminModel->getTotalTrackbackList($args);
 
             // To write to a template parameter settings

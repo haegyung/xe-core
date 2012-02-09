@@ -65,7 +65,7 @@ class trashAdminController extends trash
 	function _relationDataDelete($isAll, &$trashSrls)
 	{
 		if($isAll == 'true') $trashSrls = array();
-		$oTrashModel = &getModel('trash');
+		$oTrashModel = getModel('trash');
 		if(count($trashSrls) > 0) $args->trashSrl = $trashSrls;
 		$output = $oTrashModel->getTrashList($args);
 		if(!$output->toBool()) return new Object(-1, $output->message);
@@ -84,7 +84,7 @@ class trashAdminController extends trash
 				$classFile = FileHandler::getRealPath($classFile);
 				if(!file_exists($classFile)) return new Object(-1, 'not exist restore module class file');
 
-				$oAdminController = &getAdminController($oTrashVO->getOriginModule());
+				$oAdminController = getAdminController($oTrashVO->getOriginModule());
 				if(!method_exists($oAdminController, 'emptyTrash')) return new Object(-1, 'not exist restore method in module class file');
 
 				$output = $oAdminController->emptyTrash($oTrashVO->getSerializedObject());
@@ -105,12 +105,12 @@ class trashAdminController extends trash
 		if(is_array($trashSrlList))
 		{
 			// begin transaction
-			$oDB = &DB::getInstance();
+			$oDB = DB::getInstance();
 			$oDB->begin();
 			// eache restore method call in each classfile
 			foreach($trashSrlList AS $key=>$value)
 			{
-				$oTrashModel = &getModel('trash');
+				$oTrashModel = getModel('trash');
 				$output = $oTrashModel->getTrash($value);
 				if(!$output->toBool()) return new Object(-1, $output->message);
 
@@ -122,7 +122,7 @@ class trashAdminController extends trash
 				$classFile = FileHandler::getRealPath($classFile);
 				if(!file_exists($classFile)) return new Object(-1, 'not exist restore module class file');
 
-				$oAdminController = &getAdminController($output->data->getOriginModule());
+				$oAdminController = getAdminController($output->data->getOriginModule());
 				if(!method_exists($oAdminController, 'restoreTrash')) return new Object(-1, 'not exist restore method in module class file');
 
 				$originObject = unserialize($output->data->getSerializedObject());
@@ -157,7 +157,7 @@ class trashAdminController extends trash
 		if($trashSrls) $trashSrlList = explode(',', $trashSrls);
 
 		if(count($trashSrlList) > 0) {
-			$oTrashModel = &getModel('trash');
+			$oTrashModel = getModel('trash');
 			$args->trashSrl = $trashSrlList;
 			$output = $oTrashModel->getTrashList($args);
 			$trashList = $output->data;

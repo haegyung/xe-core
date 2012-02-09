@@ -12,7 +12,7 @@
          **/
         function moduleInstall() {
             // Register to add a few
-            $oAddonController = &getAdminController('addon');
+            $oAddonController = getAdminController('addon');
             $oAddonController->doInsert('autolink', 0, 'site', 'Y');
             $oAddonController->doInsert('blogapi');
             $oAddonController->doInsert('counter', 0, 'site', 'Y');
@@ -31,7 +31,7 @@
          * @brief a method to check if successfully installed
          **/
         function checkUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
 			if(!$oDB->isColumnExists("addons", "is_used_m")) return true;
 			if(!$oDB->isColumnExists("addons_site", "is_used_m")) return true;
 
@@ -45,7 +45,7 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
 			if(!$oDB->isColumnExists("addons", "is_used_m")) {
 				$oDB->addColumn("addons", "is_used_m", "char", 1, "N", true);
 			}

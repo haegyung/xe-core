@@ -23,7 +23,7 @@
             if(Context::get('is_logged')) $tpl_file = 'login_info';
             else $tpl_file = 'login_form';
             // Get the member configuration
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $this->member_config = $oModuleModel->getModuleConfig('member');
             Context::set('member_config', $this->member_config);
 

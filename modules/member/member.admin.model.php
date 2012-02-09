@@ -143,11 +143,11 @@
             $skin = Context::get('skin');
             if(!$skin) $tpl = "";
             else {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $skin_info = $oModuleModel->loadSkinInfo($this->module_path, $skin);
                 Context::set('skin_info', $skin_info);
 
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $config = $oModuleModel->getModuleConfig('member');
                 if(!$config->colorset) $config->colorset = "white";
                 Context::set('config', $config);
@@ -218,7 +218,7 @@
 			$db_info = Context::getDBInfo();
 			$admin_ip_list = $db_info->admin_ip_list;
 			$admin_ip_list = explode(",",$admin_ip_list);
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$falg = false;
 			foreach($admin_ip_list as $admin_ip_list_key => $admin_ip_value) {

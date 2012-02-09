@@ -32,7 +32,7 @@
         }
 
 		function _updateinfo(){
-            $oModel = &getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             $item = $oModel->getLatestPackage();
             if($item)
             {
@@ -52,7 +52,7 @@
         function checkInstalled()
         {
             executeQuery("autoinstall.deleteInstalledPackage");
-            $oModel =& getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             $packages = $oModel->getPackages();
             foreach($packages as $package)
             {
@@ -126,7 +126,7 @@
         {
             @set_time_limit(0);
             $package_srls = Context::get('package_srl');
-            $oModel =& getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             $packages = explode(',', $package_srls);
             $ftp_info =  Context::getFTPInfo();
             if(!$_SESSION['ftp_password'])
@@ -177,7 +177,7 @@
 
         function updatePackages(&$xmlDoc)
         {
-            $oModel =& getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             if(!$xmlDoc->response->packages->item) return;
             if(!is_array($xmlDoc->response->packages->item))
             {
@@ -210,7 +210,7 @@
         function updateCategory(&$xmlDoc)
         {
             executeQuery("autoinstall.deleteCategory");
-            $oModel =& getModel('autoinstall');
+            $oModel = getModel('autoinstall');
             if(!is_array($xmlDoc->response->categorylist->item))
             {
                 $xmlDoc->response->categorylist->item = array($xmlDoc->response->categorylist->item);
@@ -230,7 +230,7 @@
 		function procAutoinstallAdminUninstallPackage()
 		{
 			$package_srl = Context::get('package_srl');
-            $oModel =& getModel('autoinstall');
+            $oModel = getModel('autoinstall');
 			$package = $oModel->getPackage($package_srl);
 			$path = $package->path;
 

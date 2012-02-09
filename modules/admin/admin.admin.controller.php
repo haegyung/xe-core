@@ -12,7 +12,7 @@
          **/
         function init() {
             // forbit access if the user is not an administrator
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $logged_info = $oMemberModel->getLoggedInfo();
             if($logged_info->is_admin!='Y') return $this->stop("msg_is_not_administrator");
         }
@@ -21,7 +21,7 @@
 			$menuSrl = Context::get('menu_srl');
 			if (!$menuSrl) return $this->stop('msg_invalid_request');
 
-			$oMenuAdminController = &getAdminController('menu');
+			$oMenuAdminController = getAdminController('menu');
 			$output = $oMenuAdminController->deleteMenu($menuSrl);
 			if (!$output->toBool()) return $output;
 
@@ -45,7 +45,7 @@
             FileHandler::removeFile(_XE_PATH_.'files/_debug_db_query.php');
             FileHandler::removeFile(_XE_PATH_.'files/_db_slow_query.php');
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $module_list = $oModuleModel->getModuleList();
 
             // call recompileCache for each module
@@ -89,7 +89,7 @@
          * @return none
          **/
         function procAdminLogout() {
-            $oMemberController = &getController('member');
+            $oMemberController = getController('member');
             $oMemberController->procMemberLogout();
 
 			header('Location: '.getNotEncodedUrl('', 'module','admin'));
@@ -134,10 +134,10 @@
 					$skin_output = executeQuery('module.updateAllModuleSkinInSiteWithTheme', $skin_args);
 					if (!$skin_output->toBool()) return $skin_output;
 
-					$oModuleModel = &getModel('module');
+					$oModuleModel = getModel('module');
 					$module_config = $oModuleModel->getModuleConfig($module, $site_info->site_srl);
 					$module_config->skin = $val;
-					$oModuleController = &getController('module');
+					$oModuleController = getController('module');
 					$oModuleController->insertModuleConfig($module, $module_config, $site_info->site_srl);
 				}
 			}
@@ -169,7 +169,7 @@
 			$moduleName = Context::get('module_name');
 
 			// check favorite exists
-			$oModel = &getAdminModel('admin');
+			$oModel = getAdminModel('admin');
 			$output = $oModel->isExistsFavorite($siteSrl, $moduleName);
 			if (!$output->toBool()) return $output;
 
@@ -215,7 +215,7 @@
 			$adminTitle = Context::get('adminTitle');
             $file = $_FILES['adminLogo'];
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $oAdminConfig = $oModuleModel->getModuleConfig('admin');
 
 			if($file['tmp_name'])
@@ -239,7 +239,7 @@
 
 			if($oAdminConfig)
 			{
-				$oModuleController = &getController('module');
+				$oModuleController = getController('module');
 				$oModuleController->insertModuleConfig('admin', $oAdminConfig);
 			}
 
@@ -256,13 +256,13 @@
 		 **/
 		function procAdminDeleteLogo()
 		{
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $oAdminConfig = $oModuleModel->getModuleConfig('admin');
 
             FileHandler::removeFile(_XE_PATH_.$oAdminConfig->adminLogo);
 			unset($oAdminConfig->adminLogo);
 
-			$oModuleController = &getController('module');
+			$oModuleController = getController('module');
 			$oModuleController->insertModuleConfig('admin', $oAdminConfig);
 
 			$this->setMessage('success_deleted', 'info');

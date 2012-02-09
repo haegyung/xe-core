@@ -6,13 +6,13 @@ class memberMobile extends member
 
     function init() {
         // Get the member configuration
-        $oModuleModel = &getModel('module');
+        $oModuleModel = getModel('module');
         $this->member_config = $oModuleModel->getModuleConfig('member');
 
 		// if member_srl exists, set memberInfo
 		$member_srl = Context::get('member_srl');
 		if($member_srl) {
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
 			$this->memberInfo = $oMemberModel->getMemberInfoByMemberSrl($member_srl);
 			if(!$this->memberInfo) Context::set('member_srl','');
 			else Context::set('member_info',$this->memberInfo);
@@ -38,7 +38,7 @@ class memberMobile extends member
     }
 
     function dispMemberSignUpForm(){
-        $oMemberModel = &getModel('member');
+        $oMemberModel = getModel('member');
 
         if($oMemberModel->isLogged()) return $this->stop('msg_already_logged');
 
@@ -46,7 +46,7 @@ class memberMobile extends member
         if(!$trigger_output->toBool()) return $trigger_output;
 
         if ($this->member_config->enable_join != 'Y') return $this->stop('msg_signup_disabled');
-		$oMemberAdminView = &getAdminView('member');
+		$oMemberAdminView = getAdminView('member');
 		$formTags = $oMemberAdminView->_getMemberInputTag($member_info);
 		Context::set('formTags', $formTags);
 
@@ -63,7 +63,7 @@ class memberMobile extends member
     }
 
     function dispMemberInfo() {
-        $oMemberModel = &getModel('member');
+        $oMemberModel = getModel('member');
         $logged_info = Context::get('logged_info');
 
         // Don't display member info to non-logged user
@@ -99,8 +99,8 @@ class memberMobile extends member
      * @brief Edit member profile
      **/
     function dispMemberModifyInfo() {
-        $oMemberModel = &getModel('member');
-        $oModuleModel = &getModel('module');
+        $oMemberModel = getModel('member');
+        $oModuleModel = getModel('module');
         $memberModuleConfig = $oModuleModel->getModuleConfig('member');
 
         // A message appears if the user is not logged-in
@@ -120,7 +120,7 @@ class memberMobile extends member
 
         // Call getEditor of the editor module and set it for signiture
         if($this->memberInfo->member_srl) {
-            $oEditorModel = &getModel('editor');
+            $oEditorModel = getModel('editor');
             $option->primary_key_name = 'member_srl';
             $option->content_key_name = 'signature';
             $option->allow_fileupload = false;
@@ -144,7 +144,7 @@ class memberMobile extends member
      * @brief Change the user password
      **/
     function dispMemberModifyPassword() {
-        $oMemberModel = &getModel('member');
+        $oMemberModel = getModel('member');
 
         // A message appears if the user is not logged-in
         if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');
@@ -166,7 +166,7 @@ class memberMobile extends member
      * @brief Member withdrawl
      **/
     function dispMemberLeave() {
-        $oMemberModel = &getModel('member');
+        $oMemberModel = getModel('member');
 
         // A message appears if the user is not logged-in
         if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');

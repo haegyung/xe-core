@@ -30,17 +30,17 @@
             // call a trigger
             ModuleHandler::triggerCall('comment.getCommentMenu', 'before', $menu_list);
 
-            $oCommentController = &getController('comment');
+            $oCommentController = getController('comment');
             // feature that only member can do
             if($logged_info->member_srl) {
 
-				$oCommentModel = &getModel('comment');
+				$oCommentModel = getModel('comment');
 				$columnList = array('comment_srl', 'module_srl', 'member_srl', 'ipaddress');
 				$oComment = $oCommentModel->getComment($comment_srl, false, $columnList);
 				$module_srl = $oComment->get('module_srl');
 				$member_srl = $oComment->get('member_srl');
 
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				$comment_config = $oModuleModel->getModulePartConfig('document',$module_srl);
 				if($comment_config->use_vote_up!='N' && $member_srl!=$logged_info->member_srl){
 					// Add a vote-up button for positive feedback
@@ -61,7 +61,7 @@
             ModuleHandler::triggerCall('comment.getCommentMenu', 'after', $menu_list);
             // find a comment by IP matching if an administrator.
             if($logged_info->is_admin == 'Y') {
-                $oCommentModel = &getModel('comment');
+                $oCommentModel = getModel('comment');
                 $oComment = $oCommentModel->getComment($comment_srl);
 
                 if($oComment->isExists()) {
@@ -179,7 +179,7 @@
          **/
         function getNewestCommentList($obj, $columnList = array()) {
             if($obj->mid) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $obj->module_srl = $oModuleModel->getModuleSrlByMid($obj->mid);
                 unset($obj->mid);
             }
@@ -231,7 +231,7 @@
                 }
         	if(!$output){
                     // get the number of comments on the document module
-	            $oDocumentModel = &getModel('document');
+	            $oDocumentModel = getModel('document');
                     $columnList = array('document_srl', 'module_srl', 'comment_count');
 	            $oDocument = $oDocumentModel->getDocument($document_srl, false, true, $columnList);
 	            // return if no doc exists.
@@ -494,7 +494,7 @@
          * @brief return a configuration of comments for each module
          **/
         function getCommentConfig($module_srl) {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $comment_config = $oModuleModel->getModulePartConfig('comment', $module_srl);
             if(!isset($comment_config->comment_count)) $comment_config->comment_count = 50;
             return $comment_config;
@@ -508,12 +508,12 @@
 			$point = Context::get('point');
 			if($point != -1) $point = 1;
 
-			$oCommentModel = &getModel('comment');
+			$oCommentModel = getModel('comment');
             $oComment = $oCommentModel->getComment($comment_srl, false, false);
 			$module_srl = $oComment->get('module_srl');
 			if(!$module_srl) return new Object(-1, 'msg_invalid_request');
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
             $comment_config = $oModuleModel->getModulePartConfig('comment',$module_srl);
 			if($point == -1){
 				if($comment_config->use_vote_down!='S') return new Object(-1, 'msg_invalid_request');
@@ -527,7 +527,7 @@
 			$output = executeQueryArray('comment.getVotedMemberList',$args);
 			if(!$output->toBool()) return $output;
 
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
 			if($output->data){
 				foreach($output->data as $k => $d){
 					$profile_image = $oMemberModel->getProfileImage($d->member_srl);

@@ -20,11 +20,11 @@
             $skin = Context::get('skin');
             if(!$skin) $tpl = "";
             else {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $skin_info = $oModuleModel->loadSkinInfo($this->module_path, $skin);
                 Context::set('skin_info', $skin_info);
 
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $communication_config = $oModuleModel->getModuleConfig('communication');
                 if(!$communication_config->colorset) $communication_config->colorset = "white";
                 Context::set('communication_config', $communication_config);

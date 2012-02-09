@@ -123,7 +123,7 @@
         function getPollGetColorsetList() {
             $skin = Context::get('skin');
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $skin_info = $oModuleModel->loadSkinInfo($this->module_path, $skin);
 
             for($i=0;$i<count($skin_info->colorset);$i++) {

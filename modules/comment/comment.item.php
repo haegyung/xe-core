@@ -87,7 +87,7 @@
                 return true;
             }
 
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($this->get('document_srl'));
             if($oDocument->isGranted()) {
                 $this->setAccessible();
@@ -110,7 +110,7 @@
             $logged_info = Context::get('logged_info');
             if($logged_info->member_srl == $this->get('member_srl')) return;
             // get where the comment belongs to 
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($this->get('document_srl'));
             // Variables
             if($type) $title = "[".$type."] ";
@@ -119,7 +119,7 @@
             $receiver_srl = $this->get('member_srl');
             $sender_member_srl = $logged_info->member_srl;
             // send a message
-            $oCommunicationController = &getController('communication');
+            $oCommunicationController = getController('communication');
             $oCommunicationController->sendMessage($sender_member_srl, $receiver_srl, $title, $content, false);
         }
 
@@ -269,7 +269,7 @@
             if(($this->isSecret() && !$this->isAccessible()) && !$this->isGranted()) return;
             if(!$this->get('uploaded_count')) return;
 
-            $oFileModel = &getModel('file');
+            $oFileModel = getModel('file');
             $file_list = $oFileModel->getFiles($this->comment_srl, $is_admin);
             return $file_list;
         }
@@ -280,7 +280,7 @@
         function getEditor() {
             $module_srl = $this->get('module_srl');
             if(!$module_srl) $module_srl = Context::get('module_srl');
-            $oEditorModel = &getModel('editor');
+            $oEditorModel = getModel('editor');
             return $oEditorModel->getModuleEditor('comment', $module_srl, $this->comment_srl, 'comment_srl', 'content');
         }
 
@@ -289,7 +289,7 @@
          **/
         function getProfileImage() {
             if(!$this->isExists() || !$this->get('member_srl')) return;
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $profile_info = $oMemberModel->getProfileImage($this->get('member_srl'));
             if(!$profile_info) return;
 
@@ -303,11 +303,11 @@
             // pass if the posting not exists.
             if(!$this->isExists() || !$this->get('member_srl')) return;
             // get the signiture information
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $signature = $oMemberModel->getSignature($this->get('member_srl'));
             // check if max height of the signiture is specified on the member module
             if(!isset($GLOBALS['__member_signature_max_height'])) {
-               $oModuleModel = &getModel('module');
+               $oModuleModel = getModel('module');
                $member_config = $oModuleModel->getModuleConfig('member');
                $GLOBALS['__member_signature_max_height'] = $member_config->signature_max_height;
             }

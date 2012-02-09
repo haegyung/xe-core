@@ -18,9 +18,9 @@
          **/
         function dispCommunicationAdminConfig() {
             // Creating an object
-            $oEditorModel = &getModel('editor');
-            $oModuleModel = &getModel('module');
-            $oCommunicationModel = &getModel('communication');
+            $oEditorModel = getModel('editor');
+            $oModuleModel = getModel('module');
+            $oCommunicationModel = getModel('communication');
             // get the configurations of communication module
             Context::set('communication_config', $oCommunicationModel->getConfig() );
             // get a list of editor skins

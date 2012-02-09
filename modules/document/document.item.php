@@ -60,7 +60,7 @@
                 $this->add('tag_list', $tag_list);
             }
 
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $GLOBALS['XE_DOCUMENT_LIST'][$this->document_srl] = $this;
             if($load_extra_vars) {
                 $oDocumentModel->setToAllDocumentExtraVars();
@@ -81,7 +81,7 @@
             $logged_info = Context::get('logged_info');
             if($logged_info->is_admin == 'Y') return true;
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$grant = $oModuleModel->getGrant($oModuleModel->getModuleInfoByModuleSrl($this->get('module_srl')), $logged_info);
 			if($grant->manager) return true;
 
@@ -110,7 +110,7 @@
             static $allow_trackback_status = null;
             if(is_null($allow_trackback_status)) {
                 // If the trackback module is configured to be disabled, do not allow. Otherwise, check the setting of each module.
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $trackback_config = $oModuleModel->getModuleConfig('trackback');
                 if(!isset($trackback_config->enable_trackback)) $trackback_config->enable_trackback = 'Y';
                 if($trackback_config->enable_trackback != 'Y') $allow_trackback_status = false;
@@ -137,7 +137,7 @@
         }
 
         function isSecret() {
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
             return $this->get('status') == $oDocumentModel->getConfigStatus('secret') ? true : false;
         }
 
@@ -183,7 +183,7 @@
             $receiver_srl = $this->get('member_srl');
             $sender_member_srl = $logged_info->member_srl;
             // Send a message
-            $oCommunicationController = &getController('communication');
+            $oCommunicationController = getController('communication');
             $oCommunicationController->sendMessage($sender_member_srl, $receiver_srl, $title, $content, false);
         }
 
@@ -315,7 +315,7 @@
          * Return transformed content by Editor codes
          **/
         function getTransContent($add_popup_menu = true, $add_content_info = true, $resource_realpath = false, $add_xe_content_class = true) {
-            $oEditorController = &getController('editor');
+            $oEditorController = getController('editor');
 
             $content = $this->getContent($add_popup_menu, $add_content_info, $resource_realpath, $add_xe_content_class);
             $content = $oEditorController->transComponent($content);
@@ -394,12 +394,12 @@
         function getTrackbackUrl() {
             if(!$this->document_srl) return;
             // Generate a key to prevent spams
-            $oTrackbackModel = &getModel('trackback');
+            $oTrackbackModel = getModel('trackback');
             return $oTrackbackModel->getTrackbackUrl($this->document_srl);
         }
 
         function updateReadedCount() {
-            $oDocumentController = &getController('document');
+            $oDocumentController = getController('document');
             if($oDocumentController->updateReadedCount($this)) {
                 $readed_count = $this->get('readed_count');
                 $this->add('readed_count', $readed_count+1);
@@ -408,7 +408,7 @@
 
         function isExtraVarsExists() {
             if(!$this->get('module_srl')) return false;
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $extra_keys = $oDocumentModel->getExtraKeys($this->get('module_srl'));
             return count($extra_keys)?true:false;
         }
@@ -416,7 +416,7 @@
         function getExtraVars() {
             if(!$this->get('module_srl') || !$this->document_srl) return null;
 
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             return $oDocumentModel->getExtraVars($this->get('module_srl'), $this->document_srl);
         }
 
@@ -473,7 +473,7 @@
             // cpage is a number of comment pages
             $cpage = Context::get('cpage');
             // Get a list of comments
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
             $output = $oCommentModel->getCommentList($this->document_srl, $cpage, $is_admin);
             if(!$output->toBool() || !count($output->data)) return;
             // Create commentItem object from a comment list
@@ -506,7 +506,7 @@
 
             if(!$this->allowTrackback() || !$this->get('trackback_count')) return;
 
-            $oTrackbackModel = &getModel('trackback');
+            $oTrackbackModel = getModel('trackback');
             return $oTrackbackModel->getTrackbackList($this->document_srl, $is_admin);
         }
 
@@ -527,7 +527,7 @@
             if(!in_array($thumbnail_type, array('crop','ratio'))) {
                 $config = $GLOBALS['__document_config__'];
                 if(!$config) {
-                    $oDocumentModel = &getModel('document');
+                    $oDocumentModel = getModel('document');
                     $config = $oDocumentModel->getDocumentConfig();
                     $GLOBALS['__document_config__'] = $config;
                 }
@@ -547,7 +547,7 @@
             $is_tmp_file = false;
             // Find an iamge file among attached files if exists
             if($this->get('uploaded_count')) {
-                $oFileModel = &getModel('file');
+                $oFileModel = getModel('file');
                 $file_list = $oFileModel->getFiles($this->document_srl);
                 if(count($file_list)) {
                     foreach($file_list as $file) {
@@ -684,7 +684,7 @@
             if($this->isSecret() && !$this->isGranted()) return;
             if(!$this->get('uploaded_count')) return;
 
-            $oFileModel = &getModel('file');
+            $oFileModel = getModel('file');
             $file_list = $oFileModel->getFiles($this->document_srl, $is_admin);
             return $file_list;
         }
@@ -696,7 +696,7 @@
             $module_srl = $this->get('module_srl');
             if(!$module_srl) $module_srl = Context::get('module_srl');
 
-            $oEditorModel = &getModel('editor');
+            $oEditorModel = getModel('editor');
             return $oEditorModel->getModuleEditor('document', $module_srl, $this->document_srl, 'document_srl', 'content');
         }
 
@@ -718,7 +718,7 @@
         function getCommentEditor() {
             if(!$this->isEnableComment()) return;
 
-            $oEditorModel = &getModel('editor');
+            $oEditorModel = getModel('editor');
             return $oEditorModel->getModuleEditor('comment', $this->get('module_srl'), $comment_srl, 'comment_srl', 'content');
         }
 
@@ -727,7 +727,7 @@
          **/
         function getProfileImage() {
             if(!$this->isExists() || !$this->get('member_srl')) return;
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $profile_info = $oMemberModel->getProfileImage($this->get('member_srl'));
             if(!$profile_info) return;
 
@@ -741,11 +741,11 @@
             // Pass if a document doesn't exist
             if(!$this->isExists() || !$this->get('member_srl')) return;
             // Get signature information
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $signature = $oMemberModel->getSignature($this->get('member_srl'));
             // Check if a maximum height of signiture is set in the member module
             if(!isset($GLOBALS['__member_signature_max_height'])) {
-               $oModuleModel = &getModel('module');
+               $oModuleModel = getModel('module');
                $member_config = $oModuleModel->getModuleConfig('member');
                $GLOBALS['__member_signature_max_height'] = $member_config->signature_max_height;
             }
@@ -756,7 +756,28 @@
 
             return $signature;
         }
+		
+		/**
+		* @brief Return an array of objects with translated languages of current document
+		**/
+		public function getTranslationLangCodes()
+        {
+            $obj->document_srl = $this->document_srl;
+            // -2 is an index for content. We are interested if content has other translations.
+            $obj->var_idx = -2;
+            $output = executeQueryArray('document.getDocumentTranslationLangCodes', $obj);
 
+            if (!$output->data)
+            {
+                $output->data = array();
+            }
+            // add original page's lang code as well
+            $origLangCode->lang_code = $this->getLangCode();
+            $output->data[] = $origLangCode;
+
+            return $output->data;
+        }
+		
         /**
          * @brief Change an image path in the content to absolute path
          **/
@@ -772,7 +793,7 @@
 			$status = $this->get('status');
 			if(empty($status)) return false;
 
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			$configStatusList = $oDocumentModel->getStatusList();
 
 			if($status == $configStatusList['public'] || $status == $configStatusList['publish'])

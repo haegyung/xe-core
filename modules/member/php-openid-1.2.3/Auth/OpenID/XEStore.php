@@ -18,18 +18,18 @@ class Auth_OpenID_XEStore extends Auth_OpenID_OpenIDStore {
     function createAuthKey()
     {
         $auth_key = Auth_OpenID_CryptUtil::randomString($this->AUTH_KEY_LEN);
-        $oModuleModel = &getModel('module');
+        $oModuleModel = getModel('module');
         $memberConfig = $oModuleModel->getModuleConfig('member');
         $memberConfig->openid_authkey = $auth_key;
 
-        $oModuleController = &getController('module');
+        $oModuleController = getController('module');
         $oModuleController->inesrtModuleConfig("module", $memberConfig);
         return $auth_key;
     }
 
     function _readAuthKey()
     {
-        $oModuleModel = &getModel('module');
+        $oModuleModel = getModel('module');
         $memberConfig = $oModuleModel->getModuleConfig('member');
         return $memberConfig->openid_authkey;
     }

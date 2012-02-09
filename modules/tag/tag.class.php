@@ -11,8 +11,8 @@
          * @brief Implement if additional tasks are necessary when installing
          **/
         function moduleInstall() {
-            $oModuleController = &getController('module');
-            $oDB = &DB::getInstance();
+            $oModuleController = getController('module');
+            $oDB = DB::getInstance();
 
             $oDB->addIndex("tags","idx_tag", array("document_srl","tag"));
             // 2007. 10. 17 document.insertDocument, updateDocument, deleteDocument trigger property for
@@ -31,8 +31,8 @@
          * @brief a method to check if successfully installed
          **/
         function checkUpdate() {
-            $oModuleModel = &getModel('module');
-            $oDB = &DB::getInstance();
+            $oModuleModel = getModel('module');
+            $oDB = DB::getInstance();
             // 2007. 10. 17 trigger registration, if registered upset
             if(!$oModuleModel->getTrigger('document.insertDocument', 'tag', 'controller', 'triggerArrangeTag', 'before')) return true;
             if(!$oModuleModel->getTrigger('document.insertDocument', 'tag', 'controller', 'triggerInsertTag', 'after')) return true;
@@ -51,9 +51,9 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oModuleModel = &getModel('module');
-            $oModuleController = &getController('module');
-            $oDB = &DB::getInstance();
+            $oModuleModel = getModel('module');
+            $oModuleController = getController('module');
+            $oDB = DB::getInstance();
             // 2007. 10. 17 document.insertDocument, updateDocument, deleteDocument trigger property for
             if(!$oModuleModel->getTrigger('document.insertDocument', 'tag', 'controller', 'triggerArrangeTag', 'before')) 
                 $oModuleController->insertTrigger('document.insertDocument', 'tag', 'controller', 'triggerArrangeTag', 'before');

@@ -11,7 +11,7 @@
                 var $_is_string_from_function = false; //< Checks if value is string resulted from evaluating a piece of PHP code (see $_SERVER[REMOTE_ADDR])
 
 		function DefaultValue($column_name, $value){
-                        $dbParser = &DB::getParser();
+                        $dbParser = DB::getParser();
 			$this->column_name = $dbParser->parseColumnName($column_name);
 			$this->value = $value;
                         $this->value = $this->_setValue();

@@ -21,7 +21,7 @@ class Member extends ModuleObject
 			return;
 		}
 
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		$member_config = $oModuleModel->getModuleConfig('member');
 
 		// Set to use SSL upon actions related member join/information/password and so on
@@ -47,12 +47,12 @@ class Member extends ModuleObject
 	public function moduleInstall()
 	{
 		// Register action forward (to use in administrator mode)
-		$oModuleController = &getController('module');
+		$oModuleController = getController('module');
 
-		$oDB = &DB::getInstance();
+		$oDB = DB::getInstance();
 		$oDB->addIndex("member_group", "idx_site_title", array("site_srl", "title"), TRUE);
 
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		$args = $oModuleModel->getModuleConfig('member');
 
 		// Set the basic information
@@ -73,8 +73,8 @@ class Member extends ModuleObject
 		$oModuleController->insertModuleConfig('member', $args);
 
 		// Create a member controller object
-		$oMemberController = &getController('member');
-		$oMemberAdminController = &getAdminController('member');
+		$oMemberController = getController('member');
+		$oMemberAdminController = getAdminController('member');
 
 		$oMemberModel = getModel('member');
 		$groups = $oMemberModel->getGroups();
@@ -110,8 +110,8 @@ class Member extends ModuleObject
 	 */
 	public function checkUpdate()
 	{
-		$oDB = &DB::getInstance();
-		$oModuleModel = &getModel('module');
+		$oDB = DB::getInstance();
+		$oModuleModel = getModel('module');
 
 		// check member directory (11/08/2007 added)
 		if(!is_dir('./files/member_extra_info'))
@@ -203,8 +203,8 @@ class Member extends ModuleObject
 	 */
 	function moduleUpdate()
 	{
-		$oDB = &DB::getInstance();
-		$oModuleController = &getController('module');
+		$oDB = DB::getInstance();
+		$oModuleController = getController('module');
 
 		// Add a column
 		if(!$oDB->isColumnExists('member_auth_mail', 'is_register'))

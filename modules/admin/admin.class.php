@@ -19,7 +19,7 @@
          * @brief if update is necessary it returns true
          **/
         function checkUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             if(!$oDB->isColumnExists("admin_favorite", "type")) return true;
 
             return false;
@@ -30,10 +30,10 @@
          * @return new Object
          **/
         function moduleUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             if(!$oDB->isColumnExists("admin_favorite", "type"))
 			{
-				$oAdminAdminModel = &getAdminModel('admin');
+				$oAdminAdminModel = getAdminModel('admin');
 				$output = $oAdminAdminModel->getFavoriteList();
 				$favoriteList = $output->get('favoriteList');
 
@@ -42,7 +42,7 @@
             	$oDB->addColumn('admin_favorite',"type","varchar",30, 'module');
 				if(is_array($favoriteList))
 				{
-					$oAdminAdminController = &getAdminController('admin');
+					$oAdminAdminController = getAdminController('admin');
 					$oAdminAdminController->_deleteAllFavorite();
 					foreach($favoriteList AS $key=>$value)
 					{
@@ -88,7 +88,7 @@
                 $output = executeQuery('menu.insertMenuItem', $args);
 			}
 
-			$oMenuAdminModel = &getAdminModel('menu');
+			$oMenuAdminModel = getAdminModel('menu');
 			$columnList = array('menu_item_srl', 'name');
 			$output = $oMenuAdminModel->getMenuItems($menuSrl, 0, $columnList);
 			if(is_array($output->data))
@@ -196,7 +196,7 @@
 				),
 			);
 
-			$oMemberModel = &getModel('member');
+			$oMemberModel = getModel('member');
 			$output = $oMemberModel->getAdminGroup(array('group_srl'));
 			$adminGroupSrl = $output->group_srl;
 
@@ -209,7 +209,7 @@
 			$args->hover_btn = '';
 			$args->active_btn = '';
 			$args->group_srls = $adminGroupSrl;
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 
 			foreach($gnbModuleList AS $key=>$value)
 			{
@@ -231,7 +231,7 @@
 				}
 			}
 
-			$oMenuAdminConroller = &getAdminController('menu');
+			$oMenuAdminConroller = getAdminController('menu');
 			$oMenuAdminConroller->makeXmlFile($menuSrl);
 		}
 

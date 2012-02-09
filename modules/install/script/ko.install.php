@@ -34,7 +34,7 @@
 	if(!$output->toBool()) return $output;
 
 		// XML 파일을 갱신
-	$oMenuAdminController = &getAdminController('menu');
+	$oMenuAdminController = getAdminController('menu');
 	$oMenuAdminController->makeXmlFile($menu_srl);
 
 	// create Layout
@@ -51,7 +51,7 @@
 	$args->title = 'welcome_layout';
 	$args->layout_type = 'P';
 
-	$oLayoutAdminController = &getAdminController('layout');
+	$oLayoutAdminController = getAdminController('layout');
 	$output = $oLayoutAdminController->insertLayout($args);
 	if(!$output->toBool()) return $output;
 
@@ -70,7 +70,7 @@
 	$page_args->page_type = 'ARTICLE';
 	$page_args->skin = 'default';
 
-	$oModuleController = &getController('module');
+	$oModuleController = getController('module');
 	$output = $oModuleController->insertModule($page_args);
 
 	if(!$output->toBool()) return $output;
@@ -80,8 +80,8 @@
 	// insert PageContents - widget
 	$oTemplateHandler = &TemplateHandler::getInstance();
 
-	$oDocumentModel = &getModel('document');
-	$oDocumentController = &getController('document');
+	$oDocumentModel = getModel('document');
+	$oDocumentController = getController('document');
 
 	$obj->module_srl = $module_srl;
 	Context::set('version', __ZBXE_VERSION__);
@@ -95,7 +95,7 @@
 	$document_srl = $output->get('document_srl');
 
 	// save PageWidget
-	$oModuleModel = &getModel('module');
+	$oModuleModel = getModel('module');
 	$module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl);
 	$module_info->document_srl = $document_srl;
 	$output = $oModuleController->updateModule($module_info);

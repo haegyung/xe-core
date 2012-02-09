@@ -58,7 +58,7 @@
             $file_count = count($file_srl_list);
             if(!$file_count) return $this->stop('msg_cart_is_null');
 
-            $oFileController = &getController('file');
+            $oFileController = getController('file');
             // Delete the post
             for($i=0;$i<$file_count;$i++) {
                 $file_srl = trim($file_srl_list[$i]);
@@ -87,7 +87,7 @@
             $config->allow_outlink_format = Context::get('allow_outlink_format');
             $config->allow_outlink_site = Context::get('allow_outlink_site');
             // Create module Controller object
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $output = $oModuleController->insertModuleConfig('file',$config);
 			if($output->toBool() && !in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
 				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispFileAdminConfig');
@@ -129,7 +129,7 @@
 			if($userFileAllowSize > $iniMinSzie || $userAttachAllowSize > $iniMinSzie)
 				return new Object(-1, 'input size over than config in php.ini');
 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             for($i=0;$i<count($module_srl);$i++) {
                 $srl = trim($module_srl[$i]);
                 if(!$srl) continue;
@@ -153,7 +153,7 @@
 			$file_srl = (int)Context::get('file_srl');
 			//$fileSrlList = array(500, 502);
 
-			$oFileModel = &getModel('file');
+			$oFileModel = getModel('file');
 			$output = $oFileModel->getFile($file_srl);
 			//$output = $oFileModel->getFile($fileSrlList);
 

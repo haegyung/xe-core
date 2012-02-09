@@ -49,7 +49,7 @@
          * Download a widget with type (generation and other means)
          **/
         function getDownloadedWidgetList() {
-			$oAutoinstallModel = &getModel('autoinstall');
+			$oAutoinstallModel = getModel('autoinstall');
 
             // 've Downloaded the widget and the widget's list of installed Wanted
             $searched_list = FileHandler::readDir('./widgets');

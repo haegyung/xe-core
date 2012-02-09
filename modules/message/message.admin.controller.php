@@ -20,7 +20,7 @@
             // Get information
             $args->skin = Context::get('skin');
             // Create a module Controller object 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $output = $oModuleController->insertModuleConfig('message',$args);
             if(!$output->toBool()) return $output;
 

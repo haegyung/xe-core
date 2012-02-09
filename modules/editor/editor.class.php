@@ -12,9 +12,9 @@
          **/
         function moduleInstall() {
             // Register action forward (to use in administrator mode)
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             // Add the default editor component
-            $oEditorController = &getAdminController('editor');
+            $oEditorController = getAdminController('editor');
             $oEditorController->insertComponent('colorpicker_text',true);
             $oEditorController->insertComponent('colorpicker_bg',true);
             $oEditorController->insertComponent('emoticon',true);
@@ -42,9 +42,9 @@
          * @brief a method to check if successfully installed
          **/
         function checkUpdate() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // 2009. 06. 15 Save module_srl when auto-saving
             if(!$oDB->isColumnExists("editor_autosave","module_srl")) return true;
             if(!$oDB->isIndexExists("editor_autosave","idx_module_srl")) return true;
@@ -67,10 +67,10 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oModuleModel = &getModel('module');
-            $oModuleController = &getController('module');
+            $oModuleModel = getModel('module');
+            $oModuleController = getController('module');
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // Save module_srl when auto-saving 15/06/2009
             if(!$oDB->isColumnExists("editor_autosave","module_srl")) 
                 $oDB->addColumn("editor_autosave","module_srl","number",11);

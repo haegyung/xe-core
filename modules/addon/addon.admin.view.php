@@ -18,10 +18,10 @@
          * @brief Add Management main page (showing the list)
          **/
         function dispAddonAdminIndex() {
-			$oAdminModel = &getAdminModel('admin');
+			$oAdminModel = getAdminModel('admin');
 
             // Add to the list settings
-            $oAddonModel = &getAdminModel('addon');
+            $oAddonModel = getAdminModel('addon');
             $addon_list = $oAddonModel->getAddonListForSuperAdmin();
 
 			$security = new Security($addon_list);
@@ -46,12 +46,12 @@
             // Wanted to add the requested
             $selected_addon = Context::get('selected_addon');
             // Wanted to add the requested information
-            $oAddonModel = &getAdminModel('addon');
+            $oAddonModel = getAdminModel('addon');
             $addon_info = $oAddonModel->getAddonInfoXml($selected_addon, $site_module_info->site_srl, 'site');
             Context::set('addon_info', $addon_info);
             // Get a mid list
-            $oModuleModel = &getModel('module');
-            $oModuleAdminModel = &getAdminModel('module');
+            $oModuleModel = getModel('module');
+            $oModuleAdminModel = getAdminModel('module');
 
             if($site_module_info->site_srl) $args->site_srl = $site_module_info->site_srl;
 			$columnList = array('module_srl', 'module_category_srl', 'mid', 'browser_title');
@@ -93,7 +93,7 @@
             // Wanted to add the requested
             $selected_addon = Context::get('selected_addon');
             // Wanted to add the requested information
-            $oAddonModel = &getAdminModel('addon');
+            $oAddonModel = getAdminModel('addon');
             $addon_info = $oAddonModel->getAddonInfoXml($selected_addon, $site_module_info->site_srl);
             Context::set('addon_info', $addon_info);
             // Set the layout to be pop-up

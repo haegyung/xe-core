@@ -16,7 +16,7 @@ class memberView extends member {
 	 **/
 	function init() {
 		// Get the member configuration
-		$oModuleModel = &getModel('module');
+		$oModuleModel = getModel('module');
 		$this->member_config = $oModuleModel->getModuleConfig('member');
 		if(!$this->member_config->skin) $this->member_config->skin = "default";
 		if(!$this->member_config->colorset) $this->member_config->colorset = "white";
@@ -37,7 +37,7 @@ class memberView extends member {
 	 */
 	public function dispMemberInfo()
 	{
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 
 		// Don't display member info to non-logged user
 		if(!Context::get('is_logged'))
@@ -100,8 +100,8 @@ class memberView extends member {
 			setcookie("XE_REDIRECT_URL", $_SERVER['HTTP_REFERER']);
 		}
 
-		$oMemberModel = &getModel('member');
-		$oModuleModel = &getModel('module');
+		$oMemberModel = getModel('member');
+		$oModuleModel = getModel('module');
 
 		// Get the member information if logged-in
 		if($oMemberModel->isLogged())
@@ -207,7 +207,7 @@ class memberView extends member {
 	 * @brief Modify member information
 	 **/
 	function dispMemberModifyInfo() {
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 
 		// A message appears if the user is not logged-in
 		if(!$oMemberModel->isLogged())
@@ -263,7 +263,7 @@ class memberView extends member {
 		Context::set('openids', $oMemberModel->getMemberOpenIDByMemberSrl($member_srl));
 		// Editor of the module set for signing by calling getEditor
 		if($member_info->member_srl) {
-			$oEditorModel = &getModel('editor');
+			$oEditorModel = getModel('editor');
 			$option->primary_key_name = 'member_srl';
 			$option->content_key_name = 'signature';
 			$option->allow_fileupload = false;
@@ -279,7 +279,7 @@ class memberView extends member {
 			Context::set('editor', $editor);
 		}
 
-		$oMemberAdminView = &getAdminView('member');
+		$oMemberAdminView = getAdminView('member');
 		$formTags = $oMemberAdminView->_getMemberInputTag($member_info);
 		Context::set('formTags', $formTags);
 
@@ -302,7 +302,7 @@ class memberView extends member {
 	 * @brief Display documents written by the member
 	 **/
 	function dispMemberOwnDocument() {
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		// A message appears if the user is not logged-in
 		if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');
 
@@ -314,7 +314,7 @@ class memberView extends member {
 		Context::set('search_target','member_srl');
 		Context::set('search_keyword',$member_srl);
 
-		$oDocumentAdminView = &getAdminView('document');
+		$oDocumentAdminView = getAdminView('document');
 		$oDocumentAdminView->dispDocumentAdminList();
 
 		Context::set('module_srl', $module_srl);
@@ -325,7 +325,7 @@ class memberView extends member {
 	 * @brief Display documents scrapped by the member
 	 **/
 	function dispMemberScrappedDocument() {
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		// A message appears if the user is not logged-in
 		if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');
 
@@ -347,7 +347,7 @@ class memberView extends member {
 	 * @brief Display documents saved by the member
 	 **/
 	function dispMemberSavedDocument() {
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		// A message appears if the user is not logged-in
 		if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');
 		// Get the saved document(module_srl is set to member_srl instead)
@@ -356,7 +356,7 @@ class memberView extends member {
 		$args->page = (int)Context::get('page');
 		$args->statusList = array('TEMP');
 
-		$oDocumentModel = &getModel('document');
+		$oDocumentModel = getModel('document');
 		$output = $oDocumentModel->getDocumentList($args, true);
 		Context::set('total_count', $output->total_count);
 		Context::set('total_page', $output->total_page);
@@ -423,7 +423,7 @@ class memberView extends member {
 	 * @brief Change the user password
 	 **/
 	function dispMemberModifyPassword() {
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		// A message appears if the user is not logged-in
 		if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');
 
@@ -442,7 +442,7 @@ class memberView extends member {
 	 **/
 	function dispMemberLeave()
 	{
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		// A message appears if the user is not logged-in
 		if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');
 
@@ -459,7 +459,7 @@ class memberView extends member {
 	 * @brief OpenID member withdrawl
 	 **/
 	function dispMemberOpenIDLeave() {
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		// A message appears if the user is not logged-in
 		if(!$oMemberModel->isLogged()) return $this->stop('msg_not_logged');
 
@@ -476,7 +476,7 @@ class memberView extends member {
 	 * @brief Member log-out
 	 **/
 	function dispMemberLogout() {
-		$oMemberController = &getController('member');
+		$oMemberController = getController('member');
 		$output = $oMemberController->procMemberLogout();
 		if(!$output->redirect_url)
 			$this->setRedirectUrl(getNotEncodedUrl('act', ''));
@@ -500,7 +500,7 @@ class memberView extends member {
 	function dispMemberFindAccount() {
 		if(Context::get('is_logged')) return $this->stop('already_logged');
 
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		$config = $oMemberModel->getMemberConfig();
 
 		Context::set('identifier', $config->identifier);

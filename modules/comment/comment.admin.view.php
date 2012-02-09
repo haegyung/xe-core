@@ -27,7 +27,7 @@
             $args->module_srl = Context::get('module_srl');
 
             // get a list by using comment->getCommentList. 
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
 			$secretNameList = $oCommentModel->getSecretNameList();
 			$columnList = array('comment_srl', 'document_srl', 'is_secret', 'content', 'comments.member_srl', 'comments.nick_name', 'comments.regdate', 'ipaddress');
             $output = $oCommentModel->getTotalCommentList($args, $columnList);
@@ -62,7 +62,7 @@
             if($declared_output->data && count($declared_output->data)) {
                 $comment_list = array();
 
-                $oCommentModel = &getModel('comment');
+                $oCommentModel = getModel('comment');
                 foreach($declared_output->data as $key => $comment) {
                     $comment_list[$key] = new commentItem();
                     $comment_list[$key]->setAttribute($comment);

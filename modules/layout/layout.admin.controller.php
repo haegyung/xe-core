@@ -53,7 +53,7 @@
 
         // Initiate if it is faceoff layout
         function initLayout($layout_srl, $layout_name){
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             // Import a sample layout if it is faceoff
             if($oLayoutModel->useDefaultLayout($layout_name)) {
                 $this->importLayout($layout_srl, $this->module_path.'tpl/faceOff_sample.tar');
@@ -80,8 +80,8 @@
 
             $args = Context::gets('layout_srl','title');
             // Get layout information
-            $oLayoutModel = &getModel('layout');
-            $oMenuAdminModel = &getAdminModel('menu');
+            $oLayoutModel = getModel('layout');
+            $oMenuAdminModel = getAdminModel('menu');
             $layout_info = $oLayoutModel->getLayout($args->layout_srl);
 			if($layout_info->menu) {
 	            $menus = get_object_vars($layout_info->menu);
@@ -164,8 +164,8 @@
                 }
             }
             // Save header script into "config" of layout module
-            $oModuleModel = &getModel('module');
-            $oModuleController = &getController('module');
+            $oModuleModel = getModel('module');
+            $oModuleController = getController('module');
             $layout_config->header_script = Context::get('header_script');
             $oModuleController->insertModulePartConfig('layout',$args->layout_srl,$layout_config);
             // Save a title of the menu
@@ -183,7 +183,7 @@
         function updateLayout($args) {
             $output = executeQuery('layout.updateLayout', $args);
             if($output->toBool()) {
-                $oLayoutModel = &getModel('layout');
+                $oLayoutModel = getModel('layout');
                 $cache_file = $oLayoutModel->getUserLayoutCache($args->layout_srl, Context::getLangType());
                 FileHandler::removeFile($cache_file);
 				//remove from cache
@@ -208,7 +208,7 @@
         }
 
         function deleteLayout($layout_srl) {
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
 
             $path = $oLayoutModel->getUserLayoutPath($layout_srl);
             FileHandler::removeDir($path);
@@ -243,7 +243,7 @@
 			$is_post    = (Context::getRequestMethod() == 'POST');
             if(!$layout_srl || !$code) return new Object(-1, 'msg_invalid_request');
 
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_file = $oLayoutModel->getUserLayoutHtml($layout_srl);
             FileHandler::writeFile($layout_file, $code);
 
@@ -262,7 +262,7 @@
             if(!$layout_srl) return new Object(-1, 'msg_invalid_request');
 
             // delete user layout file
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $layout_file = $oLayoutModel->getUserLayoutHtml($layout_srl);
             FileHandler::removeFile($layout_file);
 
@@ -304,7 +304,7 @@
          *
          **/
         function insertUserLayoutImage($layout_srl,$source){
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $path = $oLayoutModel->getUserLayoutImagePath($layout_srl);
             if(!is_dir($path)) FileHandler::makeDir($path);
 
@@ -325,7 +325,7 @@
          *
          **/
         function removeUserLayoutImage($layout_srl,$filename){
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $path = $oLayoutModel->getUserLayoutImagePath($layout_srl);
             @unlink($path . $filename);
         }
@@ -348,7 +348,7 @@
          * save in "ini" format for faceoff
          **/
         function procLayoutAdminUserValueInsert(){
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 
             $mid = Context::get('mid');
             if(!$mid) return new Object(-1, 'msg_invalid_request');
@@ -359,7 +359,7 @@
             $layout_srl = $module_info->layout_srl;
             if(!$layout_srl) return new Object(-1, 'msg_invalid_request');
 
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
 
             // save tmp?
             $temp = Context::get('saveTemp');
@@ -399,7 +399,7 @@
          *
          **/
         function insertUserLayoutValue($layout_srl,$arr){
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $file = $oLayoutModel->getUserLayoutIni($layout_srl);
             FileHandler::writeIniFile($file, $arr);
         }
@@ -413,7 +413,7 @@
          *
          **/
         function addExtension($layout_srl,$arg,$content){
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
              $reg = '/(<\!\-\- start\-e1 \-\->)(.*)(<\!\-\- end\-e1 \-\->)/i';
              $extension_content =  '\1' .stripslashes($arg->e1) . '\3';
              $content = preg_replace($reg,$extension_content,$content);
@@ -438,7 +438,7 @@
          *
          **/
          function deleteUserLayoutTempFile($layout_srl){
-             $oLayoutModel = &getModel('layout');
+             $oLayoutModel = getModel('layout');
              $file_list = $oLayoutModel->getUserLayoutTempFileList($layout_srl);
              foreach($file_list as $key => $file){
                 FileHandler::removeFile($file);
@@ -454,7 +454,7 @@
             if(!$layout_srl) return new Object('-1','msg_invalid_request');
 
             require_once(_XE_PATH_.'libs/tar.class.php');
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
 			
 			// Copy files to temp path
 			$file_path = $oLayoutModel->getUserLayoutPath($layout_srl);
@@ -556,7 +556,7 @@
             $layout_srl = Context::get('layout_srl');
             if(!$layout_srl) exit();
 
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $user_layout_path = FileHandler::getRealPath($oLayoutModel->getUserLayoutPath($layout_srl));
             if(!move_uploaded_file($file['tmp_name'], $user_layout_path . 'faceoff.tar')) exit();
 
@@ -566,7 +566,7 @@
         }
 
         function importLayout($layout_srl, $source_file) {
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $user_layout_path = FileHandler::getRealPath($oLayoutModel->getUserLayoutPath($layout_srl));
             $file_list = $oLayoutModel->getUserLayoutFileList($layout_srl);
             foreach($file_list as $key => $file){

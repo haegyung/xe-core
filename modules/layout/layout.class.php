@@ -21,7 +21,7 @@
          * @brief a method to check if successfully installed
          **/
         function checkUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // 2009. 02. 11 Add site_srl to layout table
             if(!$oDB->isColumnExists('layouts', 'site_srl')) return true;
             // 2009. 02. 26 Move the previous layout for faceoff
@@ -40,13 +40,13 @@
          * @brief Execute update
          **/
         function moduleUpdate() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // 2009. 02. 11 Add site_srl to menu table
             if(!$oDB->isColumnExists('layouts', 'site_srl')) {
                 $oDB->addColumn('layouts','site_srl','number',11,0,true);
             }
             // 2009. 02. 26 Move the previous layout for faceoff
-            $oLayoutModel = &getModel('layout');
+            $oLayoutModel = getModel('layout');
             $files = FileHandler::readDir('./files/cache/layout');
             for($i=0,$c=count($files);$i<$c;$i++) {
                 $filename = $files[$i];

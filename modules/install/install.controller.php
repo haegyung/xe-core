@@ -112,7 +112,7 @@
             // Set DB type and information
             Context::setDBInfo($db_info);
             // Create DB Instance
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // Check if available to connect to the DB
             $output = $oDB->getError();
 			if(!$output->toBool()) return $output;
@@ -174,7 +174,7 @@
             // Set DB type and information
             Context::setDBInfo($db_info);
             // Create DB Instance
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // Check if available to connect to the DB
             if(!$oDB->isConnected()) return $oDB->getError();
             // When installing firebire DB, transaction will not be used
@@ -384,7 +384,7 @@
          * Create a table by using schema xml file in the shcema directory of each module
          **/
         function installDownloadedModule() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             // Create a table ny finding schemas/*.xml file in each module
             $module_list = FileHandler::readDir('./modules/', NULL, false, true);
             foreach($module_list as $module_path)
@@ -497,7 +497,7 @@
         function installModule($module, $module_path)
 		{
             // create db instance
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             // Create a table if the schema xml exists in the "schemas" directory of the module
             $schema_dir = sprintf('%s/schemas/', $module_path);
             $schema_files = FileHandler::readDir($schema_dir, NULL, false, true);

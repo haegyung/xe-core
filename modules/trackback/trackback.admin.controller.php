@@ -25,7 +25,7 @@
             $trackback_count = count($trackback_srl_list);
             if(!$trackback_count) return $this->stop('msg_cart_is_null');
 
-            $oTrackbackController = &getController('trackback');
+            $oTrackbackController = getController('trackback');
             // Delete the post
             for($i=0;$i<$trackback_count;$i++) {
                 $trackback_srl = trim($trackback_srl_list[$i]);
@@ -49,7 +49,7 @@
             $config->enable_trackback = Context::get('enable_trackback');
             if($config->enable_trackback != 'Y') $config->enable_trackback = 'N';
 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $output = $oModuleController->insertModuleConfig('trackback',$config);
 			if($output->toBool() && !in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {
 				$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispTrackbackAdminList');
@@ -95,7 +95,7 @@
 		{
 			$trackback_srl = (int)Context::get('trackback_srl');
 
-			$oTrackbackAdminModel = &getAdminModel('trackback');
+			$oTrackbackAdminModel = getAdminModel('trackback');
 			//$columnList = array('trackback_srl');
 			$args->trackbackSrlList = array($trackback_srl);
 
@@ -117,7 +117,7 @@
         function setTrackbackModuleConfig($module_srl, $enable_trackback) {
             $config->enable_trackback = $enable_trackback;
 
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $oModuleController->insertModulePartConfig('trackback', $module_srl, $config);
             return new Object();
         }

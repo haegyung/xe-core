@@ -18,7 +18,7 @@
 			$file = "modules.test.tar";
             $checksum = '549989037bd8401d39b83ca2393d8131';
 			$file = "modules.test.skins.test.tar";
-			$oAutoinstallAdminController = &getAdminController('autoinstall');
+			$oAutoinstallAdminController = getAdminController('autoinstall');
 			$output = $oAutoinstallAdminController->install($file, $checksum);
             return $output;
 		}

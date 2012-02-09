@@ -87,7 +87,7 @@
          * @param[in] $db_type type of db
          * @return instance
          **/
-        function &getInstance($db_type = NULL) {
+        function getInstance($db_type = NULL) {
             if(!$db_type) $db_type = Context::getDBType();
             if(!$db_type && Context::isInstalled()) return new Object(-1, 'msg_db_not_setted');
 

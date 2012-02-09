@@ -81,7 +81,7 @@
          **/
         function getNewestTrackbackList($obj) {
             if($obj->mid) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $obj->module_srl = $oModuleModel->getModuleSrlByMid($obj->mid);
                 unset($obj->mid);
             }
@@ -103,7 +103,7 @@
          **/
         function getTrackbackModuleConfig($module_srl) {
             // Bringing trackback module config
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $module_trackback_config = $oModuleModel->getModulePartConfig('trackback', $module_srl);
             if(!$module_trackback_config) {
                 $trackback_config = $oModuleModel->getModuleConfig('trackback');

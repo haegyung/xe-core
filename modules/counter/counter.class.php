@@ -11,7 +11,7 @@
          * @brief Implement if additional tasks are necessary when installing
          **/
         function moduleInstall() {
-            $oCounterController = &getController('counter');
+            $oCounterController = getController('counter');
             // add a row for the total visit history 
             //$oCounterController->insertTotalStatus();
             // add a row for today's status
@@ -25,7 +25,7 @@
          **/
         function checkUpdate() {
             // Add site_srl to the counter
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             if(!$oDB->isColumnExists('counter_log', 'site_srl')) return true;
             if(!$oDB->isIndexExists('counter_log','idx_site_counter_log')) return true;
             
@@ -37,7 +37,7 @@
          **/
         function moduleUpdate() {
             // Add site_srl to the counter
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             if(!$oDB->isColumnExists('counter_log', 'site_srl')) $oDB->addColumn('counter_log','site_srl','number',11,0,true);
             if(!$oDB->isIndexExists('counter_log','idx_site_counter_log')) $oDB->addIndex('counter_log','idx_site_counter_log',array('site_srl','ipaddress'),false);
 

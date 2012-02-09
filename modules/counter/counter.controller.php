@@ -24,13 +24,13 @@
          * @brief Counter logs
          **/
         function counterExecute() {
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
 
             $site_module_info = Context::get('site_module_info');
             $site_srl = (int)$site_module_info->site_srl;
             // Check the logs
-            $oCounterModel = &getModel('counter');
+            $oCounterModel = getModel('counter');
             // Register today's row if not exist
             if(!$oCounterModel->isInsertedTodayStatus($site_srl)) {
                 $this->insertTodayStatus(0,$site_srl);

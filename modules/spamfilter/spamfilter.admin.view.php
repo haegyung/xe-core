@@ -21,11 +21,11 @@
          **/
 		function dispSpamfilterAdminSetting() {
             // Get configurations (using module model object)
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('spamfilter');
 			
 			// Get the list of denied IP addresses and words
-			$oSpamFilterModel = &getModel('spamfilter');
+			$oSpamFilterModel = getModel('spamfilter');
             $ip_list = $oSpamFilterModel->getDeniedIPList();
             $word_list = $oSpamFilterModel->getDeniedWordList();
 

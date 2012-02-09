@@ -26,15 +26,15 @@
             $args->isvalid = Context::get('isvalid');
             $args->module_srl = Context::get('module_srl');
             // Get a list
-            $oFileAdminModel = &getAdminModel('file');
+            $oFileAdminModel = getAdminModel('file');
 			$columnList = array('file_srl', 'upload_target_srl', 'upload_target_type', 'sid', 'module_srl'
 					, 'source_filename', 'isvalid', 'file_size', 'download_count', 'files.regdate', 'ipaddress');
             $output = $oFileAdminModel->getFileList($args, $columnList);
             // Get the document for looping a list
             if($output->data) {
-                $oCommentModel = &getModel('comment');
-                $oDocumentModel = &getModel('document');
-                $oModuleModel = &getModel('module');
+                $oCommentModel = getModel('comment');
+                $oDocumentModel = getModel('document');
+                $oModuleModel = getModel('module');
 
                 $file_list = array();
                 $document_list = array();
@@ -177,7 +177,7 @@
          * @brief Set attachment information (for administrator)
          **/
         function dispFileAdminConfig() {
-            $oFileModel = &getModel('file');
+            $oFileModel = getModel('file');
             $config = $oFileModel->getFileConfig();
             Context::set('config',$config);
             // Set a template file

@@ -42,7 +42,7 @@ $password = trim($params[2]->value->string->body);
 if($called_position == 'before_module_init') {
 	// Attempt log-in by using member controller
 	if($user_id && $password) {
-		$oMemberController = &getController('member');
+		$oMemberController = getController('member');
 		$output = $oMemberController->doLogin($user_id, $password);
 		// If login fails, an error message appears
 		if(!$output->toBool()) {
@@ -61,7 +61,7 @@ if($called_position == 'before_module_proc') {
 		printContent( getXmlRpcFailure(1, 'no permission') );
 	}
 	// Get information of the categories
-	$oDocumentModel = &getModel('document');
+	$oDocumentModel = getModel('document');
 	$category_list = $oDocumentModel->getCategoryList($this->module_srl);
 	// Specifies a temporary file storage
 	$tmp_uploaded_path = sprintf('./files/cache/blogapi/%s/%s/', $this->mid, $user_id);
@@ -99,7 +99,7 @@ if($called_position == 'before_module_proc') {
 		// Upload file
 		case 'metaWeblog.newMediaObject' :
 				// Check a file upload permission
-				$oFileModel = &getModel('file');
+				$oFileModel = getModel('file');
 				$file_module_config = $oFileModel->getFileModuleConfig($this->module_srl);
 				if(is_array($file_module_config->download_grant) && count($file_module_config->download_grant)>0) {
 					$logged_info = Context::get('logged_info');
@@ -141,7 +141,7 @@ if($called_position == 'before_module_proc') {
 				if(!$document_srl) {
 					printContent( getXmlRpcFailure(1, 'no permission') );
 				} else {
-					$oDocumentModel = &getModel('document');
+					$oDocumentModel = getModel('document');
 					$oDocument = $oDocumentModel->getDocument($document_srl);
 					if(!$oDocument->isExists() || !$oDocument->isGranted()) {
 						printContent( getXmlRpcFailure(1, 'no permission') );
@@ -149,7 +149,7 @@ if($called_position == 'before_module_proc') {
 						// Get a list of categories and set Context
 						$category = "";
 						if($oDocument->get('category_srl')) {
-							$oDocumentModel = &getModel('document');
+							$oDocumentModel = getModel('document');
 							$category_list = $oDocumentModel->getCategoryList($oDocument->get('module_srl'));
 							if($category_list[$oDocument->get('category_srl')]) {
 								$category = $category_list[$oDocument->get('category_srl')]->title;
@@ -230,7 +230,7 @@ if($called_position == 'before_module_proc') {
 					$file_list = FileHandler::readDir($tmp_uploaded_path);
 					$file_count = count($file_list);
 					if($file_count) {
-						$oFileController = &getController('file');
+						$oFileController = getController('file');
 						for($i=0;$i<$file_count;$i++) {
 							$file_info['tmp_name'] = sprintf('%s%s', $tmp_uploaded_path, $file_list[$i]);
 							$file_info['name'] = $file_list[$i];
@@ -242,7 +242,7 @@ if($called_position == 'before_module_proc') {
 
 				$obj->content = str_replace($uploaded_target_path,sprintf('/files/attach/images/%s/%s%s', $this->module_srl, getNumberingPath($document_srl,3), $filename), $obj->content);
 
-				$oDocumentController = &getController('document');
+				$oDocumentController = getController('document');
 				$obj->commentStatus = 'ALLOW';
 				$obj->allow_trackback = 'Y';
 				$output = $oDocumentController->insertDocument($obj);
@@ -271,7 +271,7 @@ if($called_position == 'before_module_proc') {
 					break;
 				}
 
-				$oDocumentModel = &getModel('document');
+				$oDocumentModel = getModel('document');
 				$oDocument = $oDocumentModel->getDocument($document_srl);
 				// Check if a permission to modify a document is granted
 				if(!$oDocument->isGranted()) {
@@ -321,7 +321,7 @@ if($called_position == 'before_module_proc') {
 					$file_list = FileHandler::readDir($tmp_uploaded_path);
 					$file_count = count($file_list);
 					if($file_count) {
-						$oFileController = &getController('file');
+						$oFileController = getController('file');
 						for($i=0;$i<$file_count;$i++) {
 							$file_info['tmp_name'] = sprintf('%s%s', $tmp_uploaded_path, $file_list[$i]);
 							$file_info['name'] = $file_list[$i];
@@ -337,7 +337,7 @@ if($called_position == 'before_module_proc') {
 
 				$obj->content = str_replace($uploaded_target_path,sprintf('/files/attach/images/%s/%s%s', $this->module_srl, getNumberingPath($document_srl,3), $filename), $obj->content);
 
-				$oDocumentController = &getController('document');
+				$oDocumentController = getController('document');
 				$output = $oDocumentController->updateDocument($oDocument,$obj);
 
 				if(!$output->toBool()) {
@@ -355,7 +355,7 @@ if($called_position == 'before_module_proc') {
 				$tmp_arr = explode('/', $tmp_val);
 				$document_srl = array_pop($tmp_arr);
 				// Get a document
-				$oDocumentModel = &getModel('document');
+				$oDocumentModel = getModel('document');
 				$oDocument = $oDocumentModel->getDocument($document_srl);
 				// If the document exists
 				if(!$oDocument->isExists()) {
@@ -366,7 +366,7 @@ if($called_position == 'before_module_proc') {
 					break;
 				// Delete
 				} else {
-					$oDocumentController = &getController('document');
+					$oDocumentController = getController('document');
 					$output = $oDocumentController->deleteDocument($document_srl);
 					if(!$output->toBool()) $content = getXmlRpcFailure(1, $output->getMessage());
 					else $content = getXmlRpcResponse(true);
@@ -389,7 +389,7 @@ if($called_position == 'before_module_proc') {
 					$content = getXmlRpcFailure(1, 'post not founded');
 					printContent($content);
 				} else {
-					$oEditorController = &getController('editor');
+					$oEditorController = getController('editor');
 
 					$posts = array();
 					foreach($output->data as $key => $oDocument) {

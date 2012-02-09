@@ -66,8 +66,8 @@ class MemberAdminView extends Member
 	public function dispMemberAdminConfig()
 	{
 		global $lang;            // retrieve configuration via module model instance
-		$oModuleModel = &getModel('module');
-		$oMemberModel = &getModel('member');
+		$oModuleModel = getModel('module');
+		$oMemberModel = getModel('member');
 		$config = $oMemberModel->getMemberConfig();
 
 		Context::set('config', $config);
@@ -255,7 +255,7 @@ class MemberAdminView extends Member
 		$output = executeQueryArray('member.getMembers', $args);
 		Context::set('member_list', $output->data);
 		// Get a list of the selected member
-		$oMemberModel = &getModel('member');
+		$oMemberModel = getModel('member');
 		Context::set('member_groups', $oMemberModel->getGroups());
 
 		$security = new Security();

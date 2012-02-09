@@ -22,12 +22,12 @@
             $comment_srl = Context::get('target_srl');
             if(!$comment_srl) return new Object(-1, 'msg_invalid_request');
 
-			$oCommentModel = &getModel('comment');
+			$oCommentModel = getModel('comment');
             $oComment = $oCommentModel->getComment($comment_srl, false, false);
 			$module_srl = $oComment->get('module_srl');
 			if(!$module_srl) return new Object(-1, 'msg_invalid_request');
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
             $comment_config = $oModuleModel->getModulePartConfig('comment',$module_srl);
 			if($comment_config->use_vote_up=='N') return new Object(-1, 'msg_invalid_request');
 
@@ -44,12 +44,12 @@
             $comment_srl = Context::get('target_srl');
             if(!$comment_srl) return new Object(-1, 'msg_invalid_request');
 
-			$oCommentModel = &getModel('comment');
+			$oCommentModel = getModel('comment');
             $oComment = $oCommentModel->getComment($comment_srl, false, false);
 			$module_srl = $oComment->get('module_srl');
 			if(!$module_srl) return new Object(-1, 'msg_invalid_request');
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
             $comment_config = $oModuleModel->getModulePartConfig('comment',$module_srl);
 			if($comment_config->use_vote_down=='N') return new Object(-1, 'msg_invalid_request');
 
@@ -86,7 +86,7 @@
             $module_srl = $obj->module_srl;
             if(!$module_srl) return new Object();
 
-            $oCommentController = &getAdminController('comment');
+            $oCommentController = getAdminController('comment');
             return $oCommentController->deleteModuleComments($module_srl);
         }
 
@@ -110,7 +110,7 @@
             $document_srl = $obj->document_srl;
             if(!$document_srl) return new Object(-1,'msg_invalid_document');
             // get a object of document model
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
 
             // even for manual_inserted if password exists, md5 it.
             if($obj->password) $obj->password = md5($obj->password);
@@ -153,7 +153,7 @@
             if(!$obj->is_secret) $obj->is_secret = 'N';
 
             // begin transaction
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // Enter a list of comments first
             $list_args->comment_srl = $obj->comment_srl;
@@ -205,11 +205,11 @@
                 return $output;
             }
             // creat the comment model object
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
             // get the number of all comments in the posting
             $comment_count = $oCommentModel->getCommentCount($document_srl);
             // create the controller object of the document
-            $oDocumentController = &getController('document');
+            $oDocumentController = getController('document');
             // Update the number of comments in the post
             $output = $oDocumentController->updateCommentCount($document_srl, $comment_count, $obj->nick_name, true);
             // grant autority of the comment
@@ -259,7 +259,7 @@
             $output = ModuleHandler::triggerCall('comment.updateComment', 'before', $obj);
             if(!$output->toBool()) return $output;
             // create a comment model object
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
             // get the original data
             $source_obj = $oCommentModel->getComment($obj->comment_srl);
             if(!$source_obj->getMemberSrl()) {
@@ -302,7 +302,7 @@
             if($logged_info->is_admin != 'Y') $obj->content = removeHackTag($obj->content);
 
             // begin transaction
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // Update
             $output = executeQuery('comment.updateComment', $obj);
@@ -338,7 +338,7 @@
          **/
         function deleteComment($comment_srl, $is_admin = false, $isMoveToTrash = false) {
             // create the comment model object
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
             // check if comment already exists
             $comment = $oCommentModel->getComment($comment_srl);
             if($comment->comment_srl != $comment_srl) return new Object(-1, 'msg_invalid_request');
@@ -353,7 +353,7 @@
             if(!$is_admin && !$comment->isGranted()) return new Object(-1, 'msg_not_permitted');
 
             // begin transaction
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // Delete
             $args->comment_srl = $comment_srl;
@@ -367,7 +367,7 @@
             // update the number of comments
             $comment_count = $oCommentModel->getCommentCount($document_srl);
             // create the controller object of the document
-            $oDocumentController = &getController('document');
+            $oDocumentController = getController('document');
             // update comment count of the article posting
             $output = $oDocumentController->updateCommentCount($document_srl, $comment_count, null, false);
             if(!$output->toBool()) {
@@ -418,8 +418,8 @@
          **/
         function deleteComments($document_srl) {
             // create the document model object
-            $oDocumentModel = &getModel('document');
-            $oCommentModel = &getModel('comment');
+            $oDocumentModel = getModel('document');
+            $oCommentModel = getModel('comment');
             // check if permission is granted
             $oDocument = $oDocumentModel->getDocument($document_srl);
             if(!$oDocument->isExists() || !$oDocument->isGranted()) return new Object(-1, 'msg_not_permitted');
@@ -500,7 +500,7 @@
             // invalid vote if vote info exists in the session info.
             if($_SESSION['voted_comment'][$comment_srl]) return new Object(-1, $failed_voted);
 
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
             $oComment = $oCommentModel->getComment($comment_srl, false, false);
             // invalid vote if both ip addresses between author's and the current user are same.
             if($oComment->get('ipaddress') == $_SERVER['REMOTE_ADDR']) {
@@ -510,7 +510,7 @@
             // if the comment author is a member
             if($oComment->get('member_srl')) {
                 // create the member model object
-                $oMemberModel = &getModel('member');
+                $oMemberModel = getModel('member');
                 $member_srl = $oMemberModel->getLoggedMemberSrl();
                 // session registered if the author information matches to the current logged-in user's.
                 if($member_srl && $member_srl == $oComment->get('member_srl')) {
@@ -561,7 +561,7 @@
             $output = executeQuery('comment.getDeclaredComment', $args);
             if(!$output->toBool()) return $output;
             // get the original comment
-            $oCommentModel = &getModel('comment');
+            $oCommentModel = getModel('comment');
             $oComment = $oCommentModel->getComment($comment_srl, false, false);
             // failed if both ip addresses between author's and the current user are same.
             if($oComment->get('ipaddress') == $_SERVER['REMOTE_ADDR']) {
@@ -571,7 +571,7 @@
             // if the comment author is a member
             if($oComment->get('member_srl')) {
                 // create the member model object
-                $oMemberModel = &getModel('member');
+                $oMemberModel = getModel('member');
                 $member_srl = $oMemberModel->getLoggedMemberSrl();
                 // session registered if the author information matches to the current logged-in user's.
                 if($member_srl && $member_srl == $oComment->get('member_srl')) {
@@ -653,7 +653,7 @@
         }
 
 		function setCommentModuleConfig($srl, $comment_config){
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
 			$oModuleController->insertModulePartConfig('comment',$srl,$comment_config);
             return new Object();
 		}
@@ -668,7 +668,7 @@
 			if($commentSrls) $commentSrlList = explode(',', $commentSrls);
 
 			if(count($commentSrlList) > 0) {
-				$oCommentModel = &getModel('comment');
+				$oCommentModel = getModel('comment');
 				$commentList = $oCommentModel->getComments($commentSrlList);
 
 				if(is_array($commentList))

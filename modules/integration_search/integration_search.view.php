@@ -24,7 +24,7 @@
          **/
         function IS() {
             $oFile = &getClass('file');
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             // Check permissions
             if(!$this->grant->access) return new Object(-1,'msg_not_permitted');
 
@@ -50,7 +50,7 @@
             $where = Context::get('where');
             // Create integration search model object 
             if($is_keyword) {
-                $oIS = &getModel('integration_search');
+                $oIS = getModel('integration_search');
                 switch($where) {
                     case 'document' :
                             $search_target = Context::get('search_target');

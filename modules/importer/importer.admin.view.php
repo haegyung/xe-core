@@ -27,14 +27,14 @@
                         $template_filename = "member";
                     break;
                 case 'ttxml' : 
-                        $oModuleModel = &getModel('module');
+                        $oModuleModel = getModel('module');
                         //$mid_list = $oModuleModel->getMidList();	//perhaps mid_list variables not use
                         //Context::set('mid_list', $mid_list);
                         
                         $template_filename = "ttxml";
                     break;
                 case 'module' : 
-                        $oModuleModel = &getModel('module');
+                        $oModuleModel = getModel('module');
                         //$mid_list = $oModuleModel->getMidList();	//perhaps mid_list variables not use
                         //Context::set('mid_list', $mid_list);
                         
@@ -58,7 +58,7 @@
          * @brief Display a form to upload the xml file
          **/
         function dispImporterAdminImportForm() {
-			$oDocumentModel = &getModel('document');	//for document lang use in this page
+			$oDocumentModel = getModel('document');	//for document lang use in this page
 
             $this->setTemplatePath($this->module_path.'tpl');
             $this->setTemplateFile('index');

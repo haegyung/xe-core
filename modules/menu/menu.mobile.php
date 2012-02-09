@@ -19,7 +19,7 @@ class menuMobile extends moduleObject {
 
 	function dispMenuMenu() {
 		$menu_srl = Context::get('menu_srl');
-		$oAdminModel =& getAdminModel('menu');
+		$oAdminModel = getAdminModel('menu');
 		$menu_info = $oAdminModel->getMenu($menu_srl);
 		if(file_exists($menu_info->php_file)) @include($menu_info->php_file);
 		foreach($menu->list as $menu_item)

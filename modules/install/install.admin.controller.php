@@ -21,7 +21,7 @@
             $module_name = Context::get('module_name');
             if(!$module_name) return new object(-1, 'invalid_request');
 
-            $oInstallController = &getController('install');
+            $oInstallController = getController('install');
             $oInstallController->installModule($module_name, './modules/'.$module_name);
 
             $this->setMessage('success_installed');
@@ -127,14 +127,14 @@
             unset($db_info->lang_type);
             Context::setDBInfo($db_info);
 
-            $oInstallController = &getController('install');
+            $oInstallController = getController('install');
             $oInstallController->makeConfigFile();
 
             $site_args->site_srl = 0;
             $site_args->index_module_srl = Context::get('index_module_srl');
             $site_args->default_language = Context::get('change_lang_type');
             $site_args->domain = $db_info->default_url;
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $oModuleController->updateSite($site_args);
 
 			$this->setMessage('success_updated');
@@ -226,7 +226,7 @@
 			if(!$config->thumbnail_type || $config->thumbnail_type != 'ratio' ) $args->thumbnail_type = 'crop';
 			else $args->thumbnail_type = 'ratio';
 
-			$oModuleController = &getController('module');
+			$oModuleController = getController('module');
 			$oModuleController->insertModuleConfig('document',$args);
 			
 			unset($args);

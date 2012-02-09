@@ -19,7 +19,7 @@
          * Attempt to replace with sever-side session if upload_target_srl is not yet determined
          **/
         function getFileList() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 
             $mid = Context::get('mid');
             $editor_sequence = Context::get('editor_sequence');
@@ -86,7 +86,7 @@
          **/
         function getFileConfig($module_srl = null) {
             // Get configurations (using module model object)
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
 
             $file_module_config = $oModuleModel->getModuleConfig('file');
 
@@ -228,10 +228,10 @@
 				return $file_grant;
 			}
 
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$grant = $oModuleModel->getGrant($oModuleModel->getModuleInfoByModuleSrl($file_info->module_srl), $member_info);
 
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			$oDocument = $oDocumentModel->getDocument($file_info->upload_target_srl);
 			if ($oDocument->isExists()) $document_grant = $oDocument->isGranted(); 
 			

@@ -17,7 +17,7 @@
          * @brief The action to clean up the Derby session
          **/
         function procSessionAdminClear() {
-            $oSessionController = &getController('session');
+            $oSessionController = getController('session');
             $oSessionController->gc(0);
 
             $this->add('result',Context::getLang('session_cleared'));

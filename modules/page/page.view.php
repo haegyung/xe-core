@@ -64,7 +64,7 @@
                     $page_content = FileHandler::readFile($this->cache_file); 
 					$page_content = preg_replace('@<\!--#Meta:@', '<!--Meta:', $page_content);
                 } else {
-                    $oWidgetController = &getController('widget');
+                    $oWidgetController = getController('widget');
                     $page_content = $oWidgetController->transWidgetCode($this->module_info->content);
                     FileHandler::writeFile($this->cache_file, $page_content);
                 }
@@ -76,7 +76,7 @@
 		}
 
 		function _getArticleContent(){
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			$oDocument = $oDocumentModel->getDocument(0, true);
 			
 			if ($this->module_info->document_srl){
@@ -119,7 +119,7 @@
 
             }
             // Create opage controller
-            $oPageController = &getController('page');
+            $oPageController = getController('page');
             // change url of image, css, javascript and so on if the page is from external server
             $content = $oPageController->replaceSrc($content, $path);
             // Change the document to utf-8 format

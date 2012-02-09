@@ -24,7 +24,7 @@
             if(!$args->colorset) $args->colorset = "white";
             if(!$args->editor_skin) $args->editor_skin = "default";
             // create the module module Controller object
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $output = $oModuleController->insertModuleConfig('communication',$args);
 
 			if(!in_array(Context::getRequestMethod(),array('XMLRPC','JSON'))) {

@@ -18,12 +18,12 @@
          **/
         function triggerInsertMember(&$obj) {
             // Get the point module information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             // Get the member_srl of the newly registered member
             $member_srl = $obj->member_srl;
             // Get the points of the member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
 
             $point = $config->signup_point;
@@ -43,10 +43,10 @@
             // If the last login is not today, give the points
             if(substr($obj->last_login,0,8)==date("Ymd")) return new Object();
             // Get the point module information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             // Get the points of the member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
 
             $point = $config->login_point;
@@ -61,7 +61,7 @@
          * @brief A trigger to add points to the member for creating a post
          **/
         function triggerInsertDocument(&$obj) {
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			if($obj->status != $oDocumentModel->getConfigStatus('temp'))
 			{
 				$module_srl = $obj->module_srl;
@@ -70,11 +70,11 @@
 				// The fix to disable giving points for saving the document temporarily
 				if($module_srl == $member_srl) return new Object();
 				// Get the point module information
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				$config = $oModuleModel->getModuleConfig('point');
 				$module_config = $oModuleModel->getModulePartConfig('point',$module_srl);
 				// Get the points of the member
-				$oPointModel = &getModel('point');
+				$oPointModel = getModel('point');
 				$cur_point = $oPointModel->getPoint($member_srl, true);
 
 				$point = $module_config['insert_document'];
@@ -96,20 +96,20 @@
          * Temporary storage at the point in 1.2.3 changed to avoid payment
          **/
         function triggerUpdateDocument(&$obj) {
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			$document_srl = $obj->document_srl;
 			$oDocument = $oDocumentModel->getDocument($document_srl);
 
 			// if status is TEMP or PUBLIC... give not point, only status is empty
 			if($oDocument->get('status') == $oDocumentModel->getConfigStatus('temp') && $obj->status != $oDocumentModel->getConfigStatus('temp'))
 			{
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 
 				// Get the point module information
 				$config = $oModuleModel->getModuleConfig('point');
 				$module_config = $oModuleModel->getModulePartConfig('point',$obj->module_srl);
 				// Get the points of the member
-				$oPointModel = &getModel('point');
+				$oPointModel = getModel('point');
 				$cur_point = $oPointModel->getPoint($oDocument->get('member_srl'), true);
 
 				$point = $module_config['insert_document'];
@@ -134,11 +134,11 @@
             $document_srl = $obj->document_srl;
             $member_srl = $obj->member_srl;
 
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($document_srl);
             if(!$oDocument->isExists()) return new Object();
             // Get the point module information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             $module_config = $oModuleModel->getModulePartConfig('point',$oDocument->get('module_srl'));
             // The process related to clearing the post comments
@@ -162,7 +162,7 @@
             if($member_srl) unset($member_srls[abs($member_srl)]);
             if(!count($member_srls)) return new Object();
             // Remove all the points for each member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             // Get the points
             $point = $module_config['download_file'];
             foreach($member_srls as $member_srl => $cnt) {
@@ -186,10 +186,10 @@
             $logged_info = Context::get('logged_info');
             if(!$logged_info->member_srl) return new Object();
             // Get the points of the member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
             // Get the point module information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             $module_config = $oModuleModel->getModulePartConfig('point', $module_srl);
 
@@ -217,15 +217,15 @@
             if(!$module_srl || !$member_srl) return new Object();
             // Do not increase the points if the member is the author of the post
             $document_srl = $obj->document_srl;
-            $oDocumentModel = &getModel('document');
+            $oDocumentModel = getModel('document');
             $oDocument = $oDocumentModel->getDocument($document_srl);
             if(!$oDocument->isExists() || abs($oDocument->get('member_srl'))==abs($member_srl)) return new Object();
             // Get the point module information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             $module_config = $oModuleModel->getModulePartConfig('point', $module_srl);
             // Get the points of the member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
 
             $point = $module_config['insert_comment'];
@@ -241,9 +241,9 @@
          * @brief A trigger which gives points for deleting a comment
          **/
         function triggerDeleteComment(&$obj) {
-            $oModuleModel = &getModel('module');
-            $oPointModel = &getModel('point');
-            $oDocumentModel = &getModel('document');
+            $oModuleModel = getModel('module');
+            $oPointModel = getModel('point');
+            $oDocumentModel = getModel('document');
 
             $module_srl = $obj->module_srl;
             $member_srl = abs($obj->member_srl);
@@ -289,11 +289,11 @@
             $member_srl = $obj->member_srl;
             if(!$module_srl || !$member_srl) return new Object();
             // Get the point module information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             $module_config = $oModuleModel->getModulePartConfig('point', $module_srl);
             // Get the points of the member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
 
             $point = $module_config['upload_file'];
@@ -316,7 +316,7 @@
             // Pass if it is your file
             if(abs($obj->member_srl) == abs($member_srl)) return new Object();
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             $module_config = $oModuleModel->getModulePartConfig('point', $module_srl);
             // If it is set not to allow downloading for non-logged in users, do not permit
@@ -326,7 +326,7 @@
 				else return new Object();
 			}
             // Get the points of the member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
             // Get the points
             $point = $module_config['download_file'];
@@ -350,11 +350,11 @@
             // Pass if it is your file
             if(abs($obj->member_srl) == abs($member_srl)) return new Object();
             // Get the point module information
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             $module_config = $oModuleModel->getModulePartConfig('point', $module_srl);
             // Get the points of the member
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
             // Get the points
             $point = $module_config['download_file'];
@@ -371,8 +371,8 @@
          * Run it even if there are no points
          **/
         function triggerUpdateReadedCount(&$obj) {
-            $oModuleModel = &getModel('module');
-            $oPointModel = &getModel('point');
+            $oModuleModel = getModel('module');
+            $oPointModel = getModel('point');
             // Get visitor information
             $logged_info = Context::get('logged_info');
             $member_srl = $logged_info->member_srl;
@@ -427,11 +427,11 @@
             $member_srl = $obj->member_srl;
             if(!$module_srl || !$member_srl) return new Object();
 
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('point');
             $module_config = $oModuleModel->getModulePartConfig('point', $module_srl);
 
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             $cur_point = $oPointModel->getPoint($member_srl, true);
 
             if( $obj->point > 0 ) {
@@ -458,9 +458,9 @@
             $mode_arr = array('add', 'minus', 'update', 'signup');
             if(!$mode || !in_array($mode,$mode_arr)) $mode = 'update';
             // Get configuration information
-            $oMemberModel = &getModel('member');
-            $oModuleModel = &getModel('module');
-            $oPointModel = &getModel('point');
+            $oMemberModel = getModel('member');
+            $oModuleModel = getModel('module');
+            $oPointModel = getModel('point');
             $config = $oModuleModel->getModuleConfig('point');
             // Get the default configuration information
             $prev_point = $oPointModel->getPoint($member_srl, true);
@@ -487,7 +487,7 @@
             if($args->point < 0) $args->point = 0;
             $point = $args->point;
             // If there are points, update, if no, insert
-            $oPointModel = &getModel('point');
+            $oPointModel = getModel('point');
             if($oPointModel->isExistsPoint($member_srl)) executeQuery("point.updatePoint", $args);
             else executeQuery("point.insertPoint", $args);
             // Get a new level

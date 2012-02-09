@@ -37,7 +37,7 @@
             // Return if no result or an error occurs
             if(!$output->toBool()||!count($output->data)) return $output;
 
-            $oFileModel = &getModel('file');
+            $oFileModel = getModel('file');
 
             foreach($output->data as $key => $file) {
 				if($_SESSION['file_management'][$file->file_srl]) $file->isCarted = true;

@@ -73,7 +73,7 @@
             // Separate all the values into DB entries and others
             $member_srl = Context::get('member_srl');
 
-            $oMemberController = &getController('member');
+            $oMemberController = getController('member');
             $output = $oMemberController->deleteMember($member_srl);
             if(!$output->toBool()) return $output;
 
@@ -94,7 +94,7 @@
 				'colorset'
             );
 
-			$oModuleController = &getController('module');
+			$oModuleController = getController('module');
 
 			// default setting start
             if($input_args->enable_join != 'Y')
@@ -362,10 +362,10 @@
 			$members = $var->member_srls;
 			$driver = Context::get('driver');
 
-			$oDB = &DB::getInstance();
+			$oDB = DB::getInstance();
 			$oDB->begin();
 
-			$oMemberController = &getController('member');
+			$oMemberController = getController('member');
 			foreach($members as $key=>$member_srl){
 				unset($args);
 				$args->member_srl = $member_srl;
@@ -412,7 +412,7 @@
 			$message = $var->message;
 			// Send a message
 			if($message) {
-				$oCommunicationController = &getController('communication');
+				$oCommunicationController = getController('communication');
 
 				$logged_info = Context::get('logged_info');
 				$title = cut_str($message,10,'...');
@@ -437,7 +437,7 @@
             $target_member_srls = Context::get('target_member_srls');
             if(!$target_member_srls) return new Object(-1, 'msg_invalid_request');
             $member_srls = explode(',', $target_member_srls);
-            $oMemberController = &getController('member');
+            $oMemberController = getController('member');
 
             foreach($member_srls as $member) {
                 $output = $oMemberController->deleteMember($member);
@@ -462,7 +462,7 @@
             if(!is_array($group_srl)) $group_srls = explode('|@|', $group_srl);
 			else $group_srls = $group_srl;
 
-            $oDB = &DB::getInstance();
+            $oDB = DB::getInstance();
             $oDB->begin();
             // Delete a group of selected members
             $args->member_srl = $member_srl;
@@ -514,11 +514,11 @@
             // Assign an administrator
             $args->is_admin = 'Y';
             // Get admin group and set
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             $admin_group = $oMemberModel->getAdminGroup();
             $args->group_srl_list = $admin_group->group_srl;
 
-            $oMemberController = &getController('member');
+            $oMemberController = getController('member');
             return $oMemberController->insertMember($args);
         }
 
@@ -570,7 +570,7 @@
          **/
         function deleteGroup($group_srl, $site_srl = 0) {
             // Create a member model object
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Check the group_srl (If is_default == 'Y', it cannot be deleted)
 			$columnList = array('group_srl', 'is_default');
             $group_info = $oMemberModel->getGroup($group_srl, $columnList);
@@ -594,8 +594,8 @@
 		function procMemberAdminGroupConfig() {
 			$vars = Context::getRequestVars();
 
-			$oMemberModel = &getModel('member');
-			$oModuleController = &getController('module');
+			$oMemberModel = getModel('member');
+			$oModuleController = getController('module');
 
 			// group image mark option
 			$config = $oMemberModel->getMemberConfig();
@@ -652,7 +652,7 @@
          * @brief Move up a join form
          **/
         function moveJoinFormUp($member_join_form_srl) {
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Get information of the join form
             $args->member_join_form_srl = $member_join_form_srl;
             $output = executeQuery('member.getJoinForm', $args);
@@ -691,7 +691,7 @@
          * @brief Move down a join form
          **/
         function moveJoinFormDown($member_join_form_srl) {
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             // Get information of the join form
             $args->member_join_form_srl = $member_join_form_srl;
             $output = executeQuery('member.getJoinForm', $args);

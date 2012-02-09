@@ -17,7 +17,7 @@
          * @brief get the configuration
          **/
         function getConfig() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $communication_config = $oModuleModel->getModuleConfig('communication');
 
             if(!$communication_config->skin) $communication_config->skin = 'default';
@@ -38,7 +38,7 @@
             $message = $output->data;
             if(!$message) return ;
             // get recipient's information if it is a sent message
-            $oMemberModel = &getModel('member');
+            $oMemberModel = getModel('member');
             if($message->sender_srl == $logged_info->member_srl && $message->message_type == 'S') $member_info = $oMemberModel->getMemberInfoByMemberSrl($message->receiver_srl);
             // get sendor's information if it is a received/archived message
             else $member_info = $oMemberModel->getMemberInfoByMemberSrl($message->sender_srl);
@@ -50,7 +50,7 @@
             }
             // change the status if is a received and not yet read message
             if($message->message_type == 'R' && $message->readed != 'Y') {
-                $oCommunicationController = &getController('communication');
+                $oCommunicationController = getController('communication');
                 $oCommunicationController->setMessageReaded($message_srl);
             }
 
@@ -70,7 +70,7 @@
             if(!count($output->data)) return;
             $message = array_pop($output->data);
 
-            $oCommunicationController = &getController('communication');
+            $oCommunicationController = getController('communication');
             $oCommunicationController->setMessageReaded($message->message_srl);
 
             return $message;

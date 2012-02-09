@@ -20,7 +20,7 @@
          * @brief All RSS feeds configurations
          **/
         function procRssAdminInsertConfig() {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $total_config = $oModuleModel->getModuleConfig('rss');
 
             $config_vars = Context::getRequestVars();
@@ -124,7 +124,7 @@
          * @brief All Feeds with or without change
          **/
         function procRssAdminToggleActivate() {
-            $oRssModel = &getModel('rss');
+            $oRssModel = getModel('rss');
             // Get mid value
             $module_srl = Context::get('module_srl');
             if($module_srl) {
@@ -147,7 +147,7 @@
          * @brief A funciton to configure all Feeds of the RSS module
          **/
         function setFeedConfig($config) {
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $oModuleController->insertModuleConfig('rss',$config);
             return new Object();
         }
@@ -157,7 +157,7 @@
          * @brief A function t configure the RSS module
          **/
         function setRssModuleConfig($module_srl, $open_rss, $open_total_feed = 'N', $feed_description = 'N', $feed_copyright = 'N') {
-            $oModuleController = &getController('module');
+            $oModuleController = getController('module');
             $config->open_rss = $open_rss;
             $config->open_total_feed = $open_total_feed;
             if($feed_description != 'N') { $config->feed_description = $feed_description; }

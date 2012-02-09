@@ -161,7 +161,7 @@ EOD;
          **/
         function getMemberConfig() {
             // Get member configuration stored in the DB
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
 			//for multi language
 			if(is_array($config->signupForm))
@@ -229,7 +229,7 @@ EOD;
 
             ModuleHandler::triggerCall('member.getMemberMenu', 'before', $null);
 
-            $oMemberController = &getController('member');
+            $oMemberController = getController('member');
             // Display member information (Don't display to non-logged user)
             if($logged_info->member_srl) {
                 $url = getUrl('','mid',$mid,'act','dispMemberInfo','member_srl',$member_srl);
@@ -293,14 +293,14 @@ EOD;
                 if($site_module_info->site_srl) {
                     $logged_info->group_list = $this->getMemberGroups($logged_info->member_srl, $site_module_info->site_srl);
                     // Add is_site_admin bool variable into logged_info if site_administrator is
-                    $oModuleModel = &getModel('module');
+                    $oModuleModel = getModel('module');
                     if($oModuleModel->isSiteAdmin($logged_info)) $logged_info->is_site_admin = true;
                     else $logged_info->is_site_admin = false;
                 } else {
                     // Register a default group if the site doesn't have a member group
                     if(!count($logged_info->group_list)) {
                         $default_group = $this->getDefaultGroup(0);
-                        $oMemberController = &getController('member');
+                        $oMemberController = getController('member');
                         $oMemberController->addMemberToGroup($logged_info->member_srl, $default_group->group_srl, 0);
                         $groups[$default_group->group_srl] = $default_group->title;
                         $logged_info->group_list = $groups;
@@ -379,7 +379,7 @@ EOD;
          **/
         function arrangeMemberInfo($info, $site_srl = 0) {
             if(!$GLOBALS['__member_info__'][$info->member_srl]) {
-                $oModuleModel = &getModel('module');
+                $oModuleModel = getModel('module');
                 $config = $oModuleModel->getModuleConfig('member');
 
                 $info->group_list = $this->getMemberGroups($info->member_srl, $site_srl);
@@ -829,7 +829,7 @@ EOD;
          **/
         function getGroupImageMark($member_srl,$site_srl=0) {
             if(!isset($GLOBALS['__member_info__']['group_image_mark'][$member_srl])) {
-				$oModuleModel = &getModel('module');
+				$oModuleModel = getModel('module');
 				$config = $oModuleModel->getModuleConfig('member');
 				if($config->group_image_mark!='Y'){
 					return null;
@@ -886,7 +886,7 @@ EOD;
             if(mysql_pre4_hash_password($password_text) == $hashed_password) return true;
             // Verify the password by using old_password if the current db is MySQL. If correct, return true.
             if(substr(Context::getDBType(),0,5)=='mysql') {
-                $oDB = &DB::getInstance();
+                $oDB = DB::getInstance();
                 if($oDB->isValidOldPassword($password_text, $hashed_password)) return true;
             }
 
@@ -897,7 +897,7 @@ EOD;
          * @brief Return all the open IDs of the member
          **/
         function getMemberOpenIDByMemberSrl($member_srl) {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
 
             $result = array();
@@ -931,7 +931,7 @@ EOD;
          * @brief Return the member of the open ID.
          **/
         function getMemberSrlByOpenID($openid) {
-            $oModuleModel = &getModel('module');
+            $oModuleModel = getModel('module');
             $config = $oModuleModel->getModuleConfig('member');
 
             if ($config->enable_openid != 'Y') return $result;
