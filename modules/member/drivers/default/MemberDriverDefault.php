@@ -2093,7 +2093,7 @@ class MemberDriverDefault extends MemberDriver
 		$fields[] = sprintf('<field name="user_id" required="true" rule="%s"/>', $trans[$identifier]);
 		$fields[] = '<field name="password" required="true" />';
 
-		$this->createRuleset($this->getSigninRulset(TRUE), $fields);
+		$this->createRuleset($this->getSigninRuleset(TRUE), $fields);
 	}
 
 
