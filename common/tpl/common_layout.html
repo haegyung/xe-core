@@ -16,15 +16,6 @@
 	<meta charset="UTF-8" cond="$db_info->use_html5=='Y'"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" cond="$db_info->use_html5!='Y'" />
 
 	<meta name="Generator" content="XpressEngine" />
-<meta name="{$meta_tag['name']}" content="{$meta_tag['content']}" cond="!$meta_tag['is_http_equiv']" loop="$meta_tags=>$key,$meta_tag" />
-	<meta name="module" content="{$module_info->module}" cond="$module_info->module" />
-
-	<meta name="module_skin" content="{$module_info->skin}" cond="$module_info->skin" />
-
-	<meta name="layout" content="{$layout_info->title}({$layout_info->layout})" cond="$layout_info->title" />
-
-	<meta name="layout_maker" content="{$author->name}({$author->homepage})" cond="$layout_info->author" loop="$layout_info->author=>$author" />
-
 <!-- TITLE -->
 	<title>{Context::getBrowserTitle()}</title>
 <!-- CSS -->
@@ -39,7 +30,7 @@
 	<script type="text/javascript"|cond="$db_info->use_html5!='Y'" src="{$js_file['file']}"></script>
 <block cond="$js_file['targetie']"><![endif]--></block>
 </block>
-	<block cond="$db_info->use_html5=='Y'"><!--[if lt IE 9]><script type="text/javascript" src="../js/html5.js"></script><![endif]--></block>
+	<block cond="$db_info->use_html5=='Y'"><!--[if lt IE 9]><script src="../js/html5.js"></script><![endif]--></block>
 
 <!-- RSS -->
 	<link rel="alternate" type="application/rss+xml" title="RSS" href="{$rss_url}" cond="$rss_url" /><link rel="alternate" type="application/rss+xml" title="Site RSS" href="{$general_rss_url}" cond="$general_rss_url" />
